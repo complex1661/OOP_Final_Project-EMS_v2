@@ -30,24 +30,26 @@ public class TestSystem {
 //      System.out.println(entry.getKey().toString());
 //    }
     
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 1), new AttendanceDayRecord(8, 0, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 2), new AttendanceDayRecord(8, 0, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 3), new AttendanceDayRecord(8, 0, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 4), new AttendanceDayRecord(8, 0, 0, true, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 1), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 2), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 3), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 4), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, true, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 5), new AttendanceDayRecord(4, 0, 4, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 6), new AttendanceDayRecord(8, 0, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 10), new AttendanceDayRecord(8, 0, 0, true, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 12), new AttendanceDayRecord(8, 0, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 13), new AttendanceDayRecord(8, 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 6), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 10), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, true, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 12), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 13), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 14), new AttendanceDayRecord(4, 4, 0, false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 15), new AttendanceDayRecord(8, 0, 0, false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 15), new AttendanceDayRecord(WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, 0, false, false));
     
     System.out.println(uuid.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(uuid, new CustomDate(2023, 5)));
     
-    TreeMap<UUID, AttendanceDayRecord> attendanceRecordAtSpecificYearMonth = attendanceRecordSystem.searchAllWorkersRecordsByYearMonthDay(new CustomDate(2023,5,5));
-    
+    CustomDate specificDate = new CustomDate(2023,5,5);
+    TreeMap<UUID, AttendanceDayRecord> attendanceRecordAtSpecificYearMonth = attendanceRecordSystem.searchAllWorkersRecordsByYearMonthDay(specificDate);
+    System.out.println("在 " + specificDate.toString() + "，員工的出缺勤紀錄為: ");
     for (Map.Entry<UUID, AttendanceDayRecord> worker : attendanceRecordAtSpecificYearMonth.entrySet()) {
-      System.out.println(worker.getKey() + ": \n" + worker.getValue().toString());
+      System.out.println("UUID: " + worker.getKey() + "，姓名: " + Worker.getWorkerByUUID(worker.getKey()).getInfo().getName() + ": \n" + worker.getValue().toString());
     }
+    
   }
 }
