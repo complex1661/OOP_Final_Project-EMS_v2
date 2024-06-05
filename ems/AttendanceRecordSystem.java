@@ -63,15 +63,22 @@ public class AttendanceRecordSystem {
     }
   }
   
-  // る籔 UUID 穓碝对猵 -> 穓碝琘琘琘る对猵
+  // る籔 UUID 穓碝对猵 -> 穓碝琘琘琘る(琘ら)对猵
   public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(UUID worker_uuid, CustomDate date) {
     ArrayList<AttendanceDayRecord> recordThisYearMonth = new ArrayList<>();
     TreeMap<CustomDate, AttendanceDayRecord> workerRecords = WorkerToDays.get(worker_uuid);
     if (workerRecords != null) {
       for (CustomDate recordDate : workerRecords.keySet()) {
         if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth())) {
-          AttendanceDayRecord record = workerRecords.get(recordDate);
-          recordThisYearMonth.add(record);
+          if (recordDate.getDay() != null && recordDate.getDay().equals(date.getDay())) {
+            AttendanceDayRecord record = workerRecords.get(recordDate);
+            recordThisYearMonth.add(record);
+            break;
+          }
+          if (recordDate.getDay() == null) {
+            AttendanceDayRecord record = workerRecords.get(recordDate);
+            recordThisYearMonth.add(record);
+          }
         }
       }
       return recordThisYearMonth;

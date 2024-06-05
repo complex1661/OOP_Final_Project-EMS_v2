@@ -46,6 +46,7 @@ public class AttendanceDayRecord {
   public LeaveRecord getLeaveRecord() {
     return leaveRecord;
   }
+  
   public String toString() {
     String late = isLate ? "¬O" : "§_";
     String paidLeave = isPaidLeave ? "¬O" : "§_";

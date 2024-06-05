@@ -20,7 +20,7 @@ public class TestSystem {
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 12), new AttendanceDayRecord(uuid, 5, 0, new LeaveRecord(), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 13), new AttendanceDayRecord(uuid, 5, 0, new LeaveRecord(), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 14), new AttendanceDayRecord(uuid, 4, 1, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 15), new AttendanceDayRecord(uuid, 1, 0, new LeaveRecord("" ,new Message(), new CustomDate(2023, 5, 15)), false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 15), new AttendanceDayRecord(uuid, 1, 0, new LeaveRecord("病假" ,new Message(), new CustomDate(2023, 5, 15)), false, false));
     attendanceRecordSystem.deleteDayRecord(uuid, new CustomDate(2023, 5, 10));
     System.out.println(uuid.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(uuid, new CustomDate(2023, 5)));
     
@@ -32,7 +32,7 @@ public class TestSystem {
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 2), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 3), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 4), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), true, false));
-    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 5), new AttendanceDayRecord(uuid,4, 0, new LeaveRecord("" ,new Message(), new CustomDate(2023, 5, 5)), false, false));
+    attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 5), new AttendanceDayRecord(uuid,4, 0, new LeaveRecord("事假" ,new Message(), new CustomDate(2023, 5, 5)), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 6), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), false, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 10), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), true, false));
     attendanceRecordSystem.addDayRecord(uuid, new CustomDate(2023, 5, 12), new AttendanceDayRecord(uuid, WorkerClockInSystem.getClockHour(new ClockRecord(new Time(9,0), new Time(17, 0))), 0, new LeaveRecord(), false, false));
@@ -49,6 +49,13 @@ public class TestSystem {
     System.out.println("在 " + specificDate.toString() + "，員工的出缺勤紀錄為: ");
     for (Map.Entry<UUID, AttendanceDayRecord> worker : attendanceRecordAtSpecificYearMonth.entrySet()) {
       System.out.println("UUID: " + worker.getKey() + "，姓名: " + Worker.getWorkerByUUID(worker.getKey()).getInfo().getName() + ": \n" + worker.getValue().toString());
+    }
+    
+    // 取得在特定年月的員工出勤紀錄之請假資訊
+    specificDate = new CustomDate(2023,5,5);
+    ArrayList<AttendanceDayRecord> attendanceRecordAtSpecificYearMonthDay = attendanceRecordSystem.searchRecordByYearMonth(uuid, specificDate);
+    for (AttendanceDayRecord record : attendanceRecordAtSpecificYearMonthDay) {
+      System.out.println(record.getLeaveRecord().getLeaveType());
     }
     
     // 測試生成日期

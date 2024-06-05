@@ -35,11 +35,8 @@ public class LeaveRecord {
   }
   
   public void setLeaveType(String s) throws IllegalArgumentException {
-    if (s != null) {
-      leaveType = s;
-    } else {
-      throw new IllegalArgumentException("錯誤: 請假種類不可留白。");
-    }
+    if (s == null || s.isEmpty()) throw new IllegalArgumentException("錯誤: 請假種類不可留白。");
+    leaveType = s;
   }
   
   public String getLeaveType() {
