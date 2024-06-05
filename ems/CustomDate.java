@@ -7,6 +7,13 @@ public class CustomDate implements Comparable<CustomDate>{
   private Integer month;
   private Integer day; 
   
+  public CustomDate() {
+    Calendar c = Calendar.getInstance();
+    year = c.get(Calendar.YEAR);
+    month = c.get(Calendar.MONTH) + 1; 
+    day = c.get(Calendar.DATE);
+  }
+  
   public CustomDate(Integer y, Integer m) {
     year = y;
     month = m;
@@ -29,6 +36,7 @@ public class CustomDate implements Comparable<CustomDate>{
     day = c.get(Calendar.DAY_OF_MONTH);
   }
   
+  // 使用比較來實現自訂義 TreeMap 的鍵值
   @Override 
   public int compareTo(CustomDate cd) {
     if (!this.year.equals(cd.year)) return this.year - cd.year;

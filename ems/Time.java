@@ -5,6 +5,7 @@ import java.io.Serializable;
 public class Time{
   private int hour;
   private int minute;
+  
   public Time () {
     Calendar c = Calendar.getInstance();
     hour = c.get(Calendar.HOUR_OF_DAY);

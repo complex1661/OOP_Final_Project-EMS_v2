@@ -1,15 +1,20 @@
 package ems;
+import java.util.UUID;
+
 public class AttendanceDayRecord {
   private int attendHours;
   private int absentHours;
   private int leaveHours;
   private boolean isLate;
   private boolean isPaidLeave;
+  private LeaveRecord leaveRecord;
   
-  public AttendanceDayRecord(int at, int ab, int l, boolean isLate, boolean isPaidLeave) {
+  public AttendanceDayRecord(UUID uuid, int at, int ab, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
     attendHours = at;
     absentHours = ab;
-    leaveHours = l;
+    this.leaveRecord = leaveRecord;
+    leaveHours = WorkerLeaveSystem.getLeaveHour(uuid, leaveRecord);
+    if (leaveHours > 0 && at < leaveHours) leaveHours -= (at+ab);
     this.isLate = isLate;
     this.isPaidLeave = isPaidLeave;
   }
@@ -38,6 +43,9 @@ public class AttendanceDayRecord {
     return isPaidLeave;
   }
   
+  public LeaveRecord getLeaveRecord() {
+    return leaveRecord;
+  }
   public String toString() {
     String late = isLate ? "¬O" : "§_";
     String paidLeave = isPaidLeave ? "¬O" : "§_";

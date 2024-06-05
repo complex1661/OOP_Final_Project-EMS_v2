@@ -27,7 +27,7 @@ public class AttendanceRecordSystem {
     int working_hours = maxWorkingHours.get(workerType);
     
     // 核對 DayRecord 時數是否合理
-    if (dayRecord.getTotalHours() != working_hours){
+    if (dayRecord.getTotalHours() > working_hours){
       throw new IllegalArgumentException("錯誤: 不合理的出缺勤紀錄。"); 
     }
     
