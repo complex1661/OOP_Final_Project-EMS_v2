@@ -9,12 +9,12 @@ public class AttendanceDayRecord {
   private boolean isPaidLeave;
   private LeaveRecord leaveRecord;
   
-  public AttendanceDayRecord(UUID uuid, int at, int ab, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
-    attendHours = at;
-    absentHours = ab;
+  public AttendanceDayRecord(UUID uuid, int attendHours, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
+    this.attendHours = attendHours;
+    this.absentHours = absentHours;
     this.leaveRecord = leaveRecord;
     leaveHours = WorkerLeaveSystem.getLeaveHour(uuid, leaveRecord);
-    if (leaveHours > 0 && at < leaveHours) leaveHours -= (at+ab);
+    if (leaveHours > 0 && attendHours < leaveHours) leaveHours -= (attendHours + absentHours);
     this.isLate = isLate;
     this.isPaidLeave = isPaidLeave;
   }
