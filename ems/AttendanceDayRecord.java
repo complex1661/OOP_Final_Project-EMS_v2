@@ -10,11 +10,16 @@ public class AttendanceDayRecord {
   private LeaveRecord leaveRecord;
   
   public AttendanceDayRecord(UUID uuid, int attendHours, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
-    this.attendHours = attendHours;
-    this.absentHours = absentHours;
+    if (WorkerLeaveSystem.isLeavingWholeDay(uuid, leaveRecord)) {
+      this.attendHours = 0;
+      this.absentHours = 0;
+    }
+    else {
+      this.attendHours = attendHours;
+      this.absentHours = absentHours;
+    }
     this.leaveRecord = leaveRecord;
     leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
-    if (leaveHours > 0 && attendHours < leaveHours) leaveHours -= (attendHours + absentHours);
     this.isLate = isLate;
     this.isPaidLeave = isPaidLeave;
   }

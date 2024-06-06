@@ -13,7 +13,7 @@ public class WorkerLeaveSystem {
   
   // 取得員工請假時數
   public static int getLeaveHours(UUID uuid, LeaveRecord leaveRecord) {
-    if (leaveRecord.getStartTime() != null && leaveRecord.getStartTime() != null) {
+    if (!isLeavingWholeDay(uuid, leaveRecord)) {
       int m1 = leaveRecord.getStartTime().toMinute();
       int m2 = leaveRecord.getEndTime().toMinute();
       return Time.minuteToHour(m2 - m1);
