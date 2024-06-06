@@ -13,7 +13,7 @@ public class AttendanceDayRecord {
     this.attendHours = attendHours;
     this.absentHours = absentHours;
     this.leaveRecord = leaveRecord;
-    leaveHours = WorkerLeaveSystem.getLeaveHour(uuid, leaveRecord);
+    leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
     if (leaveHours > 0 && attendHours < leaveHours) leaveHours -= (attendHours + absentHours);
     this.isLate = isLate;
     this.isPaidLeave = isPaidLeave;

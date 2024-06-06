@@ -8,7 +8,7 @@ public class SalarySystem {
   private static final int LATE_PENALTY = 50;
   private TreeMap<EWorkerType, Integer> baseSalaryEachWorkerType;
   
-  public SalarySystem (){
+  public SalarySystem() {
     baseSalaryEachWorkerType = new TreeMap<>();
     baseSalaryEachWorkerType.put(EWorkerType.PARTTIME, PartTimeWorker.HOURLY_WAGE);
     baseSalaryEachWorkerType.put(EWorkerType.FULLTIME, FullTimeWorker.HOURLY_WAGE);
@@ -21,17 +21,17 @@ public class SalarySystem {
     
     // 取得該員工在該年月的出缺勤狀況
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_uuid, date);
-    
+
     int salary = 0;
     int hourly_wage = baseSalaryEachWorkerType.get(workerType);
-
+    
     // 計算總共工作(出勤)的時數
     int totalWorkedHours = 0;
     for (AttendanceDayRecord record : records) {
       totalWorkedHours += record.getAttendHours();
     } 
     salary = hourly_wage * totalWorkedHours;
-       
+    
     // 遲到
     for (AttendanceDayRecord record : records) {
       if (record.getIsLate()) {

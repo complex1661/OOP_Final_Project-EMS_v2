@@ -63,28 +63,40 @@ public class AttendanceRecordSystem {
     }
   }
   
-  // 以年月與員工 UUID 搜尋出缺勤狀況 -> 搜尋某員工在某年某月(某日)的出缺勤狀況
-  public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(UUID worker_uuid, CustomDate date) {
+  // 以年月與員工 UUID 搜尋出缺勤狀況 -> 搜尋某員工在某年某月的出缺勤狀況
+  public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(UUID worker_uuid, CustomDate date) throws IllegalArgumentException{
     ArrayList<AttendanceDayRecord> recordThisYearMonth = new ArrayList<>();
     TreeMap<CustomDate, AttendanceDayRecord> workerRecords = WorkerToDays.get(worker_uuid);
     if (workerRecords != null) {
       for (CustomDate recordDate : workerRecords.keySet()) {
-        if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth())) {
-          if (recordDate.getDay() != null && recordDate.getDay().equals(date.getDay())) {
-            AttendanceDayRecord record = workerRecords.get(recordDate);
-            recordThisYearMonth.add(record);
-            break;
-          }
-          if (recordDate.getDay() == null) {
-            AttendanceDayRecord record = workerRecords.get(recordDate);
-            recordThisYearMonth.add(record);
-          }
+        if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth())) { 
+          AttendanceDayRecord record = workerRecords.get(recordDate);
+          recordThisYearMonth.add(record);
         }
       }
       return recordThisYearMonth;
     }
     throw new IllegalArgumentException("錯誤: 員工UUID - " + worker_uuid.toString() + "在" + date.toString() + "無出缺勤紀錄。");
   }
+  
+  
+  public AttendanceDayRecord searchRecordByYearMonthDay(UUID worker_uuid, CustomDate date) throws IllegalArgumentException{
+    if (date.getDay() == null) throw new IllegalArgumentException("錯誤: 不可無日期。");
+    AttendanceDayRecord recordThisYearMonthDay = null;
+    TreeMap<CustomDate, AttendanceDayRecord> workerRecord = WorkerToDays.get(worker_uuid);
+    if (workerRecord != null) {
+      for (CustomDate recordDate : workerRecord.keySet()) {
+        if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth()) && recordDate.getDay().equals(date.getDay())) { 
+          AttendanceDayRecord record = workerRecord.get(recordDate);
+          recordThisYearMonthDay = record;
+        }
+      }
+      if (recordThisYearMonthDay == null) throw new IllegalArgumentException("錯誤: 此日期該員工無出缺勤紀錄。");
+    }
+    return recordThisYearMonthDay;
+  }
+  
+  
   
   // 以年月日搜尋所有員工的出缺勤狀況
   public TreeMap<UUID, AttendanceDayRecord> searchAllWorkersRecordsByYearMonthDay(CustomDate date){

@@ -1,7 +1,6 @@
 package ems;
 public class LeaveRecord {
   private String leaveType;
-  private CustomDate date;
   private Time start;
   private Time end;
   private Message msg;
@@ -10,16 +9,14 @@ public class LeaveRecord {
     start = end = new Time(0,0);
   }
   
-  public LeaveRecord(String leaveType, Message txt, CustomDate date) {
-    this.date = date;
+  public LeaveRecord(String leaveType, Message txt) {
     setLeaveType(leaveType); 
     msg = txt;
     start = null;
     end = null;
   }
   
-  public LeaveRecord(String leaveType, Message txt, CustomDate date, Time start, Time end) {
-    this.date = date;
+  public LeaveRecord(String leaveType, Message txt, Time start, Time end) {
     setLeaveType(leaveType); 
     this.start = start;
     this.end = end;
@@ -45,10 +42,6 @@ public class LeaveRecord {
   
   public Message getLeaveDetail() {
     return msg;
-  }
-  
-  public CustomDate getDate() {
-    return date;
   }
   
   public Time getStartTime() {

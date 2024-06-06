@@ -12,7 +12,7 @@ public class WorkerLeaveSystem {
   }
   
   // 取得員工請假時數
-  public static int getLeaveHour(UUID uuid, LeaveRecord leaveRecord) {
+  public static int getLeaveHours(UUID uuid, LeaveRecord leaveRecord) {
     if (leaveRecord.getStartTime() != null && leaveRecord.getStartTime() != null) {
       int m1 = leaveRecord.getStartTime().toMinute();
       int m2 = leaveRecord.getEndTime().toMinute();
@@ -20,5 +20,10 @@ public class WorkerLeaveSystem {
     }
     int hours = maxWorkingHours.get(Worker.getWorkerByUUID(uuid).getType());
     return hours;
+  }
+  
+  public static boolean isLeavingWholeDay(UUID uuid, LeaveRecord leaveRecord) {
+    if (leaveRecord.getStartTime() == null) return true;
+    return false;
   }
 }
