@@ -53,10 +53,9 @@ public class TestSystem {
     
     // 取得在特定年月的員工出勤紀錄之請假資訊
     specificDate = new CustomDate(2023,5,5);
-    ArrayList<AttendanceDayRecord> attendanceRecordAtSpecificYearMonthDay = attendanceRecordSystem.searchRecordByYearMonth(uuid, specificDate);
-    for (AttendanceDayRecord record : attendanceRecordAtSpecificYearMonthDay) {
-      System.out.println(record.getLeaveRecord().getLeaveType());
-    }
+    AttendanceDayRecord record = attendanceRecordSystem.searchRecordByYearMonthDay(uuid, specificDate);
+    System.out.println(record.getLeaveRecord().getLeaveType());
+
     
     // 測試生成日期
     System.out.println(new CustomDate().toString());
