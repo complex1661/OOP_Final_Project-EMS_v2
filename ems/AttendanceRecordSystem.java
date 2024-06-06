@@ -20,7 +20,49 @@ public class AttendanceRecordSystem {
     maxWorkingHours.put(EWorkerType.SUPERVISOR, Supervisor.WORKING_HOURS);
   }
 
-  // 新增紀錄
+  // 新增出席紀錄
+  public void addAttendanceRecord(UUID worker_uuid, CustomDate date, ClockRecord clockRecord) {
+    TreeMap<CustomDate, AttendanceDayRecord> workerAttendance = WorkerToDays.getOrDefault(worker_uuid, new TreeMap<>());
+    AttendanceDayRecord attendanceDayRecord = null;
+    if (!workerAttendance.containsKey(date)) {
+      attendanceDayRecord = new AttendanceDayRecord(worker_uuid);
+    }
+    else {
+      attendanceDayRecord = workerAttendance.get(date);
+    }
+    attendanceDayRecord.addClockRecord(clockRecord);
+    // 更新員工出席紀錄
+    workerAttendance.put(date, attendanceDayRecord);
+    // 新增到 WorkersToDays
+    WorkerToDays.put(worker_uuid, workerAttendance);
+    // 新增到 DayToWorkers
+    TreeMap<UUID, AttendanceDayRecord> dayRecordsByWorker = DayToWorkers.getOrDefault(date, new TreeMap<>());
+    dayRecordsByWorker.put(worker_uuid, attendanceDayRecord);
+    DayToWorkers.put(date, dayRecordsByWorker);
+  }
+  
+  // 新增請假紀錄
+  public void addLeaveRecord(UUID worker_uuid, CustomDate date, LeaveRecord leaveRecord) {
+    TreeMap<CustomDate, AttendanceDayRecord> workerAttendance = WorkerToDays.getOrDefault(worker_uuid, new TreeMap<>());
+    AttendanceDayRecord attendanceDayRecord = null;
+    if (!workerAttendance.containsKey(date)) {
+        attendanceDayRecord = new AttendanceDayRecord(worker_uuid);
+    } else {
+        attendanceDayRecord = workerAttendance.get(date);
+    }
+    attendanceDayRecord.addLeaveRecord(worker_uuid, leaveRecord);
+    workerAttendance.put(date, attendanceDayRecord); 
+
+    WorkerToDays.put(worker_uuid, workerAttendance);
+
+    TreeMap<UUID, AttendanceDayRecord> dayRecordsByWorker = DayToWorkers.getOrDefault(date, new TreeMap<>());
+    dayRecordsByWorker.put(worker_uuid, attendanceDayRecord); 
+
+    DayToWorkers.put(date, dayRecordsByWorker);
+}
+
+  
+  // 新增整日紀錄
   public void addDayRecord(UUID worker_uuid, CustomDate date, AttendanceDayRecord dayRecord) throws IllegalArgumentException {
     // 取得該員工每日工時上限與 UUID
     EWorkerType workerType = Worker.getWorkerByUUID(worker_uuid).getType();

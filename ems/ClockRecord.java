@@ -3,6 +3,10 @@ public class ClockRecord {
   private Time start;
   private Time end;
   
+  public ClockRecord () {
+    start = end = new Time(0,0);
+  }
+  
   public ClockRecord(Time s, Time e) {
     start = s; 
     end = e;

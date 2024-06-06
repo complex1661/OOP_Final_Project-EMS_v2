@@ -41,7 +41,7 @@ public class SalarySystem {
     
     // ¯Ê¶Ô
     for (AttendanceDayRecord record : records) {
-      salary -= record.getAbsentHours() * hourly_wage;
+      salary -= record.getAbsentHours(worker_uuid) * hourly_wage;
     } 
     
     return salary;

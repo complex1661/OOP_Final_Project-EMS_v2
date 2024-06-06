@@ -1,5 +1,6 @@
 package ems;
 import java.util.UUID;
+import java.util.TreeMap;
 
 public class AttendanceDayRecord {
   private int attendHours;
@@ -7,15 +8,30 @@ public class AttendanceDayRecord {
   private int leaveHours;
   private boolean isLate;
   private boolean isPaidLeave;
+  private ClockRecord clockRecord;
   private LeaveRecord leaveRecord;
   
-  public AttendanceDayRecord(UUID uuid, int attendHours, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
+  private static TreeMap<EWorkerType, Integer> maxWorkingHours = new TreeMap<>();
+  
+  static{
+    maxWorkingHours.put(EWorkerType.PARTTIME, PartTimeWorker.WORKING_HOURS);
+    maxWorkingHours.put(EWorkerType.FULLTIME, FullTimeWorker.WORKING_HOURS);
+    maxWorkingHours.put(EWorkerType.SUPERVISOR, Supervisor.WORKING_HOURS);
+  }
+  
+  public AttendanceDayRecord (UUID uuid) {
+    attendHours = maxWorkingHours.get(Worker.getWorkerByUUID(uuid).getType());
+    absentHours = 0;
+    leaveHours = 0;
+  }
+  
+  public AttendanceDayRecord(UUID uuid, ClockRecord clockRecord, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
     if (WorkerLeaveSystem.isLeavingWholeDay(uuid, leaveRecord)) {
       this.attendHours = 0;
       this.absentHours = 0;
     }
     else {
-      this.attendHours = attendHours;
+      this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
       this.absentHours = absentHours;
     }
     this.leaveRecord = leaveRecord;
@@ -24,11 +40,22 @@ public class AttendanceDayRecord {
     this.isPaidLeave = isPaidLeave;
   }
   
+  public void addClockRecord(ClockRecord clockRecord) {
+    this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
+  }
+  
+  public void addLeaveRecord(UUID uuid, LeaveRecord leaveRecord) {
+    this.leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
+  }
+
   public int getAttendHours() {
     return attendHours;
   }
   
-  public int getAbsentHours() {
+  public int getAbsentHours(UUID uuid) {
+    if (attendHours == 0 && leaveHours == 0 && absentHours == 0) {
+      absentHours = maxWorkingHours.get(Worker.getWorkerByUUID(uuid).getType());
+    }
     return absentHours;
   } 
   
@@ -48,10 +75,14 @@ public class AttendanceDayRecord {
     return isPaidLeave;
   }
   
+  public ClockRecord getClockRecord() {
+    return clockRecord;
+  }
+  
   public LeaveRecord getLeaveRecord() {
     return leaveRecord;
   }
-  
+
   public String toString() {
     String late = isLate ? "¬O" : "§_";
     String paidLeave = isPaidLeave ? "¬O" : "§_";
