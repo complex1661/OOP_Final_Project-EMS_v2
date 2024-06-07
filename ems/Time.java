@@ -55,7 +55,7 @@ public class Time{
       if (hour == 24) thour = 12; 
       temp = "AM ";
     }
-    return temp +thour + ":00 " + minute + "¤À";
+    return temp +thour + "ÂI " + minute + "¤À";
   } 
   
   public int toMinute() {
@@ -65,4 +65,17 @@ public class Time{
   public static int minuteToHour(int m) {
     return (int) Math.ceil((double) m / 60);
   }
+  
+  public boolean before(Time other) {
+    if (this.hour < other.hour) return true;
+    if (this.hour > other.hour) return false;
+    return this.minute <= other.minute;
+  }
+  
+   public boolean after(Time other) {
+    if (this.hour > other.hour) return true;
+    if (this.hour < other.hour) return false;
+    return this.minute >= other.minute;
+  }
+  
 }

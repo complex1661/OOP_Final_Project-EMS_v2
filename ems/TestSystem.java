@@ -7,20 +7,20 @@ public class TestSystem {
     SalarySystem salarySystem = ManageSystem.getSalarySystem();
    
     // 材
-    Worker w = new PartTimeWorker(new WorkerInfo("John", "瑍窲", new CustomDate(2020,5,20)));
+    Worker w = new PartTimeWorker(new WorkerInfo("John", "瑍窲", new CustomDate(2020,5,20)), new Time(8,0));
     Worker.addWorker(w);
     String id = w.getInfo().getId();
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 1), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 2), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(12, 0)), 1, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 3), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 4), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), true, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 5), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 6), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 10), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), true, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 12), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 13), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 14), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(12, 0)), 1, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 15), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(9, 0)), 0, new LeaveRecord("痜安" ,new Message(), new Time(9,0), new Time(13,0)), false, false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 1), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 2), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(12, 0)), 1, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 3), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 4), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 5), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 6), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 10), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 12), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 13), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 14), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(12, 0)), 1, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 15), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(9, 0)), 0, new LeaveRecord("痜安" ,new Message(), new Time(9,0), new Time(13,0)), false));
     attendanceRecordSystem.deleteDayRecord(id, new CustomDate(2023, 5, 10));
     System.out.println(id.toString() + " 羱戈 " + salarySystem.computeMonthlySalary(id, new CustomDate(2023, 5)));
     
@@ -28,19 +28,19 @@ public class TestSystem {
     Worker w2 = new FullTimeWorker(new WorkerInfo("Sarah", "癩叭场穦璸畍", new CustomDate(2019,6,30)));
     Worker.addWorker(w2);
     id = w2.getInfo().getId();
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 1), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 2), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 3), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 4), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), true, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 5), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(13, 0)), 0, new LeaveRecord("ㄆ安" ,new Message(), new Time(13,0), new Time(17,0)), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 6), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 10), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), true, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 12), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 13), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 14), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(13, 0)), 4, new LeaveRecord(), false, false));
-    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 15), new AttendanceDayRecord(id, new ClockRecord(new Time(9,0), new Time(17, 0)), 0, new LeaveRecord(), false, false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 1), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 2), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 3), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 4), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 5), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 0, new LeaveRecord("ㄆ安" ,new Message(), new Time(13,0), new Time(17,0)), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 6), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 10), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 12), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 13), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 14), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(13, 0)), 4, new LeaveRecord(), false));
+    attendanceRecordSystem.addDayRecord(id, new CustomDate(2023, 5, 15), new AttendanceDayRecord(id, new ClockRecord(new Time(8,0), new Time(17, 0)), 0, new LeaveRecord(), false));
     attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 16), new ClockRecord(new Time(9,0), new Time(16, 0)));
-    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 16), new LeaveRecord("ㄆ安", new Message(), new Time(16,0), new Time(17, 0)));
+    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 16), new LeaveRecord("ㄆ安", new Message(), new Time(8,0), new Time(9, 0)));
     
     // 眔疭﹚る羱戈
     System.out.println(id.toString() + " 羱戈 " + salarySystem.computeMonthlySalary(id, new CustomDate(2023, 5)));

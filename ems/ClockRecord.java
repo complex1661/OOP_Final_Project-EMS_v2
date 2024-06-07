@@ -26,4 +26,9 @@ public class ClockRecord {
   public Time getEndTime() {
     return end;
   }
+  
+  public boolean isLate(Time attend_time) {
+    Time acceptable_time = new Time(attend_time.getHour(), attend_time.getMinute() + 10);
+    return !start.before(acceptable_time);
+  }
 }

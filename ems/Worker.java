@@ -6,6 +6,7 @@ public abstract class Worker {
   
   protected EWorkerType type;
   protected WorkerInfo info;
+  protected Time ATTEND_TIME = new Time(8,0);
   protected int WORKING_HOURS;
   protected int PAID_LEAVE_DAYS;
   protected int BASE_SALARY;
@@ -40,6 +41,10 @@ public abstract class Worker {
   
   public WorkerInfo getInfo() {
     return info;
+  }
+  
+  public Time getAttendTime() {
+    return ATTEND_TIME;
   }
 
   public static Worker getWorkerById (String id) throws IllegalArgumentException{

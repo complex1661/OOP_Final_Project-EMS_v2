@@ -7,16 +7,11 @@ import java.util.Map;
 public class AttendanceRecordSystem {
   private TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>> DayToWorkers;
   private TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>> WorkerToDays;
-  private TreeMap<EWorkerType, Integer> maxWorkingHours;
   
   // 建構元
   public AttendanceRecordSystem() {
     DayToWorkers = new TreeMap<>();
     WorkerToDays = new TreeMap<>();
-    maxWorkingHours = new TreeMap<>();
-    maxWorkingHours.put(EWorkerType.PARTTIME, PartTimeWorker.WORKING_HOURS);
-    maxWorkingHours.put(EWorkerType.FULLTIME, FullTimeWorker.WORKING_HOURS);
-    maxWorkingHours.put(EWorkerType.SUPERVISOR, Supervisor.WORKING_HOURS);
   }
 
   // 新增出席紀錄
@@ -29,7 +24,7 @@ public class AttendanceRecordSystem {
     else {
       attendanceDayRecord = workerAttendance.get(date);
     }
-    attendanceDayRecord.addClockRecord(clockRecord);
+    attendanceDayRecord.addClockRecord(worker_id, clockRecord);
     // 更新員工出席紀錄
     workerAttendance.put(date, attendanceDayRecord);
     // 新增到 WorkersToDays
@@ -65,7 +60,7 @@ public class AttendanceRecordSystem {
   public void addDayRecord(String worker_id, CustomDate date, AttendanceDayRecord dayRecord) throws IllegalArgumentException {
     // 取得該員工每日工時上限與 UUID
     EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
-    int working_hours = maxWorkingHours.get(workerType);
+    int working_hours = WorkerClockInSystem.getMaxWorkingHours(workerType);
     
     // 核對 DayRecord 時數是否合理
     if (dayRecord.getTotalHours() > working_hours){
