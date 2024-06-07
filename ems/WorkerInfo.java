@@ -1,6 +1,7 @@
 package ems; 
 import java.util.Date;
 import java.util.UUID;
+
 public class WorkerInfo {
   private String name;
   private UUID id;

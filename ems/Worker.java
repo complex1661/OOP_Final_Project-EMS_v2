@@ -39,7 +39,7 @@ public abstract class Worker {
   public WorkerInfo getInfo() {
     return info;
   }
-  
+
   public static Worker getWorkerByUUID (UUID uuid) throws IllegalArgumentException{
     if (!workerList.containsKey(uuid)) {
       throw new IllegalArgumentException("錯誤: 無此員工。");
