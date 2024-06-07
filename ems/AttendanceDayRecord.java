@@ -10,7 +10,6 @@ public class AttendanceDayRecord {
   private boolean isPaidLeave;
   private ClockRecord clockRecord;
   private LeaveRecord leaveRecord;
-  private AbsentRecord absentRecord;
   
   private static TreeMap<EWorkerType, Integer> maxWorkingHours = new TreeMap<>();
   
@@ -26,14 +25,14 @@ public class AttendanceDayRecord {
     leaveHours = 0;
   }
   
-  public AttendanceDayRecord(UUID uuid, ClockRecord clockRecord, AbsentRecord absentRecord, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
+  public AttendanceDayRecord(UUID uuid, ClockRecord clockRecord, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
     if (WorkerLeaveSystem.isLeavingWholeDay(uuid, leaveRecord)) {
       this.attendHours = 0;
       this.absentHours = 0;
     }
     else {
-      this.attendHours = WorkerClockInSystem.getClockHours(clockRecord);
-      this.absentHours = WorkerAbsentSystem.getAbsentHours(uuid, absentRecord);
+      this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
+      this.absentHours = absentHours;
     }
     this.leaveRecord = leaveRecord;
     leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
@@ -42,18 +41,11 @@ public class AttendanceDayRecord {
   }
   
   public void addClockRecord(ClockRecord clockRecord) {
-    this.attendHours = WorkerClockInSystem.getClockHours(clockRecord);
-    this.clockRecord = clockRecord;
+    this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
   }
   
   public void addLeaveRecord(UUID uuid, LeaveRecord leaveRecord) {
     this.leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
-    this.leaveRecord = leaveRecord;
-  }
-  
-  public void addAbsentRecord(UUID uuid, AbsentRecord absentRecord) {
-    this.absentHours = WorkerAbsentSystem.getAbsentHours(uuid, absentRecord);
-    this.absentRecord = absentRecord;
   }
 
   public int getAttendHours() {

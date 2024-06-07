@@ -46,40 +46,21 @@ public class AttendanceRecordSystem {
     TreeMap<CustomDate, AttendanceDayRecord> workerAttendance = WorkerToDays.getOrDefault(worker_uuid, new TreeMap<>());
     AttendanceDayRecord attendanceDayRecord = null;
     if (!workerAttendance.containsKey(date)) {
-      attendanceDayRecord = new AttendanceDayRecord(worker_uuid);
+        attendanceDayRecord = new AttendanceDayRecord(worker_uuid);
     } else {
-      attendanceDayRecord = workerAttendance.get(date);
+        attendanceDayRecord = workerAttendance.get(date);
     }
     attendanceDayRecord.addLeaveRecord(worker_uuid, leaveRecord);
     workerAttendance.put(date, attendanceDayRecord); 
-    
+
     WorkerToDays.put(worker_uuid, workerAttendance);
-    
+
     TreeMap<UUID, AttendanceDayRecord> dayRecordsByWorker = DayToWorkers.getOrDefault(date, new TreeMap<>());
     dayRecordsByWorker.put(worker_uuid, attendanceDayRecord); 
-    
+
     DayToWorkers.put(date, dayRecordsByWorker);
-  }
-  
-  // 新增缺席紀錄
-  public void addAbsentRecord(UUID worker_uuid, CustomDate date, AbsentRecord absentRecord) {
-    TreeMap<CustomDate, AttendanceDayRecord> workerAttendance = WorkerToDays.getOrDefault(worker_uuid, new TreeMap<>());
-    AttendanceDayRecord attendanceDayRecord = null;
-    if (!workerAttendance.containsKey(date)) {
-      attendanceDayRecord = new AttendanceDayRecord(worker_uuid);
-    } else {
-      attendanceDayRecord = workerAttendance.get(date);
-    }
-    attendanceDayRecord.addAbsentRecord(worker_uuid, absentRecord);
-    workerAttendance.put(date, attendanceDayRecord); 
-    
-    WorkerToDays.put(worker_uuid, workerAttendance);
-    
-    TreeMap<UUID, AttendanceDayRecord> dayRecordsByWorker = DayToWorkers.getOrDefault(date, new TreeMap<>());
-    dayRecordsByWorker.put(worker_uuid, attendanceDayRecord); 
-    
-    DayToWorkers.put(date, dayRecordsByWorker);
-  }
+}
+
   
   // 新增整日紀錄
   public void addDayRecord(UUID worker_uuid, CustomDate date, AttendanceDayRecord dayRecord) throws IllegalArgumentException {
