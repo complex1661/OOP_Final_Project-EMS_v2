@@ -1,5 +1,4 @@
 package ems;
-import java.util.UUID;
 import java.util.TreeMap;
 
 public class AttendanceDayRecord {
@@ -19,14 +18,14 @@ public class AttendanceDayRecord {
     maxWorkingHours.put(EWorkerType.SUPERVISOR, Supervisor.WORKING_HOURS);
   }
   
-  public AttendanceDayRecord (UUID uuid) {
-    attendHours = maxWorkingHours.get(Worker.getWorkerByUUID(uuid).getType());
+  public AttendanceDayRecord (String worker_id) {
+    attendHours = maxWorkingHours.get(Worker.getWorkerById(worker_id).getType());
     absentHours = 0;
     leaveHours = 0;
   }
   
-  public AttendanceDayRecord(UUID uuid, ClockRecord clockRecord, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
-    if (WorkerLeaveSystem.isLeavingWholeDay(uuid, leaveRecord)) {
+  public AttendanceDayRecord(String worker_id, ClockRecord clockRecord, int absentHours, LeaveRecord leaveRecord, boolean isLate, boolean isPaidLeave) {
+    if (WorkerLeaveSystem.isLeavingWholeDay(leaveRecord)) {
       this.attendHours = 0;
       this.absentHours = 0;
     }
@@ -35,7 +34,7 @@ public class AttendanceDayRecord {
       this.absentHours = absentHours;
     }
     this.leaveRecord = leaveRecord;
-    leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
+    leaveHours = WorkerLeaveSystem.getLeaveHours(worker_id, leaveRecord);
     this.isLate = isLate;
     this.isPaidLeave = isPaidLeave;
   }
@@ -44,17 +43,17 @@ public class AttendanceDayRecord {
     this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
   }
   
-  public void addLeaveRecord(UUID uuid, LeaveRecord leaveRecord) {
-    this.leaveHours = WorkerLeaveSystem.getLeaveHours(uuid, leaveRecord);
+  public void addLeaveRecord(String worker_id, LeaveRecord leaveRecord) {
+    this.leaveHours = WorkerLeaveSystem.getLeaveHours(worker_id, leaveRecord);
   }
 
   public int getAttendHours() {
     return attendHours;
   }
   
-  public int getAbsentHours(UUID uuid) {
+  public int getAbsentHours(String worker_id) {
     if (attendHours == 0 && leaveHours == 0 && absentHours == 0) {
-      absentHours = maxWorkingHours.get(Worker.getWorkerByUUID(uuid).getType());
+      absentHours = maxWorkingHours.get(Worker.getWorkerById(worker_id).getType());
     }
     return absentHours;
   } 

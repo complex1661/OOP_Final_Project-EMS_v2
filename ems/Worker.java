@@ -1,8 +1,8 @@
 package ems;
 import java.util.TreeMap;
-import java.util.UUID;
+
 public abstract class Worker {
-  protected static TreeMap<UUID, Worker> workerList = new TreeMap<>();
+  protected static TreeMap<String, Worker> workerList = new TreeMap<>();
   
   protected EWorkerType type;
   protected WorkerInfo info;
@@ -17,19 +17,21 @@ public abstract class Worker {
   }
   
   public static void addWorker(Worker w) throws IllegalArgumentException{
-    UUID uuid = w.getInfo().getUUID();
-    if (workerList.containsKey(uuid)) {
+    String id = w.getInfo().getId();
+    if (workerList.containsKey(id)) {
       throw new IllegalArgumentException("錯誤: 員工已存在。");
     }
-    workerList.put(uuid, w);
+    workerList.put(id, w);
   }
   
-  public static void deleteWorker(UUID uuid) {
-    if (!workerList.containsKey(uuid)) {
+  public static void deleteWorker(String id) {
+    if (!workerList.containsKey(id)) {
       throw new IllegalArgumentException("錯誤: 無此員工。");
     }
-    workerList.remove(uuid);
+    workerList.remove(id);
     // AttendanceRecordSystem 也要進行紀錄的刪除
+    
+    
   }
  
   public EWorkerType getType() {
@@ -40,10 +42,10 @@ public abstract class Worker {
     return info;
   }
 
-  public static Worker getWorkerByUUID (UUID uuid) throws IllegalArgumentException{
-    if (!workerList.containsKey(uuid)) {
+  public static Worker getWorkerById (String id) throws IllegalArgumentException{
+    if (!workerList.containsKey(id)) {
       throw new IllegalArgumentException("錯誤: 無此員工。");
     }
-    return workerList.get(uuid);
+    return workerList.get(id);
   }
 }

@@ -1,17 +1,24 @@
 package ems; 
 import java.util.Date;
-import java.util.UUID;
 
 public class WorkerInfo {
+  private static int idCounter = 0;
+  
   private String name;
-  private UUID id;
+  private String id;
   private String positionTitle;
   private CustomDate hiredDate;
   public WorkerInfo(String n, String pos, CustomDate hd) {
     setName(n);
     setPosition(pos);
     hiredDate = hd;
-    id = UUID.randomUUID();
+    id = generateId();
+  }
+  
+  // е═жи ID
+  private synchronized String generateId() {
+    idCounter++;
+    return String.format("%07d", idCounter);
   }
   
   public void setName(String name) throws IllegalArgumentException {
@@ -27,13 +34,9 @@ public class WorkerInfo {
   public String getName() {
     return name;
   }
-  
-  public UUID getUUID() {
-    return id;
-  }
 
   public String getId() {
-    return id.toString();
+    return id;
   }
   
   public String getPositionTitle() {

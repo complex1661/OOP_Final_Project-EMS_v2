@@ -1,28 +1,28 @@
 package ems;
 import java.util.TreeMap;
 
-public class WorkerLeaveSystem {
+public class WorkerAbsentSystem {
   private static TreeMap<EWorkerType, Integer> maxWorkingHours = new TreeMap<>();
   
-  static{
+  static {
     maxWorkingHours.put(EWorkerType.PARTTIME, PartTimeWorker.WORKING_HOURS);
     maxWorkingHours.put(EWorkerType.FULLTIME, FullTimeWorker.WORKING_HOURS);
     maxWorkingHours.put(EWorkerType.SUPERVISOR, Supervisor.WORKING_HOURS);
   }
   
-  // 取得員工請假時數
-  public static int getLeaveHours(String worker_id, LeaveRecord leaveRecord) {
-    if (!isLeavingWholeDay(leaveRecord)) {
-      int m1 = leaveRecord.getStartTime().toMinute();
-      int m2 = leaveRecord.getEndTime().toMinute();
+  // 取得員工缺席時數
+  public static int getAbsentHours(String worker_id, AbsentRecord absentRecord) {
+    if (!isAbsentWholeDay(absentRecord)) {
+      int m1 = absentRecord.getStartTime().toMinute();
+      int m2 = absentRecord.getEndTime().toMinute();
       return Time.minuteToHour(m2 - m1);
     }
     int hours = maxWorkingHours.get(Worker.getWorkerById(worker_id).getType());
     return hours;
   }
   
-  public static boolean isLeavingWholeDay(LeaveRecord leaveRecord) {
-    if (leaveRecord.getStartTime() == null) return true;
+  public static boolean isAbsentWholeDay(AbsentRecord absentRecord) {
+    if (absentRecord.getStartTime() == null) return true;
     return false;
   }
 }
