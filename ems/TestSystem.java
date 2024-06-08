@@ -23,6 +23,7 @@ public class TestSystem {
     attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 16), new LeaveRecord("事假", new Message(), new Time(8,0), new Time(9, 0)));
     attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(8,0), new Time(17, 0)));
     attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 18), new ClockRecord(new Time(8,0), new Time(17, 0)));
+  
     
     // 取得員工在特定年月的薪資
     System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(id, new CustomDate(2023, 5)));

@@ -3,13 +3,13 @@ import java.util.TreeMap;
 
 public class WorkerLeaveSystem {
   // 取得員工請假時數
-  public static int getLeaveHours(String worker_id, LeaveRecord leaveRecord) {
+  public static int getLeaveHours(String workerId, LeaveRecord leaveRecord) {
     if (!isLeavingWholeDay(leaveRecord)) {
       int m1 = leaveRecord.getStartTime().toMinute();
       int m2 = leaveRecord.getEndTime().toMinute();
       return Time.minuteToHour(m2 - m1);
     }
-    int hours = WorkerClockInSystem.getMaxWorkingHours(worker_id);
+    int hours = WorkerClockInSystem.getMaxWorkingHours(workerId);
     return hours;
   }
   

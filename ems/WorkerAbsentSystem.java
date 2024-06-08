@@ -11,13 +11,13 @@ public class WorkerAbsentSystem {
   }
   
   // 取得員工缺席時數
-  public static int getAbsentHours(String worker_id, AbsentRecord absentRecord) {
+  public static int getAbsentHours(String workerId, AbsentRecord absentRecord) {
     if (!isAbsentWholeDay(absentRecord)) {
       int m1 = absentRecord.getStartTime().toMinute();
       int m2 = absentRecord.getEndTime().toMinute();
       return Time.minuteToHour(m2 - m1);
     }
-    int hours = maxWorkingHours.get(Worker.getWorkerById(worker_id).getType());
+    int hours = maxWorkingHours.get(Worker.getWorkerById(workerId).getType());
     return hours;
   }
   

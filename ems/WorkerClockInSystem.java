@@ -22,14 +22,14 @@ public class WorkerClockInSystem {
     return Time.minuteToHour(m2 - m1);
   }
   
-  public static int getMaxWorkingHours(String worker_id) {
-    EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
+  public static int getMaxWorkingHours(String workerId) {
+    EWorkerType workerType = Worker.getWorkerById(workerId).getType();
     int working_hours = maxWorkingHours.get(workerType);
     return working_hours;
   }
   
-  public static int getMaxWorkingHours(EWorkerType worker_type) {
-    int working_hours = maxWorkingHours.get(worker_type);
+  public static int getMaxWorkingHours(EWorkerType workerType) {
+    int working_hours = maxWorkingHours.get(workerType);
     return working_hours;
   }
 }
