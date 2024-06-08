@@ -63,8 +63,15 @@ public class Time{
   }
   
   public static int minuteToHour(int m) {
-    return (int) Math.ceil((double) m / 60);
-  }
+    int hours = m / 60; 
+    int remnants = m % 60; 
+
+    if (remnants >= 40) {
+       hours += 1;
+    }
+    
+    return hours;
+}
   
   public boolean before(Time other) {
     if (this.hour < other.hour) return true;

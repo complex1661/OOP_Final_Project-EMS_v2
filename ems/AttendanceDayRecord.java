@@ -18,20 +18,6 @@ public class AttendanceDayRecord {
     leaveHours = 0;
   }
   
-  public AttendanceDayRecord(String worker_id, ClockRecord clockRecord, int absentHours, LeaveRecord leaveRecord, boolean isPaidLeave) {
-    if (WorkerLeaveSystem.isLeavingWholeDay(leaveRecord)) {
-      this.attendHours = 0;
-      this.absentHours = 0;
-    }
-    else {
-      this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
-      this.absentHours = absentHours;
-    }
-    this.leaveRecord = leaveRecord;
-    leaveHours = WorkerLeaveSystem.getLeaveHours(worker_id, leaveRecord);
-    this.isPaidLeave = isPaidLeave;
-  }
-  
   public void addClockRecord(String worker_id, ClockRecord clockRecord) {
     this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
     this.clockRecord = clockRecord;
@@ -111,7 +97,17 @@ public class AttendanceDayRecord {
         }
     }
     
-    if (clockRecord != null && clockRecord.isLate(attend_time)) return true;
+    if (clockRecord != null && clockRecord.isLate(attend_time)){
+      // 若在一小時內抵達算遲到，否則就算缺勤
+      int diff = clock_in_time.toMinute() - attend_time.toMinute();
+      if (diff <= 60) return true;
+      // else if > 60
+      else {
+        this.absentRecord = new AbsentRecord(attend_time, new Time(clock_in_time.getHour(), clock_in_time.getMinute()));
+        this.absentHours = WorkerAbsentSystem.getAbsentHours(worker_id, absentRecord);
+        return true;
+      }
+    }
     return false;
   }
   
