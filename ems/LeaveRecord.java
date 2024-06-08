@@ -1,6 +1,7 @@
 package ems;
 public class LeaveRecord {
   private String leaveType;
+  private boolean isPaidLeave = false;
   private Time start;
   private Time end;
   private Message msg;
@@ -9,9 +10,10 @@ public class LeaveRecord {
     start = end = new Time(0,0);
   }
   
-  public LeaveRecord(String leaveType, Message txt) {
+  public LeaveRecord(String leaveType, Message txt, boolean isPaidLeave) {
     setLeaveType(leaveType); 
     msg = txt;
+    this.isPaidLeave = isPaidLeave;
     start = null;
     end = null;
   }
@@ -20,6 +22,7 @@ public class LeaveRecord {
     setLeaveType(leaveType); 
     this.start = start;
     this.end = end;
+    this.isPaidLeave = false;
     msg = txt;
     if (!isValidLeaveRecord()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
   }
@@ -50,5 +53,9 @@ public class LeaveRecord {
   
   public Time getEndTime() {
     return end;
+  }
+  
+  public boolean getIsPaidLeave() {
+    return isPaidLeave;
   }
 }

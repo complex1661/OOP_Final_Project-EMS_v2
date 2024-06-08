@@ -15,7 +15,7 @@ public class AbsentRecord {
     end = null;
   }
   
-  public AbsentRecord( Time start, Time end) {
+  public AbsentRecord(Time start, Time end) {
     this.start = start;
     this.end = end;
     if (!isValidAbsentRecord()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");

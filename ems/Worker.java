@@ -25,14 +25,13 @@ public abstract class Worker {
     workerList.put(id, w);
   }
   
-  public static void deleteWorker(String id) {
+  public static void deleteWorker(AttendanceRecordSystem attendanceRecordSystem, String id) {
     if (!workerList.containsKey(id)) {
       throw new IllegalArgumentException("錯誤: 無此員工。");
     }
     workerList.remove(id);
-    // AttendanceRecordSystem 也要進行紀錄的刪除
-    
-    
+    // AttendanceRecordSystem 進行紀錄的刪除
+    attendanceRecordSystem.deleteWorkerRecords(id);
   }
  
   public EWorkerType getType() {

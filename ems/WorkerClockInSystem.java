@@ -16,6 +16,12 @@ public class WorkerClockInSystem {
     return Time.minuteToHour(m2 - m1);
   }
   
+  public static int getClockHour(OvertimeRecord overtimeRecord) {
+    int m1 = overtimeRecord.getStartTime().toMinute();
+    int m2 = overtimeRecord.getEndTime().toMinute();
+    return Time.minuteToHour(m2 - m1);
+  }
+  
   public static int getMaxWorkingHours(String worker_id) {
     EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
     int working_hours = maxWorkingHours.get(workerType);

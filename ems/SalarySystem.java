@@ -29,7 +29,14 @@ public class SalarySystem {
     for (AttendanceDayRecord record : records) {
       totalWorkedHours += record.getAttendHours();
     } 
+    
+    // ¯S¥ð(¦³Á~°²) 
+    for (AttendanceDayRecord record : records) {
+      totalWorkedHours += record.getPaidLeaveHours();
+    } 
+    
     salary = hourly_wage * totalWorkedHours;
+    
     
     // ¿ð¨ì
     for (AttendanceDayRecord record : records) {

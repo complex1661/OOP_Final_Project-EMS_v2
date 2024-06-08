@@ -5,37 +5,52 @@ public class AttendanceDayRecord {
   private int attendHours;
   private int absentHours;
   private int leaveHours;
+  private int paidLeaveHours;
+  private int overtimeHours;
+  
   private boolean isLate;
   private boolean isPaidLeave;
   
   private ClockRecord clockRecord;
   private LeaveRecord leaveRecord;
   private AbsentRecord absentRecord;
+  private OvertimeRecord overtimeRecord;
   
-  public AttendanceDayRecord (String worker_id) {
-    attendHours = WorkerClockInSystem.getMaxWorkingHours(worker_id);
-    absentHours = 0;
-    leaveHours = 0;
-  }
+  public AttendanceDayRecord (String worker_id) {}
   
   public void addClockRecord(String worker_id, ClockRecord clockRecord) {
     this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
     this.clockRecord = clockRecord;
-    this.isLate = isLate(worker_id);
+    this.isLate = checkIsLate(worker_id);
   }
   
   public void addLeaveRecord(String worker_id, LeaveRecord leaveRecord) {
-    this.leaveHours = WorkerLeaveSystem.getLeaveHours(worker_id, leaveRecord);
+    int leave_hours = WorkerLeaveSystem.getLeaveHours(worker_id, leaveRecord);
+    this.leaveHours = leave_hours;
     this.leaveRecord = leaveRecord;
-    this.isLate = isLate(worker_id);
+    
+    // 如果是特休假
+    if (leaveRecord.getIsPaidLeave()) {
+      this.attendHours = 0;
+      this.absentHours = 0;
+      isPaidLeave = true;
+      this.paidLeaveHours = leave_hours;
+    }
+    
+    this.isLate = checkIsLate(worker_id);
   }
   
   public void addAbsentRecord(String worker_id, AbsentRecord absentRecord) {
     this.absentHours = WorkerAbsentSystem.getAbsentHours(worker_id, absentRecord);
     this.absentRecord = absentRecord;
-    this.isLate = isLate(worker_id);
+    this.isLate = checkIsLate(worker_id);
   }
-
+  
+  public void addOverTime(String worker_id, OvertimeRecord overtimeRecord) {
+    this.overtimeHours = WorkerClockInSystem.getClockHour(overtimeRecord);
+    this.overtimeRecord = overtimeRecord;
+  }
+  
   public int getAttendHours() {
     return attendHours;
   }
@@ -46,9 +61,13 @@ public class AttendanceDayRecord {
     }
     return absentHours;
   } 
-  
+
   public int getLeaveHours() {
     return leaveHours;
+  }
+
+  public int getPaidLeaveHours() {
+    return paidLeaveHours;
   }
   
   public int getTotalHours() {
@@ -80,7 +99,7 @@ public class AttendanceDayRecord {
     + "遲到: " + late + "\n特休: " + paidLeave;
   }
   
-  private boolean isLate(String worker_id) {
+  private boolean checkIsLate(String worker_id) {
     // 應該要到的時間
     Time attend_time = Worker.getWorkerById(worker_id).getAttendTime();
     Time clock_in_time = (clockRecord != null ? clockRecord.getStartTime() : null);
