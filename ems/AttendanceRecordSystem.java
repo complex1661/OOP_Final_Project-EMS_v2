@@ -39,14 +39,14 @@ public class AttendanceRecordSystem {
     attendanceDayRecord.addClockRecord(workerId, clockRecord);
     updateRecords(workerId, date, attendanceDayRecord);
   }
-
+  
   // 新增請假紀錄
   public void addLeaveRecord(String workerId, CustomDate date, LeaveRecord leaveRecord) {
     AttendanceDayRecord attendanceDayRecord = getOrCreateAttendanceDayRecord(workerId, date);
     attendanceDayRecord.addLeaveRecord(workerId, leaveRecord);
     updateRecords(workerId, date, attendanceDayRecord);
   }
-
+  
   // 新增缺席紀錄
   public void addAbsentRecord(String workerId, CustomDate date, AbsentRecord absentRecord) {
     AttendanceDayRecord attendanceDayRecord = getOrCreateAttendanceDayRecord(workerId, date);
@@ -143,7 +143,7 @@ public class AttendanceRecordSystem {
   public TreeMap<String, AttendanceDayRecord> searchAllWorkersRecordsByYearMonthDay(CustomDate date){
     
     TreeMap<String, AttendanceDayRecord> allWorkersRecords = new TreeMap<>();
-
+    
     for (Map.Entry<CustomDate, TreeMap<String, AttendanceDayRecord>> entry : dayToWorkers.entrySet()) {
       CustomDate recordDate = entry.getKey();
       if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth()) && recordDate.getDay().equals(date.getDay())) {

@@ -22,7 +22,7 @@ public class SalarySystem {
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);
 
     int salary = 0;
-    int hourly_wage = baseSalaryEachWorkerType.get(workerType);
+    int hourlyWage = baseSalaryEachWorkerType.get(workerType);
     
     // 計算總共工作(出勤)的時數
     int totalWorkedHours = 0;
@@ -35,8 +35,20 @@ public class SalarySystem {
       totalWorkedHours += record.getPaidLeaveHours();
     } 
     
-    salary = hourly_wage * totalWorkedHours;
+    salary = hourlyWage * totalWorkedHours;
     
+    // 加班
+    for (AttendanceDayRecord record : records) {
+      int overtimeHour = record.getOvertimeHours();
+      //第1、2小時，加班費為平日每小時工資額加給1/3以上
+      if (overtimeHour < 2) {
+        salary += (int) overtimeHour * 1.34 * hourlyWage;
+      }
+      //第13、14小時，加班費為平日每小時工資額加給2/3以上
+      else {
+        salary += (int) overtimeHour * 1.67 * hourlyWage;
+      }
+    }
     
     // 遲到
     for (AttendanceDayRecord record : records) {
@@ -47,7 +59,7 @@ public class SalarySystem {
     
     // 缺勤
     for (AttendanceDayRecord record : records) {
-      salary -= record.getAbsentHours(worker_id) * hourly_wage;
+      salary -= record.getAbsentHours(worker_id) * hourlyWage;
     } 
     
     return salary;

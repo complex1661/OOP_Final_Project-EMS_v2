@@ -1,4 +1,5 @@
 package ems;
+
 public class ClockRecord {
   private Time start;
   private Time end;

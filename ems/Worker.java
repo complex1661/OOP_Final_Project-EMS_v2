@@ -8,7 +8,7 @@ public abstract class Worker {
   protected WorkerInfo info;
   protected Time ATTEND_TIME = new Time(8,0);
   protected int WORKING_HOURS;
-  protected int PAID_LEAVE_DAYS;
+  protected int paidLeaveDays;
   protected int BASE_SALARY;
   
   public abstract String printInfo();
@@ -38,6 +38,11 @@ public abstract class Worker {
     return type;
   }
   
+  public void reducePaidLeaveDays() {
+    if (paidLeaveDays == 0) throw new IllegalArgumentException("錯誤: 已無特休假。");
+    paidLeaveDays -= 1;
+  }
+  
   public WorkerInfo getInfo() {
     return info;
   }
@@ -46,6 +51,10 @@ public abstract class Worker {
     return ATTEND_TIME;
   }
 
+  public int getPaidLeaveDays() {
+    return paidLeaveDays;
+  }
+  
   public static Worker getWorkerById (String id) throws IllegalArgumentException{
     if (!workerList.containsKey(id)) {
       throw new IllegalArgumentException("錯誤: 無此員工。");

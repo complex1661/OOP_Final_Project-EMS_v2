@@ -35,6 +35,10 @@ public class AttendanceDayRecord {
       this.absentHours = 0;
       isPaidLeave = true;
       this.paidLeaveHours = leave_hours;
+      
+      // 扣掉員工的特休假
+      Worker w = Worker.getWorkerById(workerId);
+      w.reducePaidLeaveDays();
     }
     
     this.isLate = checkIsLate(workerId);
@@ -64,6 +68,10 @@ public class AttendanceDayRecord {
 
   public int getLeaveHours() {
     return leaveHours;
+  }
+  
+  public int getOvertimeHours() {
+    return overtimeHours;
   }
 
   public int getPaidLeaveHours() {
