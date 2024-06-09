@@ -16,14 +16,14 @@ public class AttendanceDayRecord {
   private AbsentRecord absentRecord;
   private OvertimeRecord overtimeRecord;
   
-  public AttendanceDayRecord (String workerId) {}
-  
+  // 新增出席紀錄
   public void addClockRecord(String workerId, ClockRecord clockRecord) {
     this.attendHours = WorkerClockInSystem.getClockHour(clockRecord);
     this.clockRecord = clockRecord;
     this.isLate = checkIsLate(workerId);
   }
   
+  // 新增請假紀錄
   public void addLeaveRecord(String workerId, LeaveRecord leaveRecord) {
     int leave_hours = WorkerLeaveSystem.getLeaveHours(workerId, leaveRecord);
     this.leaveHours = leave_hours;
@@ -31,30 +31,39 @@ public class AttendanceDayRecord {
     
     // 如果是特休假
     if (leaveRecord.getIsPaidLeave()) {
-      this.attendHours = 0;
-      this.absentHours = 0;
-      isPaidLeave = true;
-      this.paidLeaveHours = leave_hours;
-      
-      // 扣掉員工的特休假
-      Worker w = Worker.getWorkerById(workerId);
-      w.reducePaidLeaveDays();
+      handlePaidLeave(workerId);
     }
     
     this.isLate = checkIsLate(workerId);
   }
   
+  // 處理特休假
+  private void handlePaidLeave(String workerId) {
+    this.attendHours = 0;
+    this.absentHours = 0;
+    this.isPaidLeave = true;
+    this.paidLeaveHours = leaveHours;
+    
+    // 扣掉員工的特休假
+    Worker w = Worker.getWorkerById(workerId);
+    w.reducePaidLeaveDays();
+  }
+  
+  // 新增缺席紀錄
   public void addAbsentRecord(String workerId, AbsentRecord absentRecord) {
     this.absentHours = WorkerAbsentSystem.getAbsentHours(workerId, absentRecord);
     this.absentRecord = absentRecord;
     this.isLate = checkIsLate(workerId);
   }
   
+  // 新增加班紀錄
   public void addOvertimeRecord(String workerId, OvertimeRecord overtimeRecord) {
     this.overtimeHours = WorkerClockInSystem.getClockHour(overtimeRecord);
     this.overtimeRecord = overtimeRecord;
   }
   
+  
+  // getters
   public int getAttendHours() {
     return attendHours;
   }
@@ -97,46 +106,58 @@ public class AttendanceDayRecord {
   public LeaveRecord getLeaveRecord() {
     return leaveRecord;
   }
-
-  public String toString() {
-    String late = isLate ? "是" : "否";
-    String paidLeave = isPaidLeave ? "是" : "否";
-    return "出席: " + attendHours + "小時\n缺席: " 
-      + absentHours +  "小時\n請假: " 
-      + leaveHours + "小時\n加班: " 
-      + overtimeHours + "小時\n"
-      + "遲到: " + late + "\n特休: " + paidLeave;
+  
+  public AbsentRecord getAbsentRecord() {
+    return absentRecord;
   }
   
-  private boolean checkIsLate(String workerId) {
-    // 應該要到的時間
-    Time attend_time = Worker.getWorkerById(workerId).getAttendTime();
-    Time clock_in_time = (clockRecord != null ? clockRecord.getStartTime() : null);
+  public OvertimeRecord getOvertimeRecord() {
+    return overtimeRecord;
+  }
 
+  @Override
+  public String toString() {
+     return String.format(
+        "出席: %d小時\n缺席: %d小時\n請假: %d小時\n加班: %d小時\n遲到: %s\n特休: %s",
+        attendHours, absentHours, leaveHours, overtimeHours, isLate ? "是" : "否", isPaidLeave ? "是" : "否"
+    );
+  }
+  
+  // 檢查是否遲到
+  private boolean checkIsLate(String workerId) {
+    Time attendTime = Worker.getWorkerById(workerId).getAttendTime();
+    Time clockInTime = (clockRecord != null) ? clockRecord.getStartTime() : null;
+    
     // 若請假整天，不算遲到
     if (leaveRecord != null && WorkerLeaveSystem.isLeavingWholeDay(leaveRecord)) return false;
     // 若請假的時間是規定的時間，不算遲到
-    if (leaveRecord != null && clock_in_time != null) {
-        Time leave_start = leaveRecord.getStartTime();
-        Time leave_end = leaveRecord.getEndTime();
-        if (leave_start != null && leave_end != null && 
-            leave_start.before(attend_time) && leave_end.after(attend_time)) {
-            return false;
-        }
+    if (leaveRecord != null && clockInTime != null && isAttendTimeWithinLeavePeriod(attendTime)) {
+      return false;
     }
     
-    if (clockRecord != null && clockRecord.isLate(attend_time)){
-      // 若在一小時內抵達算遲到，否則就算缺勤
-      int diff = clock_in_time.toMinute() - attend_time.toMinute();
-      if (diff <= 60) return true;
-      // else if > 60
-      else {
-        this.absentRecord = new AbsentRecord(attend_time, new Time(clock_in_time.getHour(), clock_in_time.getMinute()));
-        this.absentHours = WorkerAbsentSystem.getAbsentHours(workerId, absentRecord);
-        return true;
-      }
+    if (clockRecord != null && clockRecord.isLate(attendTime)){
+      handleLateAttendance(workerId, attendTime, clockInTime);
     }
     return false;
   }
   
+  // 判斷上班應到時間是否在請假期間
+  private boolean isAttendTimeWithinLeavePeriod(Time attendTime) {
+    Time leaveStart = leaveRecord.getStartTime();
+    Time leaveEnd = leaveRecord.getEndTime();
+    return leaveStart != null && leaveEnd != null && 
+      leaveStart.before(attendTime) && leaveEnd.after(attendTime);
+  }
+  
+  // 處理並判斷是否遲到(無請假)
+  private void handleLateAttendance(String workerId, Time attendTime, Time clockInTime) {
+    // 若在一小時內抵達算遲到
+    int diff = clockInTime.toMinute() - attendTime.toMinute();
+    if (diff <= 60) isLate = true;
+    // 若 > 60 分算缺勤
+    else {
+      this.absentRecord = new AbsentRecord(attendTime, new Time(clockInTime.getHour(), clockInTime.getMinute()));
+      this.absentHours = WorkerAbsentSystem.getAbsentHours(workerId, absentRecord);
+    }
+  }
 }

@@ -18,21 +18,20 @@ public class AbsentRecord {
   public AbsentRecord(Time start, Time end) {
     this.start = start;
     this.end = end;
-    if (!isValidAbsentRecord()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
+    isValidAbsentRecord();
   }
   
   public AbsentRecord(Message txt, Time start, Time end) {
     this.start = start;
     this.end = end;
     msg = txt;
-    if (!isValidAbsentRecord()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
+    isValidAbsentRecord();
   }
   
-  public boolean isValidAbsentRecord(){
-    if (start == null || end == null) return false;
-    if (start.getHour() < end.getHour()) return true;
-    if (start.getHour() == end.getHour() && start.getMinute() <= end.getMinute()) return true;
-    return false;
+  public void isValidAbsentRecord() throws IllegalArgumentException{
+    if (start == null || end == null) throw new IllegalArgumentException("錯誤: 起始、結束時間不可為空。");
+    if (start.getHour() > end.getHour()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
+    if (start.getHour() == end.getHour() && start.getMinute() > end.getMinute()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
   }
   
   public Message getAbsentDetail() {
