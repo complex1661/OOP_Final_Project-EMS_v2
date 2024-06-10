@@ -15,6 +15,8 @@ import javax.swing.*;
 import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
+
+    
     /**
      * Creates new form EmsJFrame
      */
@@ -111,11 +113,6 @@ public class EmsJFrame extends javax.swing.JFrame {
 
         workerNameTextField.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         workerNameTextField.setToolTipText("請輸入員工姓名");
-        workerNameTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workerNameTextFieldActionPerformed(evt);
-            }
-        });
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel3.setText("員工職稱");
@@ -123,11 +120,6 @@ public class EmsJFrame extends javax.swing.JFrame {
 
         workerPositionTitleTextField.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         workerPositionTitleTextField.setToolTipText("請輸入員工職稱");
-        workerPositionTitleTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workerPositionTitleTextFieldActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -187,6 +179,8 @@ public class EmsJFrame extends javax.swing.JFrame {
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("入職日期");
         jLabel4.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
+
+        hiredDateChooser.setToolTipText("請選擇員工入職日期");
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -253,15 +247,11 @@ public class EmsJFrame extends javax.swing.JFrame {
 
         workerIdTextField.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         workerIdTextField.setToolTipText("請輸入員工ID");
-        workerIdTextField.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workerIdTextFieldActionPerformed(evt);
-            }
-        });
 
         recordTypeChooser.setEditable(true);
-        recordTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "請選擇紀錄種類", "打卡", "缺席", "請假" }));
+        recordTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "請選擇紀錄種類", "打卡", "缺席", "請假", "加班" }));
         recordTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
+        recordTypeChooser.setToolTipText("請選擇紀錄種類");
         recordTypeChooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleSelectedRecordType(evt);
@@ -278,6 +268,8 @@ public class EmsJFrame extends javax.swing.JFrame {
 
         jLabel9.setText("起始時間");
         jLabel9.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
+
+        recordDateChooser.setToolTipText("請選擇紀錄的時間");
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -385,8 +377,11 @@ public class EmsJFrame extends javax.swing.JFrame {
                     .addContainerGap(31, Short.MAX_VALUE)))
         );
 
+        outputMessagePane.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+
         systemOutputs.setColumns(20);
         systemOutputs.setRows(5);
+        systemOutputs.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
         jScrollPane1.setViewportView(systemOutputs);
 
         outputMessagePane.addTab("系統訊息", jScrollPane1);
@@ -458,23 +453,59 @@ public class EmsJFrame extends javax.swing.JFrame {
 
     private void addWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWorkerButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            String workerName = workerNameTextField.getText();
+            if (workerName == null || workerName.isEmpty()) {
+                throw new IllegalArgumentException("員工姓名不可為空。");
+            }
+ 
+            String workerPositionTitle = workerPositionTitleTextField.getText();
+            if (workerPositionTitle == null || workerPositionTitle.isEmpty()) {
+                throw new IllegalArgumentException("員工職稱不可為空。");
+            }
+            
+            // 處理日期
+            Date date = hiredDateChooser.getDate();
+            Calendar cal = Calendar.getInstance();
+            cal.setTime(date);
+            int year = cal.get(Calendar.YEAR);
+            int month = cal.get(Calendar.MONTH) + 1 ;
+            int day = cal.get(Calendar.DAY_OF_MONTH);
+            CustomDate hiredDate = new CustomDate(year, month, day);
+            
+            WorkerInfo workerInfo = new WorkerInfo(workerName, workerPositionTitle, hiredDate);
+            
+            Worker worker = null;
+            String selectedWorkerType = (String) workerTypeChooser.getSelectedItem();
+            
+            if (selectedWorkerType.equals("工讀生")) {
+                int attendHour = Integer.parseInt(JOptionPane.showInputDialog("請輸入應出勤時間(時):"));
+                int attendMinute = Integer.parseInt(JOptionPane.showInputDialog("請輸入應出勤時間(分):"));
+                Time attendTime = new Time(attendHour, attendMinute);
+                worker = new PartTimeWorker(workerInfo, attendTime);
+                
+            } else if (selectedWorkerType.equals("正職員工")) {
+                worker = new FullTimeWorker(workerInfo);
+            } else if (selectedWorkerType.equals("主管")) {
+                worker = new Supervisor(workerInfo);
+            } 
+            Worker.addWorker(worker);
+            systemOutputs.append("成功新增員工" + workerInfo.getName() + "。\n");
+            
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        } catch (NullPointerException e) {
+            JOptionPane.showMessageDialog(this, "不合理的日期格式。", "", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_addWorkerButtonActionPerformed
 
     private void removeWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeWorkerButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_removeWorkerButtonActionPerformed
 
-    private void workerNameTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerNameTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_workerNameTextFieldActionPerformed
-
     private void workerTypeChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerTypeChooserActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_workerTypeChooserActionPerformed
-
-    private void workerIdTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerIdTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_workerIdTextFieldActionPerformed
 
     private void recordTypeChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordTypeChooserActionPerformed
         // TODO add your handling code here:
@@ -488,10 +519,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_removeRecordButtonActionPerformed
 
-    private void workerPositionTitleTextFieldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerPositionTitleTextFieldActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_workerPositionTitleTextFieldActionPerformed
-
     private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_nextButtonActionPerformed
@@ -502,39 +529,47 @@ public class EmsJFrame extends javax.swing.JFrame {
 
     private void handleSelectedRecordType(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleSelectedRecordType
         // TODO add your handling code here:
-        try { 
-            if (recordTypeChooser.getSelectedItem().equals("打卡")) {
-
-            } else if (recordTypeChooser.getSelectedItem().equals("請假")) {
-
-            } else if (recordTypeChooser.getSelectedItem().equals("缺席")) {
-
-            } else {
-               workerTypeChooser.setSelectedItem("打卡");
-               throw new IllegalArgumentException("請選擇出缺勤紀錄種類。");
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            try { 
+                String selectedItem = (String) recordTypeChooser.getSelectedItem();
+                if (selectedItem.equals("打卡")) {
+                    systemOutputs.append("選擇「打卡」紀錄。\n");
+                } else if (selectedItem.equals("請假")) {
+                    systemOutputs.append("選擇「請假」紀錄。\n");
+                } else if (selectedItem.equals("缺席")) {
+                    systemOutputs.append("選擇「缺席」紀錄。\n");
+                } else if (selectedItem.equals("加班")) {
+                    systemOutputs.append("選擇「加班」紀錄。\n");
+                } else {
+                   recordTypeChooser.setSelectedItem("打卡");
+                   throw new IllegalArgumentException("請選擇出缺勤紀錄種類。");
+                }
             }
-        }
-        catch (IllegalArgumentException e){
-            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            catch (IllegalArgumentException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_handleSelectedRecordType
 
     private void handleSelectedWokerType(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleSelectedWokerType
         // TODO add your handling code here:
-        try { 
-            if (workerTypeChooser.getSelectedItem().equals("工讀生")) {
-
-            } else if (workerTypeChooser.getSelectedItem().equals("正職員工")) {
-
-            } else if (workerTypeChooser.getSelectedItem().equals("主管")) {
-                    
-            } else {
-               workerTypeChooser.setSelectedItem("工讀生");
-               throw new IllegalArgumentException("請選擇員工種類。");
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            try { 
+                String selectedItem = (String) workerTypeChooser.getSelectedItem();
+                if (selectedItem.equals("工讀生")) {
+                    systemOutputs.append("選擇「工讀生」。\n");
+                } else if (selectedItem.equals("正職員工")) {
+                    systemOutputs.append("選擇「正職員工」。\n");
+                } else if (selectedItem.equals("主管")) {
+                    systemOutputs.append("選擇「主管」。\n");
+                } else {
+                   workerTypeChooser.setSelectedItem("工讀生");
+                   throw new IllegalArgumentException("請選擇員工種類。");
+                }
             }
-        }
-        catch (IllegalArgumentException e){
-            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            catch (IllegalArgumentException e){
+                JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            }
         }
     }//GEN-LAST:event_handleSelectedWokerType
 
