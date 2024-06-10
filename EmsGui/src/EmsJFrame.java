@@ -12,10 +12,13 @@ import ems.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
 
+    AttendanceRecordSystem attendanceRecordSystem = ManageSystem.getAttendanceRecordSystem();
+    SalarySystem salarySystem = ManageSystem.getSalarySystem();
     
     /**
      * Creates new form EmsJFrame
@@ -56,7 +59,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         workerPositionTitleTextField = new javax.swing.JTextField();
         jPanel2 = new javax.swing.JPanel();
         addWorkerButton = new javax.swing.JButton();
-        removeWorkerButton = new javax.swing.JButton();
+        deleteWorkerButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         hiredDateChooser = new com.toedter.calendar.JDateChooser();
@@ -99,11 +102,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         workerTypeChooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 handleSelectedWokerType(evt);
-            }
-        });
-        workerTypeChooser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                workerTypeChooserActionPerformed(evt);
             }
         });
 
@@ -167,14 +165,14 @@ public class EmsJFrame extends javax.swing.JFrame {
         });
         jPanel2.add(addWorkerButton);
 
-        removeWorkerButton.setText("刪除員工");
-        removeWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
-        removeWorkerButton.addActionListener(new java.awt.event.ActionListener() {
+        deleteWorkerButton.setText("刪除員工");
+        deleteWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        deleteWorkerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                removeWorkerButtonActionPerformed(evt);
+                deleteWorkerButtonActionPerformed(evt);
             }
         });
-        jPanel2.add(removeWorkerButton);
+        jPanel2.add(deleteWorkerButton);
 
         jLabel4.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         jLabel4.setText("入職日期");
@@ -257,11 +255,6 @@ public class EmsJFrame extends javax.swing.JFrame {
                 handleSelectedRecordType(evt);
             }
         });
-        recordTypeChooser.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                recordTypeChooserActionPerformed(evt);
-            }
-        });
 
         jLabel8.setText("結束時間");
         jLabel8.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
@@ -296,11 +289,11 @@ public class EmsJFrame extends javax.swing.JFrame {
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(startTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(jPanel4Layout.createSequentialGroup()
                                 .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                                .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(startTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -319,14 +312,16 @@ public class EmsJFrame extends javax.swing.JFrame {
                     .addGroup(jPanel4Layout.createSequentialGroup()
                         .addGap(18, 18, 18)
                         .addComponent(recordDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(endTimePicker, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 14, Short.MAX_VALUE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(startTimePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(startTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(6, 6, 6))
         );
 
@@ -466,12 +461,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             
             // 處理日期
             Date date = hiredDateChooser.getDate();
-            Calendar cal = Calendar.getInstance();
-            cal.setTime(date);
-            int year = cal.get(Calendar.YEAR);
-            int month = cal.get(Calendar.MONTH) + 1 ;
-            int day = cal.get(Calendar.DAY_OF_MONTH);
-            CustomDate hiredDate = new CustomDate(year, month, day);
+            CustomDate hiredDate = transferDateToCustomDate(date);
             
             WorkerInfo workerInfo = new WorkerInfo(workerName, workerPositionTitle, hiredDate);
             
@@ -499,20 +489,48 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addWorkerButtonActionPerformed
 
-    private void removeWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeWorkerButtonActionPerformed
+    private void deleteWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteWorkerButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_removeWorkerButtonActionPerformed
-
-    private void workerTypeChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_workerTypeChooserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_workerTypeChooserActionPerformed
-
-    private void recordTypeChooserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_recordTypeChooserActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_recordTypeChooserActionPerformed
-
+        try {
+            String workerId = JOptionPane.showInputDialog("請輸入欲刪除的員工ID(7位數):");
+            Worker.deleteWorker(attendanceRecordSystem, workerId);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        }
+    }//GEN-LAST:event_deleteWorkerButtonActionPerformed
+    
+    private CustomDate transferDateToCustomDate(Date date) throws IllegalArgumentException{
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+        int year = cal.get(Calendar.YEAR);
+        int month = cal.get(Calendar.MONTH) + 1 ;
+        int day = cal.get(Calendar.DAY_OF_MONTH);
+        CustomDate customDate = null;
+        try {
+            customDate = new CustomDate(year, month, day);
+        } catch (IllegalArgumentException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        }
+        return customDate;
+    }
+    
     private void addRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRecordButtonActionPerformed
         // TODO add your handling code here:
+        // 處理日期
+        Date date = recordDateChooser.getDate();
+        CustomDate recordDate = transferDateToCustomDate(date);
+        
+        String selectedItem = (String) recordTypeChooser.getSelectedItem();
+        if (selectedItem.equals("打卡")) {
+            LocalTime startTime = startTimePicker.getTime();
+            LocalTime endTime = endTimePicker.getTime();
+        } else if (selectedItem.equals("請假")) {
+            
+        } else if (selectedItem.equals("缺席")) {
+            
+        } else if (selectedItem.equals("加班")) {
+            
+        }
     }//GEN-LAST:event_addRecordButtonActionPerformed
 
     private void removeRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRecordButtonActionPerformed
@@ -612,6 +630,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton addRecordButton;
     private javax.swing.JButton addWorkerButton;
     private javax.swing.JPanel attedanceRecordOperations;
+    private javax.swing.JButton deleteWorkerButton;
     private com.github.lgooddatepicker.components.TimePicker endTimePicker;
     private javax.swing.JTextArea generalOutputs;
     private com.toedter.calendar.JDateChooser hiredDateChooser;
@@ -638,7 +657,6 @@ public class EmsJFrame extends javax.swing.JFrame {
     private com.toedter.calendar.JDateChooser recordDateChooser;
     private javax.swing.JComboBox<String> recordTypeChooser;
     private javax.swing.JButton removeRecordButton;
-    private javax.swing.JButton removeWorkerButton;
     private com.github.lgooddatepicker.components.TimePicker startTimePicker;
     private javax.swing.JTextArea systemOutputs;
     private javax.swing.JTextField workerIdTextField;
