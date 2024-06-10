@@ -24,20 +24,20 @@
     <DimensionLayout dim="0">
       <Group type="103" groupAlignment="0" attributes="0">
           <Group type="102" alignment="1" attributes="0">
-              <EmptySpace max="32767" attributes="0"/>
+              <EmptySpace pref="16" max="32767" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
                   <Group type="102" attributes="0">
-                      <Component id="OutputMessagePane" min="-2" pref="1143" max="-2" attributes="0"/>
+                      <Component id="outputMessagePane" min="-2" pref="1143" max="-2" attributes="0"/>
                       <EmptySpace max="32767" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="jButton1" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
-                          <Component id="jButton2" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
+                          <Component id="lastButton" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
+                          <Component id="nextButton" alignment="1" min="-2" pref="230" max="-2" attributes="0"/>
                       </Group>
                   </Group>
                   <Group type="102" attributes="0">
-                      <Component id="WorkerOperations" min="-2" max="-2" attributes="0"/>
+                      <Component id="workerOperations" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="-2" pref="38" max="-2" attributes="0"/>
-                      <Component id="AttedanceRecordOperations" min="-2" max="-2" attributes="0"/>
+                      <Component id="attedanceRecordOperations" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
@@ -49,19 +49,19 @@
           <Group type="102" attributes="0">
               <EmptySpace min="-2" pref="45" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                  <Component id="AttedanceRecordOperations" min="-2" pref="495" max="-2" attributes="0"/>
-                  <Component id="WorkerOperations" max="32767" attributes="0"/>
+                  <Component id="attedanceRecordOperations" min="-2" pref="495" max="-2" attributes="0"/>
+                  <Component id="workerOperations" max="32767" attributes="0"/>
               </Group>
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <EmptySpace min="-2" pref="49" max="-2" attributes="0"/>
-                      <Component id="OutputMessagePane" min="-2" pref="523" max="-2" attributes="0"/>
+                      <Component id="outputMessagePane" min="-2" pref="523" max="-2" attributes="0"/>
                   </Group>
                   <Group type="102" alignment="0" attributes="0">
                       <EmptySpace min="-2" pref="78" max="-2" attributes="0"/>
-                      <Component id="jButton2" min="-2" pref="58" max="-2" attributes="0"/>
+                      <Component id="nextButton" min="-2" pref="58" max="-2" attributes="0"/>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="jButton1" min="-2" pref="58" max="-2" attributes="0"/>
+                      <Component id="lastButton" min="-2" pref="58" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="384" max="32767" attributes="0"/>
@@ -70,7 +70,7 @@
     </DimensionLayout>
   </Layout>
   <SubComponents>
-    <Container class="javax.swing.JPanel" name="WorkerOperations">
+    <Container class="javax.swing.JPanel" name="workerOperations">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -133,9 +133,9 @@
                       </Group>
                       <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="0" attributes="0">
-                          <Component id="WorkerTypeChooser" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
-                          <Component id="WorkerNameTextField" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
-                          <Component id="WorkerPositionTitleTextField" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
+                          <Component id="workerTypeChooser" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
+                          <Component id="workerNameTextField" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
+                          <Component id="workerPositionTitleTextField" alignment="0" min="-2" pref="463" max="-2" attributes="0"/>
                       </Group>
                   </Group>
               </Group>
@@ -147,13 +147,13 @@
                           <Component id="jLabel1" min="-2" pref="77" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
-                              <Component id="WorkerTypeChooser" min="-2" pref="45" max="-2" attributes="0"/>
+                              <Component id="workerTypeChooser" min="-2" pref="45" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel2" min="-2" pref="77" max="-2" attributes="0"/>
                           <Group type="102" alignment="1" attributes="0">
-                              <Component id="WorkerNameTextField" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="workerNameTextField" min="-2" pref="35" max="-2" attributes="0"/>
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
                           </Group>
                       </Group>
@@ -161,7 +161,7 @@
                           <Component id="jLabel3" min="-2" pref="77" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="17" max="-2" attributes="0"/>
-                              <Component id="WorkerPositionTitleTextField" min="-2" pref="38" max="-2" attributes="0"/>
+                              <Component id="workerPositionTitleTextField" min="-2" pref="38" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                   </Group>
@@ -171,31 +171,32 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel1">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x7a2e;&#x985e;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x7a2e;&#x985e;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JComboBox" name="WorkerTypeChooser">
+            <Component class="javax.swing.JComboBox" name="workerTypeChooser">
               <Properties>
                 <Property name="editable" type="boolean" value="true"/>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft JhengHei UI" size="15" style="0"/>
-                </Property>
                 <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
                   <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
+                    <StringItem index="0" value="&#x8acb;&#x9078;&#x64c7;&#x54e1;&#x5de5;&#x7a2e;&#x985e;"/>
+                    <StringItem index="1" value="&#x5de5;&#x8b80;&#x751f;"/>
+                    <StringItem index="2" value="&#x6b63;&#x8077;&#x54e1;&#x5de5;"/>
+                    <StringItem index="3" value="&#x4e3b;&#x7ba1;"/>
                   </StringArray>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI" size="15" style="0"/>
                 </Property>
                 <Property name="toolTipText" type="java.lang.String" value="&#x8acb;&#x9078;&#x64c7;&#x54e1;&#x5de5;&#x7a2e;&#x985e;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WorkerTypeChooserActionPerformed"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="handleSelectedWokerType"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="workerTypeChooserActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
@@ -203,14 +204,14 @@
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel2">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x59d3;&#x540d;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x59d3;&#x540d;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="WorkerNameTextField">
+            <Component class="javax.swing.JTextField" name="workerNameTextField">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="15" style="0"/>
@@ -218,19 +219,19 @@
                 <Property name="toolTipText" type="java.lang.String" value="&#x8acb;&#x8f38;&#x5165;&#x54e1;&#x5de5;&#x59d3;&#x540d;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WorkerNameTextFieldActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="workerNameTextFieldActionPerformed"/>
               </Events>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel3">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x8077;&#x7a31;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;&#x8077;&#x7a31;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="WorkerPositionTitleTextField">
+            <Component class="javax.swing.JTextField" name="workerPositionTitleTextField">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="15" style="0"/>
@@ -238,7 +239,7 @@
                 <Property name="toolTipText" type="java.lang.String" value="&#x8acb;&#x8f38;&#x5165;&#x54e1;&#x5de5;&#x8077;&#x7a31;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WorkerPositionTitleTextFieldActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="workerPositionTitleTextFieldActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -251,26 +252,26 @@
             <Property name="rows" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="AddWorkerButton">
+            <Component class="javax.swing.JButton" name="addWorkerButton">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x54e1;&#x5de5;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x54e1;&#x5de5;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddWorkerButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addWorkerButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="RemoveWorkerButton">
+            <Component class="javax.swing.JButton" name="removeWorkerButton">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x522a;&#x9664;&#x54e1;&#x5de5;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x522a;&#x9664;&#x54e1;&#x5de5;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoveWorkerButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeWorkerButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
@@ -282,11 +283,9 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Group type="102" attributes="0">
                       <Component id="jLabel4" min="-2" pref="79" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="57" max="-2" attributes="0"/>
-                      <Component id="ShowPickedHiredDateLabel" min="-2" pref="212" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="27" max="-2" attributes="0"/>
-                      <Component id="ChooseHiredDate" min="-2" pref="221" max="-2" attributes="0"/>
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
+                      <EmptySpace pref="52" max="32767" attributes="0"/>
+                      <Component id="hiredDateChooser" min="-2" pref="465" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="21" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -296,12 +295,9 @@
                       <Component id="jLabel4" min="-2" pref="58" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
-                  <Group type="102" alignment="1" attributes="0">
+                  <Group type="102" alignment="0" attributes="0">
                       <EmptySpace max="-2" attributes="0"/>
-                      <Group type="103" groupAlignment="1" attributes="0">
-                          <Component id="ShowPickedHiredDateLabel" max="32767" attributes="0"/>
-                          <Component id="ChooseHiredDate" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="hiredDateChooser" max="32767" attributes="0"/>
                       <EmptySpace max="-2" attributes="0"/>
                   </Group>
               </Group>
@@ -310,37 +306,20 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel4">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x5165;&#x8077;&#x65e5;&#x671f;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x5165;&#x8077;&#x65e5;&#x671f;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JButton" name="ChooseHiredDate">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft JhengHei UI" size="16" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x9078;&#x64c7;&#x65e5;&#x671f;"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ChooseHiredDateActionPerformed"/>
-              </Events>
-            </Component>
-            <Component class="javax.swing.JLabel" name="ShowPickedHiredDateLabel">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft JhengHei UI" size="16" style="0"/>
-                </Property>
-                <Property name="horizontalAlignment" type="int" value="4"/>
-              </Properties>
+            <Component class="com.toedter.calendar.JDateChooser" name="hiredDateChooser">
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JPanel" name="AttedanceRecordOperations">
+    <Container class="javax.swing.JPanel" name="attedanceRecordOperations">
       <Properties>
         <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
           <Border info="org.netbeans.modules.form.compat2.border.TitledBorderInfo">
@@ -402,30 +381,30 @@
                                   <Component id="jLabel6" alignment="1" max="32767" attributes="0"/>
                                   <Component id="jLabel5" alignment="1" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="-2" pref="70" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                  <Component id="RecordTypeChooser" alignment="1" max="32767" attributes="0"/>
-                                  <Component id="WorkerIdTextField" max="32767" attributes="0"/>
-                                  <Group type="102" alignment="1" attributes="0">
-                                      <Component id="ShowPickedRecordDateLabel" min="-2" pref="212" max="-2" attributes="0"/>
-                                      <EmptySpace pref="30" max="32767" attributes="0"/>
-                                      <Component id="ChooseRecordDate" min="-2" pref="221" max="-2" attributes="0"/>
+                              <EmptySpace min="70" pref="70" max="-2" attributes="0"/>
+                              <Group type="103" groupAlignment="0" attributes="0">
+                                  <Group type="102" attributes="0">
+                                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                                          <Component id="recordTypeChooser" alignment="1" pref="463" max="32767" attributes="0"/>
+                                          <Component id="workerIdTextField" max="32767" attributes="0"/>
+                                      </Group>
+                                      <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                                   </Group>
+                                  <Component id="recordDateChooser" max="32767" attributes="0"/>
                               </Group>
-                              <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                           </Group>
                           <Group type="102" attributes="0">
                               <EmptySpace max="-2" attributes="0"/>
                               <Group type="103" groupAlignment="0" attributes="0">
-                                  <Group type="102" alignment="0" attributes="0">
-                                      <Component id="jLabel9" min="-2" pref="281" max="-2" attributes="0"/>
-                                      <EmptySpace max="32767" attributes="0"/>
-                                      <Component id="timePicker1" min="-2" pref="222" max="-2" attributes="0"/>
-                                  </Group>
                                   <Group type="102" attributes="0">
                                       <Component id="jLabel8" min="-2" pref="142" max="-2" attributes="0"/>
-                                      <EmptySpace min="-2" pref="243" max="-2" attributes="0"/>
-                                      <Component id="timePicker2" max="32767" attributes="0"/>
+                                      <EmptySpace max="32767" attributes="0"/>
+                                      <Component id="startTimePicker" min="-2" pref="221" max="-2" attributes="0"/>
+                                  </Group>
+                                  <Group type="102" alignment="0" attributes="0">
+                                      <Component id="jLabel9" min="-2" pref="281" max="-2" attributes="0"/>
+                                      <EmptySpace pref="105" max="32767" attributes="0"/>
+                                      <Component id="endTimePicker" min="-2" pref="221" max="-2" attributes="0"/>
                                   </Group>
                               </Group>
                           </Group>
@@ -441,37 +420,31 @@
                           <Component id="jLabel5" alignment="0" min="-2" pref="77" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
                               <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
-                              <Component id="WorkerIdTextField" min="-2" pref="35" max="-2" attributes="0"/>
+                              <Component id="workerIdTextField" min="-2" pref="35" max="-2" attributes="0"/>
                           </Group>
                       </Group>
                       <Group type="103" groupAlignment="3" attributes="0">
                           <Component id="jLabel6" alignment="3" min="-2" pref="77" max="-2" attributes="0"/>
-                          <Component id="RecordTypeChooser" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
+                          <Component id="recordTypeChooser" alignment="3" min="-2" pref="45" max="-2" attributes="0"/>
                       </Group>
                       <Group type="103" groupAlignment="0" attributes="0">
                           <Component id="jLabel7" min="-2" pref="77" max="-2" attributes="0"/>
                           <Group type="102" alignment="0" attributes="0">
-                              <EmptySpace type="unrelated" max="-2" attributes="0"/>
-                              <Group type="103" groupAlignment="1" max="-2" attributes="0">
-                                  <Component id="ChooseRecordDate" pref="46" max="32767" attributes="0"/>
-                                  <Component id="ShowPickedRecordDateLabel" max="32767" attributes="0"/>
-                              </Group>
+                              <EmptySpace type="separate" max="-2" attributes="0"/>
+                              <Component id="recordDateChooser" min="-2" pref="41" max="-2" attributes="0"/>
                           </Group>
                       </Group>
-                      <EmptySpace pref="21" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="timePicker1" min="-2" pref="41" max="-2" attributes="0"/>
-                          <Group type="102" attributes="0">
-                              <EmptySpace min="2" pref="2" max="-2" attributes="0"/>
-                              <Component id="jLabel9" max="32767" attributes="0"/>
-                          </Group>
+                      <EmptySpace max="32767" attributes="0"/>
+                      <Group type="103" groupAlignment="0" attributes="0">
+                          <Component id="jLabel9" alignment="1" min="-2" pref="39" max="-2" attributes="0"/>
+                          <Component id="endTimePicker" alignment="1" min="-2" pref="47" max="-2" attributes="0"/>
                       </Group>
                       <EmptySpace type="separate" max="-2" attributes="0"/>
                       <Group type="103" groupAlignment="3" attributes="0">
-                          <Component id="timePicker2" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
                           <Component id="jLabel8" alignment="3" min="-2" pref="40" max="-2" attributes="0"/>
+                          <Component id="startTimePicker" alignment="3" min="-2" pref="47" max="-2" attributes="0"/>
                       </Group>
-                      <EmptySpace min="-2" pref="10" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="6" max="-2" attributes="0"/>
                   </Group>
               </Group>
             </DimensionLayout>
@@ -479,32 +452,32 @@
           <SubComponents>
             <Component class="javax.swing.JLabel" name="jLabel5">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;ID"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x54e1;&#x5de5;ID"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel6">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x7d00;&#x9304;&#x7a2e;&#x985e;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x7d00;&#x9304;&#x7a2e;&#x985e;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel7">
               <Properties>
+                <Property name="horizontalAlignment" type="int" value="2"/>
+                <Property name="text" type="java.lang.String" value="&#x65e5;&#x671f;&#x8207;&#x6642;&#x9593;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="horizontalAlignment" type="int" value="2"/>
-                <Property name="text" type="java.lang.String" value="&#x65e5;&#x671f;&#x8207;&#x6642;&#x9593;"/>
               </Properties>
             </Component>
-            <Component class="javax.swing.JTextField" name="WorkerIdTextField">
+            <Component class="javax.swing.JTextField" name="workerIdTextField">
               <Properties>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="15" style="0"/>
@@ -512,69 +485,53 @@
                 <Property name="toolTipText" type="java.lang.String" value="&#x8acb;&#x8f38;&#x5165;&#x54e1;&#x5de5;ID"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="WorkerIdTextFieldActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="workerIdTextFieldActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JComboBox" name="RecordTypeChooser">
+            <Component class="javax.swing.JComboBox" name="recordTypeChooser">
               <Properties>
                 <Property name="editable" type="boolean" value="true"/>
+                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
+                  <StringArray count="4">
+                    <StringItem index="0" value="&#x8acb;&#x9078;&#x64c7;&#x7d00;&#x9304;&#x7a2e;&#x985e;"/>
+                    <StringItem index="1" value="&#x6253;&#x5361;"/>
+                    <StringItem index="2" value="&#x7f3a;&#x5e2d;"/>
+                    <StringItem index="3" value="&#x8acb;&#x5047;"/>
+                  </StringArray>
+                </Property>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="15" style="0"/>
                 </Property>
-                <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                  <StringArray count="4">
-                    <StringItem index="0" value="Item 1"/>
-                    <StringItem index="1" value="Item 2"/>
-                    <StringItem index="2" value="Item 3"/>
-                    <StringItem index="3" value="Item 4"/>
-                  </StringArray>
-                </Property>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RecordTypeChooserActionPerformed"/>
+                <EventHandler event="itemStateChanged" listener="java.awt.event.ItemListener" parameters="java.awt.event.ItemEvent" handler="handleSelectedRecordType"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="recordTypeChooserActionPerformed"/>
               </Events>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
               </AuxValues>
             </Component>
-            <Component class="javax.swing.JLabel" name="ShowPickedRecordDateLabel">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft JhengHei UI" size="16" style="0"/>
-                </Property>
-                <Property name="horizontalAlignment" type="int" value="4"/>
-              </Properties>
-            </Component>
-            <Component class="javax.swing.JButton" name="ChooseRecordDate">
-              <Properties>
-                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-                  <Font name="Microsoft JhengHei UI" size="16" style="0"/>
-                </Property>
-                <Property name="text" type="java.lang.String" value="&#x9078;&#x64c7;&#x65e5;&#x671f;"/>
-              </Properties>
-              <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="ChooseRecordDateActionPerformed"/>
-              </Events>
-            </Component>
             <Component class="javax.swing.JLabel" name="jLabel8">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x7d50;&#x675f;&#x6642;&#x9593;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x7d50;&#x675f;&#x6642;&#x9593;"/>
               </Properties>
             </Component>
             <Component class="javax.swing.JLabel" name="jLabel9">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x8d77;&#x59cb;&#x6642;&#x9593;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft YaHei Light" size="16" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x8d77;&#x59cb;&#x6642;&#x9593;"/>
               </Properties>
             </Component>
-            <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker1">
+            <Component class="com.github.lgooddatepicker.components.TimePicker" name="startTimePicker">
             </Component>
-            <Component class="com.github.lgooddatepicker.components.TimePicker" name="timePicker2">
+            <Component class="com.github.lgooddatepicker.components.TimePicker" name="endTimePicker">
+            </Component>
+            <Component class="com.toedter.calendar.JDateChooser" name="recordDateChooser">
             </Component>
           </SubComponents>
         </Container>
@@ -586,33 +543,33 @@
             <Property name="rows" type="int" value="1"/>
           </Layout>
           <SubComponents>
-            <Component class="javax.swing.JButton" name="AddRecordButton">
+            <Component class="javax.swing.JButton" name="addRecordButton">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x7d00;&#x9304;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x65b0;&#x589e;&#x7d00;&#x9304;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="AddRecordButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="addRecordButtonActionPerformed"/>
               </Events>
             </Component>
-            <Component class="javax.swing.JButton" name="RemoveRecordButton">
+            <Component class="javax.swing.JButton" name="removeRecordButton">
               <Properties>
+                <Property name="text" type="java.lang.String" value="&#x79fb;&#x9664;&#x7d00;&#x9304;"/>
                 <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
                   <Font name="Microsoft JhengHei UI" size="14" style="0"/>
                 </Property>
-                <Property name="text" type="java.lang.String" value="&#x79fb;&#x9664;&#x7d00;&#x9304;"/>
               </Properties>
               <Events>
-                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="RemoveRecordButtonActionPerformed"/>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="removeRecordButtonActionPerformed"/>
               </Events>
             </Component>
           </SubComponents>
         </Container>
       </SubComponents>
     </Container>
-    <Container class="javax.swing.JTabbedPane" name="OutputMessagePane">
+    <Container class="javax.swing.JTabbedPane" name="outputMessagePane">
 
       <Layout class="org.netbeans.modules.form.compat2.layouts.support.JTabbedPaneSupportLayout"/>
       <SubComponents>
@@ -627,7 +584,7 @@
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
           <SubComponents>
-            <Component class="javax.swing.JTextArea" name="SystemOutputs">
+            <Component class="javax.swing.JTextArea" name="systemOutputs">
               <Properties>
                 <Property name="columns" type="int" value="20"/>
                 <Property name="rows" type="int" value="5"/>
@@ -650,7 +607,7 @@
 
               <Layout class="org.netbeans.modules.form.compat2.layouts.support.JScrollPaneSupportLayout"/>
               <SubComponents>
-                <Component class="javax.swing.JTextArea" name="GeneralOutputs">
+                <Component class="javax.swing.JTextArea" name="generalOutputs">
                   <Properties>
                     <Property name="columns" type="int" value="20"/>
                     <Property name="rows" type="int" value="5"/>
@@ -662,26 +619,26 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="jButton1">
+    <Component class="javax.swing.JButton" name="lastButton">
       <Properties>
+        <Property name="text" type="java.lang.String" value="&#x4e0b;&#x4e00;&#x7b46;"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&#x4e0b;&#x4e00;&#x7b46;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton1ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lastButtonActionPerformed"/>
       </Events>
     </Component>
-    <Component class="javax.swing.JButton" name="jButton2">
+    <Component class="javax.swing.JButton" name="nextButton">
       <Properties>
+        <Property name="text" type="java.lang.String" value="&#x4e0a;&#x4e00;&#x7b46;"/>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
           <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
         </Property>
-        <Property name="text" type="java.lang.String" value="&#x4e0a;&#x4e00;&#x7b46;"/>
       </Properties>
       <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButton2ActionPerformed"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
       </Events>
     </Component>
   </SubComponents>
