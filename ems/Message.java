@@ -42,4 +42,8 @@ public class Message {
   public String getText() {
     return text;
   }
+  
+  public String getMessageDate() {
+    return date.toString();
+  }
 }

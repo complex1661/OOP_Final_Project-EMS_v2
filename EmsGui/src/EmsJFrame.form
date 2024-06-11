@@ -55,11 +55,7 @@
                   </Group>
                   <Group type="102" alignment="1" attributes="0">
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
-                      <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                          <Component id="nextButton" alignment="1" pref="230" max="32767" attributes="0"/>
-                          <Component id="lastButton" alignment="1" pref="230" max="32767" attributes="0"/>
-                          <Component id="jPanel7" alignment="1" max="32767" attributes="0"/>
-                      </Group>
+                      <Component id="jPanel7" min="-2" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace min="27" pref="27" max="-2" attributes="0"/>
@@ -86,10 +82,7 @@
                       <Component id="searchWorkerRecordButton" min="-2" pref="58" max="-2" attributes="0"/>
                       <EmptySpace type="unrelated" max="-2" attributes="0"/>
                       <Component id="computeWorkerSalaryButton" min="-2" pref="58" max="-2" attributes="0"/>
-                      <EmptySpace min="-2" pref="112" max="-2" attributes="0"/>
-                      <Component id="nextButton" min="-2" pref="58" max="-2" attributes="0"/>
-                      <EmptySpace type="separate" max="-2" attributes="0"/>
-                      <Component id="lastButton" min="-2" pref="58" max="-2" attributes="0"/>
+                      <EmptySpace min="-2" pref="246" max="-2" attributes="0"/>
                   </Group>
               </Group>
               <EmptySpace pref="325" max="32767" attributes="0"/>
@@ -839,18 +832,18 @@
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
                   <Table columnCount="13" rowCount="4">
                     <Column editable="true" title="&#x54e1;&#x5de5; ID" type="java.lang.String"/>
-                    <Column editable="true" title="&#x59d3;&#x540d;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x5e74;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x6708;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x65e5;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x51fa;&#x52e4;&#x6642;&#x6578;" type="java.lang.Integer"/>
-                    <Column editable="true" title="&#x8acb;&#x5047;&#x6642;&#x6578;" type="java.lang.Integer"/>
-                    <Column editable="true" title="&#x7f3a;&#x5e2d;&#x6642;&#x6578;" type="java.lang.Integer"/>
-                    <Column editable="true" title="&#x52a0;&#x73ed;&#x6642;&#x6578;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x8acb;&#x5047;&#x7a2e;&#x985e;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x8a3b;&#x8a18;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x52a0;&#x8a3b;&#x8005;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x52a0;&#x8a3b;&#x65e5;&#x671f;" type="java.lang.Object"/>
+                    <Column editable="true" title="&#x59d3;&#x540d;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x5e74;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x6708;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x65e5;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x51fa;&#x52e4;&#x6642;&#x6578;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x8acb;&#x5047;&#x6642;&#x6578;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x7f3a;&#x5e2d;&#x6642;&#x6578;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x52a0;&#x73ed;&#x6642;&#x6578;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x8acb;&#x5047;&#x7a2e;&#x985e;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x8a3b;&#x8a18;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x52a0;&#x8a3b;&#x8005;" type="java.lang.String"/>
+                    <Column editable="true" title="&#x52a0;&#x8a3b;&#x65e5;&#x671f;" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
@@ -931,28 +924,6 @@
         </Container>
       </SubComponents>
     </Container>
-    <Component class="javax.swing.JButton" name="lastButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x4e0b;&#x4e00;&#x7b46;"/>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="lastButtonActionPerformed"/>
-      </Events>
-    </Component>
-    <Component class="javax.swing.JButton" name="nextButton">
-      <Properties>
-        <Property name="text" type="java.lang.String" value="&#x4e0a;&#x4e00;&#x7b46;"/>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
-          <Font name="Microsoft JhengHei UI Light" size="18" style="1"/>
-        </Property>
-      </Properties>
-      <Events>
-        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="nextButtonActionPerformed"/>
-      </Events>
-    </Component>
     <Component class="javax.swing.JButton" name="searchWorkerInfoButton">
       <Properties>
         <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
@@ -996,7 +967,7 @@
                   <Component id="searchByAWorkerButton" min="-2" max="-2" attributes="0"/>
                   <EmptySpace type="separate" max="-2" attributes="0"/>
                   <Component id="searchByAllWorkersButton" min="-2" pref="67" max="-2" attributes="0"/>
-                  <EmptySpace max="32767" attributes="0"/>
+                  <EmptySpace pref="80" max="32767" attributes="0"/>
               </Group>
           </Group>
         </DimensionLayout>

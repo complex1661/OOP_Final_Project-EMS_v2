@@ -95,8 +95,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         showWorkerSalaryTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
         showWorkerRecordTable = new javax.swing.JTable();
-        lastButton = new javax.swing.JButton();
-        nextButton = new javax.swing.JButton();
         searchWorkerInfoButton = new javax.swing.JButton();
         searchWorkerRecordButton = new javax.swing.JButton();
         computeWorkerSalaryButton = new javax.swing.JButton();
@@ -486,7 +484,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.String.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class, java.lang.Object.class
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -508,22 +506,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
 
         outputMessagePane.addTab("顯示出缺勤紀錄", jScrollPane2);
-
-        lastButton.setText("下一筆");
-        lastButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
-        lastButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastButtonActionPerformed(evt);
-            }
-        });
-
-        nextButton.setText("上一筆");
-        nextButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
-            }
-        });
 
         searchWorkerInfoButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         searchWorkerInfoButton.setText("查詢員工基本資料");
@@ -576,7 +558,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 .addComponent(searchByAWorkerButton)
                 .addGap(18, 18, 18)
                 .addComponent(searchByAllWorkersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(80, Short.MAX_VALUE))
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -614,10 +596,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(nextButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(lastButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
@@ -638,10 +617,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                         .addComponent(searchWorkerRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(computeWorkerSalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(112, 112, 112)
-                        .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(lastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(246, 246, 246)))
                 .addContainerGap(325, Short.MAX_VALUE))
         );
 
@@ -842,14 +818,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_removeRecordButtonActionPerformed
 
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextButtonActionPerformed
-
-    private void lastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastButtonActionPerformed
-
     private void handleSelectedRecordType(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleSelectedRecordType
         // TODO add your handling code here:
         
@@ -901,8 +869,29 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_leaveTypeChooserItemStateChanged
 
+    
+    private String[] convertDayRecordToString(String workerId, int year, int month, AttendanceDayRecord record) {
+        Worker worker = Worker.getWorkerById(workerId);
+        String name = worker.getInfo().getName();
+        
+        String leaveType =  "無";
+        String leaveText = "無";
+        String leaveMessageSender = "無";
+        String leaveMessageDate = "無";
+        if (record.getLeaveRecord() != null) {
+            LeaveRecord leaveRecord = record.getLeaveRecord();
+            leaveType = leaveRecord.getLeaveType();
+            leaveText = leaveRecord.getLeaveDetail().getText();
+            leaveMessageSender = leaveRecord.getLeaveDetail().getMessageSender();
+            leaveMessageDate = leaveRecord.getLeaveDetail().getMessageDate();
+        }
+        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), "", Integer.toString(record.getAttendHours()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), leaveType, leaveText, leaveMessageSender, leaveMessageDate};
+        return recordInString;
+    }
+    
     private void searchWorkerRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerRecordButtonActionPerformed
         // TODO add your handling code here:
+        outputMessagePane.setSelectedIndex(3);
         // 以個人搜尋
         if (searchByAWorkerButton.isSelected()) {
              try {
@@ -918,23 +907,15 @@ public class EmsJFrame extends javax.swing.JFrame {
                 if (day != 0) date = new CustomDate(year, month, day);
                 else date = new CustomDate(year, month);
                 
-                Worker worker = Worker.getWorkerById(workerId);
-                String name = worker.getInfo().getName();
-                
+                DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
                 if (day == 0) {
                     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(workerId, date);
                     for (AttendanceDayRecord record : records) {
-                        if (record.getLeaveRecord() != null) {
-                            String leaveType = record.getLeaveRecord().getLeaveType();
-                            String leaveText = record.getLeaveRecord().getLeaveDetail().getMessageSender();
-                        }
-                        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), null, Integer.toString(record.getAttendHours()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), };
-                        DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
-                        tableModel.addRow(recordInString);
+                        tableModel.addRow(convertDayRecordToString(workerId, year, month, record));
                     }
                 } else {
                     AttendanceDayRecord dayRecord = attendanceRecordSystem.searchRecordByYearMonthDay(workerId, date);
-                    
+                    tableModel.addRow(convertDayRecordToString(workerId, year, month, dayRecord));
                 }
             } catch (IllegalArgumentException e) {
                 JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
@@ -1024,9 +1005,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane4;
     private javax.swing.JScrollPane jScrollPane5;
-    private javax.swing.JButton lastButton;
     private javax.swing.JComboBox<String> leaveTypeChooser;
-    private javax.swing.JButton nextButton;
     private javax.swing.JTabbedPane outputMessagePane;
     private com.toedter.calendar.JDateChooser recordDateChooser;
     private javax.swing.JComboBox<String> recordTypeChooser;
