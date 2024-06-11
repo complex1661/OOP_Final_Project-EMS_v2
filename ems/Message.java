@@ -38,4 +38,8 @@ public class Message {
   public String getMessageSender() {
     return messageSender;
   }
+  
+  public String getText() {
+    return text;
+  }
 }

@@ -736,14 +736,6 @@ public class EmsJFrame extends javax.swing.JFrame {
             if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
             if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
             
-            Set<String> paidLeaveTypes = new HashSet<>();
-            paidLeaveTypes.add("特休");
-            paidLeaveTypes.add("婚假");
-            paidLeaveTypes.add("喪假");
-            paidLeaveTypes.add("公傷病假");
-            paidLeaveTypes.add("公假");
-            paidLeaveTypes.add("產檢假");
-            paidLeaveTypes.add("陪產檢及陪產假");
             
             // 處理日期
             Date date = recordDateChooser.getDate();
@@ -766,7 +758,6 @@ public class EmsJFrame extends javax.swing.JFrame {
             } else if (selectedItem.equals("請假")) {
                 boolean isPaidLeave = false;
                 String leaveType = (String) leaveTypeChooser.getSelectedItem();
-                if (paidLeaveTypes.contains(leaveType)) isPaidLeave = true;
                 
                 Message leaveMessage = null;
                 String message = JOptionPane.showInputDialog("請輸入附註:");
@@ -935,9 +926,9 @@ public class EmsJFrame extends javax.swing.JFrame {
                     for (AttendanceDayRecord record : records) {
                         if (record.getLeaveRecord() != null) {
                             String leaveType = record.getLeaveRecord().getLeaveType();
-                            String leaveText = record.getLeaveRecord().getLeaveDetail().getDetail();
+                            String leaveText = record.getLeaveRecord().getLeaveDetail().getMessageSender();
                         }
-                        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), null, Integer.toString(record.getClockRecord()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), };
+                        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), null, Integer.toString(record.getAttendHours()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), };
                         DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
                         tableModel.addRow(recordInString);
                     }
