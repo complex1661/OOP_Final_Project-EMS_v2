@@ -29,7 +29,7 @@ public class AttendanceDayRecord {
     this.leaveHours = leave_hours;
     this.leaveRecord = leaveRecord;
     
-    // 狦琌疭ヰ安
+    // 狦琌Τ羱安
     if (leaveRecord.getIsPaidLeave()) {
       handlePaidLeave(workerId);
     }
@@ -37,7 +37,7 @@ public class AttendanceDayRecord {
     this.isLate = checkIsLate(workerId);
   }
   
-  // 矪瞶疭ヰ安
+  // 矪瞶Τ羱安
   private void handlePaidLeave(String workerId) {
     this.attendHours = 0;
     this.absentHours = 0;
@@ -45,8 +45,10 @@ public class AttendanceDayRecord {
     this.paidLeaveHours = leaveHours;
     
     // Ι奔疭ヰ安
-    Worker w = Worker.getWorkerById(workerId);
-    w.reducePaidLeaveDays();
+    if (leaveRecord.getLeaveType().equals("疭ヰ")) {
+      Worker w = Worker.getWorkerById(workerId);
+      w.reducePaidLeaveDays();
+    }
   }
   
   // 穝糤畊魁

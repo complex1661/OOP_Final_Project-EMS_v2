@@ -15,6 +15,7 @@ public class ClockRecord {
   }
   
   public boolean isValidClockRecord(){
+    if (start == null || end == null) return false;
     if (start.getHour() < end.getHour()) return true;
     if (start.getHour() == end.getHour() && start.getMinute() <= end.getMinute()) return true;
     return false;

@@ -1,4 +1,5 @@
 package ems;
+import java.util.*;
 public class LeaveRecord {
   private String leaveType;
   private boolean isPaidLeave = false;
@@ -6,14 +7,26 @@ public class LeaveRecord {
   private Time end;
   private Message msg;
   
+  
+  private Set<String> paidLeaveTypes = new HashSet<>();
+  
+  
+  
   public LeaveRecord() {
     start = end = new Time(0,0);
+    paidLeaveTypes.add("特休");
+    paidLeaveTypes.add("婚假");
+    paidLeaveTypes.add("喪假");
+    paidLeaveTypes.add("公傷病假");
+    paidLeaveTypes.add("公假");
+    paidLeaveTypes.add("產檢假");
+    paidLeaveTypes.add("陪產檢及陪產假");
   }
   
   public LeaveRecord(String leaveType, Message txt, boolean isPaidLeave) {
     setLeaveType(leaveType); 
     msg = txt;
-    this.isPaidLeave = isPaidLeave;
+    checkIsPaidLeave();
     start = null;
     end = null;
   }
@@ -22,7 +35,7 @@ public class LeaveRecord {
     setLeaveType(leaveType); 
     this.start = start;
     this.end = end;
-    this.isPaidLeave = false;
+    checkIsPaidLeave();
     msg = txt;
     if (!isValidLeaveRecord()) throw new IllegalArgumentException("錯誤: 結束時間不可以大於起始時間。");
   }
@@ -32,6 +45,12 @@ public class LeaveRecord {
     if (start.getHour() < end.getHour()) return true;
     if (start.getHour() == end.getHour() && start.getMinute() <= end.getMinute()) return true;
     return false;
+  }
+  
+  private void checkIsPaidLeave() {
+    if (paidLeaveTypes.contains(leaveType)) {
+      this.isPaidLeave = true;
+    }
   }
   
   public void setLeaveType(String s) throws IllegalArgumentException {
