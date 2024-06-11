@@ -1,7 +1,9 @@
 package ems;
 import java.util.TreeMap;
+import java.io.*;
 
-public abstract class Worker {
+public abstract class Worker implements Serializable{
+  protected static final long serialVersionUID = 1L;
   protected static TreeMap<String, Worker> workerList = new TreeMap<>();
   
   protected EWorkerType type;

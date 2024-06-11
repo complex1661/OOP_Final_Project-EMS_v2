@@ -1,8 +1,11 @@
 package ems;
 import java.util.Date;
 import java.util.Calendar;
+import java.io.*;
 
-public class CustomDate implements Comparable<CustomDate>{
+public class CustomDate implements Comparable<CustomDate>,Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private Integer year; 
   private Integer month;
   private Integer day; 

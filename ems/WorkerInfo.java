@@ -1,7 +1,9 @@
 package ems; 
 import java.util.Date;
+import java.io.*;
 
-public class WorkerInfo {
+public class WorkerInfo implements Serializable{
+  private static final long serialVersionUID = 1L;
   private static int idCounter = 0;
   
   private String name;
