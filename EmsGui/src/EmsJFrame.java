@@ -110,7 +110,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         jLabel1.setText("員工種類");
         jLabel1.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
 
-        workerTypeChooser.setEditable(true);
         workerTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "請選擇員工種類", "工讀生", "正職員工", "主管" }));
         workerTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         workerTypeChooser.setToolTipText("請選擇員工種類");
@@ -261,7 +260,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         workerIdTextField.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         workerIdTextField.setToolTipText("請輸入員工ID");
 
-        recordTypeChooser.setEditable(true);
         recordTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "請選擇紀錄種類", "打卡", "缺席", "請假", "加班" }));
         recordTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
         recordTypeChooser.setToolTipText("請選擇紀錄種類");
@@ -427,17 +425,17 @@ public class EmsJFrame extends javax.swing.JFrame {
         showWorkerInfoTable.setBorder(javax.swing.BorderFactory.createEtchedBorder());
         showWorkerInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null},
-                {null, null, null, null, null}
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
             },
             new String [] {
-                "員工 ID", "姓名", "職稱", "入職日期", "剩餘特休"
+                "員工 ID", "姓名", "職稱", "入職日期", "應到時間", "剩餘特休"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, true, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -453,7 +451,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             showWorkerInfoTable.getColumnModel().getColumn(1).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(2).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(3).setResizable(false);
-            showWorkerInfoTable.getColumnModel().getColumn(4).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
         outputMessagePane.addTab("顯示基本資料", jScrollPane5);
@@ -928,7 +926,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 if (year == 0) throw new IllegalArgumentException("年份不可為空。");
                 int month = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的月: "));
                 if (month == 0) throw new IllegalArgumentException("月份不可為空。");
-                Integer day = Integer.valueOf(JOptionPane.showInputDialog("請輸入想查詢的日(可為空): "));
+                Integer day = Integer.valueOf(JOptionPane.showInputDialog("請輸入想查詢的日(輸入0即查詢該月): "));
                 if (day < 0 || day > 31) throw new IllegalArgumentException("不合理的日期。");
 
                 if (day != 0) date = new CustomDate(year, month, day); 
@@ -950,13 +948,16 @@ public class EmsJFrame extends javax.swing.JFrame {
                 if (month == 0) throw new IllegalArgumentException("月份不可為空。");
                 int day = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的日: "));
                 if (day == 0) throw new IllegalArgumentException("日期不可為空。");
-
+                date = new CustomDate(year, month, day);
+                
                 // id 與其 record
                 TreeMap<String, AttendanceDayRecord> allWorkerRecords = attendanceRecordSystem.searchAllWorkersRecordsByYearMonthDay(date);
                 String workerId = null;
                 for (Map.Entry<String, AttendanceDayRecord> entry : allWorkerRecords.entrySet()) {
                     workerId = entry.getKey();
-                    tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, entry.getValue()));
+                    if (entry.getValue() != null) {
+                        tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, entry.getValue()));
+                    }
                 }
             }
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -967,7 +968,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     private Object[] convertInfoToObject(String workerId) {
         Worker worker =  Worker.getWorkerById(workerId);
         WorkerInfo workerInfo = worker.getInfo();
-        Object[] infoInString = {workerId, workerInfo.getName(), workerInfo.getPositionTitle(),workerInfo.getHiredDate().toString(), worker.getPaidLeaveDays()};
+        Object[] infoInString = {workerId, workerInfo.getName(), workerInfo.getPositionTitle(),workerInfo.getHiredDate().toString(),worker.getAttendTime().toString(), worker.getPaidLeaveDays()};
         return infoInString;
     }
     
