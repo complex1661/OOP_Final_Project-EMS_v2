@@ -1,11 +1,11 @@
 package ems;
 import java.io.*;
 
-public class LoadAttendanceSystem extends Load{
-  private static final String FILE_NAME = "AttendanceRecordSystem.dat";
+public class LoadManageSystem extends Load{
+  private static final String FILE_NAME = "ManageSystemData.dat";
   
-  public AttendanceRecordSystem loadSystem(){
-    AttendanceRecordSystem system = null;
+  public ManageSystem loadSystem(){
+    ManageSystem system = null;
     try {
       system = loadFileByName(FILE_NAME);
     } catch (FileNotFoundException e) {
@@ -14,18 +14,18 @@ public class LoadAttendanceSystem extends Load{
     return system;
   }
   
-  public AttendanceRecordSystem loadFileByName(String fileName) throws FileNotFoundException{
+  public ManageSystem loadFileByName(String fileName) throws FileNotFoundException{
     
     File file = new File(fileName);
     if ( !file.exists() ) {
       throw new FileNotFoundException("檔案："+ fileName +"不存在");
     }
     
-    AttendanceRecordSystem system = null;
+    ManageSystem system = null;
     try (FileInputStream fileIn = new FileInputStream(file);
          ObjectInputStream in = new ObjectInputStream(fileIn)) {
           
-           system = (AttendanceRecordSystem)in.readObject();
+           system = (ManageSystem)in.readObject();
          } catch (IOException | ClassNotFoundException e) {
            System.out.println(e);
          }

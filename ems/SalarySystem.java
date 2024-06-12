@@ -2,8 +2,11 @@ package ems;
 import java.util.Date;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.io.*;
 
-public class SalarySystem {
+public class SalarySystem implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private static final int LATE_PENALTY = 50;
   private TreeMap<EWorkerType, Integer> baseSalaryEachWorkerType;
   
@@ -16,7 +19,7 @@ public class SalarySystem {
   
   public int computeMonthlySalary(ManageSystem manageSystem, String worker_id, CustomDate date) {
     EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
-    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendanceRecordSystem();
+    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendance();
     
     // 取得該員工在該年月的出缺勤狀況
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);

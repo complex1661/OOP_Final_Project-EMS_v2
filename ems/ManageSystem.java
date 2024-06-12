@@ -1,13 +1,17 @@
 package ems;
-public class ManageSystem {
-  private static AttendanceRecordSystem attendanceRecordSystem  = new AttendanceRecordSystem();
-  private static SalarySystem salarySystem = new SalarySystem();
+import java.io.*;
+
+public class ManageSystem implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
+  private static AttendanceRecordSystem attendance = new AttendanceRecordSystem();
+  private static SalarySystem salary = new SalarySystem();
  
-  public AttendanceRecordSystem getAttendanceRecordSystem() {
-    return attendanceRecordSystem;
+  public AttendanceRecordSystem getAttendance() {
+    return attendance;
   } 
   
-  public SalarySystem getSalarySystem() {
-    return salarySystem;
+  public SalarySystem getSalary() {
+    return salary;
   }
 } 

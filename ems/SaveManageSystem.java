@@ -1,10 +1,10 @@
 package ems;
 import java.io.*;
 
-public class SaveAttendanceSystem extends Save<AttendanceRecordSystem>{
-  private static final String FILE_NAME = "AttendanceRecordSystem.dat";
+public class SaveManageSystem extends Save<ManageSystem>{
+  private static final String FILE_NAME = "ManageSystemData.dat";
   
-  public void saveFileTo(AttendanceRecordSystem system){
+  public void saveFileTo(ManageSystem system){
 
     File file = new File(FILE_NAME);
     
