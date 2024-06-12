@@ -707,7 +707,7 @@
                     <Column editable="false" title="&#x59d3;&#x540d;" type="java.lang.Object"/>
                     <Column editable="false" title="&#x8077;&#x7a31;" type="java.lang.Object"/>
                     <Column editable="false" title="&#x5165;&#x8077;&#x65e5;&#x671f;" type="java.lang.Object"/>
-                    <Column editable="true" title="&#x61c9;&#x5230;&#x6642;&#x9593;" type="java.lang.Object"/>
+                    <Column editable="false" title="&#x61c9;&#x5230;&#x6642;&#x9593;" type="java.lang.Object"/>
                     <Column editable="false" title="&#x5269;&#x9918;&#x7279;&#x4f11;" type="java.lang.Object"/>
                   </Table>
                 </Property>
@@ -733,7 +733,7 @@
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -753,6 +753,9 @@
                   <TableHeader reorderingAllowed="false" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <Events>
+                <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="showWorkerInfoTableMouseClicked"/>
+              </Events>
             </Component>
           </SubComponents>
         </Container>
@@ -815,6 +818,9 @@
                       <Renderer/>
                     </Column>
                   </TableColumnModel>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI" size="18" style="0"/>
                 </Property>
                 <Property name="rowHeight" type="int" value="40"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">
@@ -925,6 +931,9 @@
                       <Renderer/>
                     </Column>
                   </TableColumnModel>
+                </Property>
+                <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
+                  <Font name="Microsoft JhengHei UI" size="14" style="0"/>
                 </Property>
                 <Property name="rowHeight" type="int" value="40"/>
                 <Property name="tableHeader" type="javax.swing.table.JTableHeader" editor="org.netbeans.modules.form.editors2.JTableHeaderEditor">

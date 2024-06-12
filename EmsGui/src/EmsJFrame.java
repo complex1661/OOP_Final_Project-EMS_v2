@@ -17,8 +17,9 @@ import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
-    AttendanceRecordSystem attendanceRecordSystem = ManageSystem.getAttendanceRecordSystem();
-    SalarySystem salarySystem = ManageSystem.getSalarySystem();
+    ManageSystem manageSystem = new ManageSystem();
+    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendanceRecordSystem();
+    SalarySystem salarySystem = manageSystem.getSalarySystem();
     
     /**
      * Creates new form EmsJFrame
@@ -29,6 +30,12 @@ public class EmsJFrame extends javax.swing.JFrame {
         jPanel6.setVisible(false);
         searchByAWorkerButton.setSelected(true);
         outputMessagePane.setSelectedIndex(0);
+        DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
+        tableModel.setRowCount(0);
+        tableModel = (DefaultTableModel) showWorkerSalaryTable.getModel();
+        tableModel.setRowCount(0);
+        tableModel = (DefaultTableModel) showWorkerInfoTable.getModel();
+        tableModel.setRowCount(0);
     }
     
     private String getCurrentDate() {
@@ -434,7 +441,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true, false
+                false, false, false, false, false, false
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -444,12 +451,18 @@ public class EmsJFrame extends javax.swing.JFrame {
         showWorkerInfoTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         showWorkerInfoTable.setRowHeight(40);
         showWorkerInfoTable.getTableHeader().setReorderingAllowed(false);
+        showWorkerInfoTable.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                showWorkerInfoTableMouseClicked(evt);
+            }
+        });
         jScrollPane5.setViewportView(showWorkerInfoTable);
         if (showWorkerInfoTable.getColumnModel().getColumnCount() > 0) {
             showWorkerInfoTable.getColumnModel().getColumn(0).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(1).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(2).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(3).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(4).setResizable(false);
             showWorkerInfoTable.getColumnModel().getColumn(5).setResizable(false);
         }
 
@@ -481,6 +494,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        showWorkerSalaryTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         showWorkerSalaryTable.setRowHeight(40);
         jScrollPane4.setViewportView(showWorkerSalaryTable);
 
@@ -505,6 +519,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        showWorkerRecordTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
         showWorkerRecordTable.setRowHeight(40);
         jScrollPane2.setViewportView(showWorkerRecordTable);
         if (showWorkerRecordTable.getColumnModel().getColumnCount() > 0) {
@@ -642,7 +657,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             
             // 處理日期
             Date date = hiredDateChooser.getDate();
-            CustomDate hiredDate = transferDateToCustomDate(date);
+            CustomDate hiredDate = convertDateToCustomDate(date);
             
             WorkerInfo workerInfo = new WorkerInfo(workerName, workerPositionTitle, hiredDate);
             
@@ -660,8 +675,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 worker = new Supervisor(workerInfo);
             } 
             Worker.addWorker(worker);
-            systemOutputs.append("成功新增員工" + workerInfo.getName() + "。\n");
-            
+            systemOutputs.append("成功新增員工ID: " + workerInfo.getId() + "，姓名:" + workerInfo.getName() + "。\n");
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         } catch (NullPointerException e) {
@@ -673,13 +687,18 @@ public class EmsJFrame extends javax.swing.JFrame {
         // TODO add your handling code here:
         try {
             String workerId = JOptionPane.showInputDialog("請輸入欲刪除的員工ID(7位數):");
+            if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("員工ID不可為空。");
+            if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
+            
+            JOptionPane.showConfirmDialog(this, "確定要刪除員工?", "刪除員工確認",JOptionPane.OK_CANCEL_OPTION);
             Worker.deleteWorker(attendanceRecordSystem, workerId);
+            systemOutputs.append("成功刪除員工ID: " + workerId + "。\n");
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_deleteWorkerButtonActionPerformed
     
-    private CustomDate transferDateToCustomDate(Date date) throws IllegalArgumentException{
+    private CustomDate convertDateToCustomDate(Date date) throws IllegalArgumentException{
         Calendar cal = Calendar.getInstance();
         cal.setTime(date);
         int year = cal.get(Calendar.YEAR);
@@ -719,7 +738,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             // 處理日期
             Date date = recordDateChooser.getDate();
             if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
-            CustomDate recordDate = transferDateToCustomDate(date);
+            CustomDate recordDate = convertDateToCustomDate(date);
             
             String selectedItem = (String) recordTypeChooser.getSelectedItem();
             if (selectedItem.equals("打卡")) {
@@ -734,6 +753,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 Time endTime = transferLocalTimeToTime(endLocalTime);
                 ClockRecord clockRecord = new ClockRecord(startTime, endTime);
                 attendanceRecordSystem.addAttendanceRecord(workerId, recordDate, clockRecord);
+                systemOutputs.append("成功為員工ID:" + workerId + "加了打卡紀錄。");
             } else if (selectedItem.equals("請假")) {
                 boolean isPaidLeave = false;
                 String leaveType = (String) leaveTypeChooser.getSelectedItem();
@@ -762,6 +782,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                     leaveRecord = new LeaveRecord(leaveType, leaveMessage, startTime, endTime);
                 }
                 attendanceRecordSystem.addLeaveRecord(workerId, recordDate, leaveRecord);
+                systemOutputs.append("成功為員工ID:" + workerId + "加了請假紀錄。");
             } else if (selectedItem.equals("缺席")) {
                 Message absentMessage = null;
                 String message = JOptionPane.showInputDialog("請輸入附註:");
@@ -787,6 +808,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                     absentRecord = new AbsentRecord(absentMessage, startTime, endTime);
                 }
                 attendanceRecordSystem.addAbsentRecord(workerId, recordDate, absentRecord);
+                systemOutputs.append("成功為員工ID:" + workerId + "加了缺席紀錄。");
             } else if (selectedItem.equals("加班")) {
                 if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
                     throw new NullPointerException("新增加班紀錄時起始時間與結束時間不可為空。");
@@ -798,6 +820,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 Time endTime = transferLocalTimeToTime(endLocalTime);
                 OvertimeRecord overtimeRecord = new OvertimeRecord(startTime, endTime);
                 attendanceRecordSystem.addOvertimeRecord(workerId, recordDate, overtimeRecord);
+                systemOutputs.append("成功為員工ID:" + workerId + "加了加班紀錄。");
             }
         } catch (IllegalArgumentException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -814,7 +837,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             // 處理日期
             Date date = recordDateChooser.getDate();
             if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
-            CustomDate recordDate = transferDateToCustomDate(date);
+            CustomDate recordDate = convertDateToCustomDate(date);
             attendanceRecordSystem.deleteDayRecord(workerId, recordDate);
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -986,8 +1009,13 @@ public class EmsJFrame extends javax.swing.JFrame {
         } 
     }//GEN-LAST:event_searchWorkerInfoButtonActionPerformed
     
-    private Object[] convertSalaryToObject(String workerId) {
-    
+    private Object[] convertSalaryToObject(String workerId, CustomDate date) {
+        Worker worker = Worker.getWorkerById(workerId);
+        WorkerInfo workerInfo = worker.getInfo();
+        int salary = salarySystem.computeMonthlySalary(manageSystem, workerId, date);
+        
+        Object[] salaryInObject = {workerId, workerInfo.getName(), workerInfo.getPositionTitle(), date.getYear(), date.getMonth(), salary};
+        return salaryInObject;
     }
     
     private void computeWorkerSalaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeWorkerSalaryButtonActionPerformed
@@ -997,23 +1025,36 @@ public class EmsJFrame extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         
          try {
+            CustomDate date = null;
+            int year = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的年: "));
+            if (year == 0) throw new IllegalArgumentException("年份不可為空。");
+            int month = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的月: "));
+            if (month == 0) throw new IllegalArgumentException("月份不可為空。");
+            date = new CustomDate(year, month);
+            
             // 以個人搜尋
             if (searchByAWorkerButton.isSelected()) {
                 String workerId = JOptionPane.showInputDialog("請輸入員工ID: ");
                 if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("查詢個人基本資料時員工ID不可為空。");
                 if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
-                
-                tableModel.addRow(convertSalaryToObject(workerId));
+                tableModel.addRow(convertSalaryToObject(workerId, date));
             } else { // 以全體搜尋
                 TreeMap<String, Worker> allWorkers = Worker.getAllWorkers();
                 for (String workerId : allWorkers.keySet()) {
-                    tableModel.addRow(convertSalaryToObject(workerId));
+                    tableModel.addRow(convertSalaryToObject(workerId,date));
                 }
             }
          } catch (IllegalArgumentException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
         } 
     }//GEN-LAST:event_computeWorkerSalaryButtonActionPerformed
+
+    private void showWorkerInfoTableMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_showWorkerInfoTableMouseClicked
+        // TODO add your handling code here:
+        DefaultTableModel model = (DefaultTableModel)showWorkerInfoTable.getModel();
+        int selectedRowIndex = showWorkerInfoTable.getSelectedRow();
+        workerIdTextField.setText(model.getValueAt(selectedRowIndex, 0).toString());
+    }//GEN-LAST:event_showWorkerInfoTableMouseClicked
 
     /**
      * @param args the command line arguments
@@ -1101,5 +1142,4 @@ public class EmsJFrame extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> workerTypeChooser;
     // End of variables declaration//GEN-END:variables
 
-   
 }
