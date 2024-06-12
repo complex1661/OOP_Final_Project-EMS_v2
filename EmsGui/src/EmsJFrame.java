@@ -755,7 +755,6 @@ public class EmsJFrame extends javax.swing.JFrame {
                 attendanceRecordSystem.addAttendanceRecord(workerId, recordDate, clockRecord);
                 systemOutputs.append("成功為員工ID:" + workerId + "加了打卡紀錄。");
             } else if (selectedItem.equals("請假")) {
-                boolean isPaidLeave = false;
                 String leaveType = (String) leaveTypeChooser.getSelectedItem();
                 
                 Message leaveMessage = null;
@@ -772,7 +771,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 LeaveRecord leaveRecord = null;
                 // 請整日
                 if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
-                    leaveRecord = new LeaveRecord(leaveType, leaveMessage, isPaidLeave);
+                    leaveRecord = new LeaveRecord(leaveType, leaveMessage);
                 } else {
                     LocalTime startLocalTime = startTimePicker.getTime();
                     LocalTime endLocalTime = endTimePicker.getTime();

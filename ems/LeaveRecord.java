@@ -13,10 +13,9 @@ public class LeaveRecord implements Serializable{
   private Message msg;
   
   
-  private Set<String> paidLeaveTypes = new HashSet<>();
-
-  public LeaveRecord() {
-    start = end = new Time(0,0);
+  private static Set<String> paidLeaveTypes = new HashSet<>();
+  
+  static {
     paidLeaveTypes.add("¯S¥ð");
     paidLeaveTypes.add("±B°²");
     paidLeaveTypes.add("³à°²");
@@ -26,7 +25,11 @@ public class LeaveRecord implements Serializable{
     paidLeaveTypes.add("³­²£ÀË¤Î³­²£°²");
   }
   
-  public LeaveRecord(String leaveType, Message txt, boolean isPaidLeave) {
+  public LeaveRecord() {
+    start = end = new Time(0,0);
+  }
+  
+  public LeaveRecord(String leaveType, Message txt) {
     setLeaveType(leaveType); 
     msg = txt;
     checkIsPaidLeave();

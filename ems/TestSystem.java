@@ -12,7 +12,7 @@ public class TestSystem {
     Worker.addWorker(w);
     String id = w.getInfo().getId();
     attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(9,1), new Time(17, 0)));
-    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("事假", new Message(), true));
+    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("特休", new Message()));
     System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(manageSystem, id, new CustomDate(2023, 5)));
     
     
