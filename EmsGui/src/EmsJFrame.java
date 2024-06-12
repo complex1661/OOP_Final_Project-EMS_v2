@@ -17,7 +17,6 @@ import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
-
     AttendanceRecordSystem attendanceRecordSystem = ManageSystem.getAttendanceRecordSystem();
     SalarySystem salarySystem = ManageSystem.getSalarySystem();
     
@@ -549,20 +548,10 @@ public class EmsJFrame extends javax.swing.JFrame {
         searchBy.add(searchByAllWorkersButton);
         searchByAllWorkersButton.setText("全體");
         searchByAllWorkersButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
-        searchByAllWorkersButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchByAllWorkersButtonActionPerformed(evt);
-            }
-        });
 
         searchBy.add(searchByAWorkerButton);
         searchByAWorkerButton.setText("個人");
         searchByAWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
-        searchByAWorkerButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                searchByAWorkerButtonActionPerformed(evt);
-            }
-        });
 
         javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
         jPanel7.setLayout(jPanel7Layout);
@@ -996,18 +985,35 @@ public class EmsJFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
         } 
     }//GEN-LAST:event_searchWorkerInfoButtonActionPerformed
-
+    
+    private Object[] convertSalaryToObject(String workerId) {
+    
+    }
+    
     private void computeWorkerSalaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeWorkerSalaryButtonActionPerformed
         // TODO add your handling code here:
+        outputMessagePane.setSelectedIndex(2);
+        DefaultTableModel tableModel = (DefaultTableModel) showWorkerSalaryTable.getModel();
+        tableModel.setRowCount(0);
+        
+         try {
+            // 以個人搜尋
+            if (searchByAWorkerButton.isSelected()) {
+                String workerId = JOptionPane.showInputDialog("請輸入員工ID: ");
+                if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("查詢個人基本資料時員工ID不可為空。");
+                if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
+                
+                tableModel.addRow(convertSalaryToObject(workerId));
+            } else { // 以全體搜尋
+                TreeMap<String, Worker> allWorkers = Worker.getAllWorkers();
+                for (String workerId : allWorkers.keySet()) {
+                    tableModel.addRow(convertSalaryToObject(workerId));
+                }
+            }
+         } catch (IllegalArgumentException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+        } 
     }//GEN-LAST:event_computeWorkerSalaryButtonActionPerformed
-
-    private void searchByAllWorkersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByAllWorkersButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchByAllWorkersButtonActionPerformed
-
-    private void searchByAWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByAWorkerButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_searchByAWorkerButtonActionPerformed
 
     /**
      * @param args the command line arguments

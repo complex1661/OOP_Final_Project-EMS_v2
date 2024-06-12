@@ -14,9 +14,9 @@ public class SalarySystem {
     baseSalaryEachWorkerType.put(EWorkerType.SUPERVISOR, Supervisor.HOURLY_WAGE);
   } 
   
-  public int computeMonthlySalary(String worker_id, CustomDate date) {
+  public int computeMonthlySalary(ManageSystem manageSystem, String worker_id, CustomDate date) {
     EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
-    AttendanceRecordSystem attendanceRecordSystem = ManageSystem.getAttendanceRecordSystem();
+    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendanceRecordSystem();
     
     // 取得該員工在該年月的出缺勤狀況
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);

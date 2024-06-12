@@ -1,7 +1,8 @@
 package ems;
 
 import java.io.*;
-
+import java.util.HashSet;
+import java.util.Set;
 public class LeaveRecord implements Serializable{
   private static final long serialVersionUID = 1L;
   
@@ -13,9 +14,7 @@ public class LeaveRecord implements Serializable{
   
   
   private Set<String> paidLeaveTypes = new HashSet<>();
-  
-  
-  
+
   public LeaveRecord() {
     start = end = new Time(0,0);
     paidLeaveTypes.add("¯S¥ð");

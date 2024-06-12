@@ -3,8 +3,9 @@ import java.util.*;
 
 public class TestSystem {
   public static void main (String[] args) { 
-    AttendanceRecordSystem attendanceRecordSystem = ManageSystem.getAttendanceRecordSystem();
-    SalarySystem salarySystem = ManageSystem.getSalarySystem();
+    ManageSystem manageSystem = new ManageSystem();
+    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendanceRecordSystem();
+    SalarySystem salarySystem = manageSystem.getSalarySystem();
    
     // 第一個員工
     Worker w = new PartTimeWorker(new WorkerInfo("John", "洗碗工", new CustomDate(2020,5,20)), new Time(8,0));
@@ -12,7 +13,7 @@ public class TestSystem {
     String id = w.getInfo().getId();
     attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(9,1), new Time(17, 0)));
     attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("事假", new Message(), true));
-    System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(id, new CustomDate(2023, 5)));
+    System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(manageSystem, id, new CustomDate(2023, 5)));
     
     
     // 第二個員工 - (使用打卡紀錄作為出勤紀錄)
@@ -26,7 +27,7 @@ public class TestSystem {
     attendanceRecordSystem.addOvertimeRecord(id, new CustomDate(2023, 5, 18), new OvertimeRecord(new Time(18,0), new Time(18,50)));
     
     // 取得員工在特定年月的薪資
-    System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(id, new CustomDate(2023, 5)));
+    System.out.println(id.toString() + " 薪資為 " + salarySystem.computeMonthlySalary(manageSystem, id, new CustomDate(2023, 5)));
    
     
     // 取得在特定年月的所有員工的出勤紀錄
