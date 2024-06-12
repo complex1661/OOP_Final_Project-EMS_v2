@@ -279,11 +279,11 @@ public class EmsJFrame extends javax.swing.JFrame {
         jLabel8.setText("結束時間");
         jLabel8.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
 
-        jLabel10.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
         jLabel10.setText("請假種類");
+        jLabel10.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
 
-        leaveTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         leaveTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "病假", "事假", "生理假", "公假", "特休", "婚假", "喪假", "公傷病假", "產假", "產檢假", "陪產檢及陪產假", "安胎假", "家庭照顧假", "育嬰假" }));
+        leaveTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         leaveTypeChooser.addItemListener(new java.awt.event.ItemListener() {
             public void itemStateChanged(java.awt.event.ItemEvent evt) {
                 leaveTypeChooserItemStateChanged(evt);
@@ -425,27 +425,36 @@ public class EmsJFrame extends javax.swing.JFrame {
         outputMessagePane.addTab("系統訊息", jScrollPane1);
 
         showWorkerInfoTable.setBorder(javax.swing.BorderFactory.createEtchedBorder());
-        showWorkerInfoTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
         showWorkerInfoTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null},
+                {null, null, null, null, null}
             },
             new String [] {
-                "員工 ID", "姓名", "職稱", "入職日期"
+                "員工 ID", "姓名", "職稱", "入職日期", "剩餘特休"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        showWorkerInfoTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        showWorkerInfoTable.setRowHeight(40);
+        showWorkerInfoTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane5.setViewportView(showWorkerInfoTable);
+        if (showWorkerInfoTable.getColumnModel().getColumnCount() > 0) {
+            showWorkerInfoTable.getColumnModel().getColumn(0).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(1).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(2).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(3).setResizable(false);
+            showWorkerInfoTable.getColumnModel().getColumn(4).setResizable(false);
+        }
 
         outputMessagePane.addTab("顯示基本資料", jScrollPane5);
 
@@ -463,11 +472,19 @@ public class EmsJFrame extends javax.swing.JFrame {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
             };
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, true
+            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
         });
+        showWorkerSalaryTable.setRowHeight(40);
         jScrollPane4.setViewportView(showWorkerSalaryTable);
 
         outputMessagePane.addTab("顯示薪資", jScrollPane4);
@@ -483,14 +500,15 @@ public class EmsJFrame extends javax.swing.JFrame {
                 "員工 ID", "姓名", "年", "月", "日", "出勤時數", "請假時數", "缺席時數", "加班時數", "請假種類", "註記", "加註者", "加註日期"
             }
         ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false, false, false, false, false, false, false, false, false, false
             };
 
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
             }
         });
+        showWorkerRecordTable.setRowHeight(40);
         jScrollPane2.setViewportView(showWorkerRecordTable);
         if (showWorkerRecordTable.getColumnModel().getColumnCount() > 0) {
             showWorkerRecordTable.getColumnModel().getColumn(0).setResizable(false);
@@ -502,29 +520,28 @@ public class EmsJFrame extends javax.swing.JFrame {
             showWorkerRecordTable.getColumnModel().getColumn(7).setResizable(false);
             showWorkerRecordTable.getColumnModel().getColumn(8).setResizable(false);
             showWorkerRecordTable.getColumnModel().getColumn(9).setResizable(false);
-            showWorkerRecordTable.getColumnModel().getColumn(12).setResizable(false);
         }
 
         outputMessagePane.addTab("顯示出缺勤紀錄", jScrollPane2);
 
-        searchWorkerInfoButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         searchWorkerInfoButton.setText("查詢員工基本資料");
+        searchWorkerInfoButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         searchWorkerInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchWorkerInfoButtonActionPerformed(evt);
             }
         });
 
-        searchWorkerRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         searchWorkerRecordButton.setText("查詢員工出缺勤紀錄");
+        searchWorkerRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         searchWorkerRecordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchWorkerRecordButtonActionPerformed(evt);
             }
         });
 
-        computeWorkerSalaryButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         computeWorkerSalaryButton.setText("計算員工薪資");
+        computeWorkerSalaryButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
         computeWorkerSalaryButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 computeWorkerSalaryButtonActionPerformed(evt);
@@ -532,8 +549,8 @@ public class EmsJFrame extends javax.swing.JFrame {
         });
 
         searchBy.add(searchByAllWorkersButton);
-        searchByAllWorkersButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         searchByAllWorkersButton.setText("全體");
+        searchByAllWorkersButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         searchByAllWorkersButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchByAllWorkersButtonActionPerformed(evt);
@@ -541,8 +558,8 @@ public class EmsJFrame extends javax.swing.JFrame {
         });
 
         searchBy.add(searchByAWorkerButton);
-        searchByAWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         searchByAWorkerButton.setText("個人");
+        searchByAWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         searchByAWorkerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchByAWorkerButtonActionPerformed(evt);
@@ -592,8 +609,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                                     .addComponent(computeWorkerSalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(59, 59, 59)
-                                .addComponent(searchWorkerInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addComponent(searchWorkerInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -870,7 +886,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_leaveTypeChooserItemStateChanged
 
     
-    private String[] convertDayRecordToString(String workerId, int year, int month, AttendanceDayRecord record) {
+    private Object[] convertDayRecordToObject(String workerId, int year, int month, Integer day, AttendanceDayRecord record) {
         Worker worker = Worker.getWorkerById(workerId);
         String name = worker.getInfo().getName();
         
@@ -885,48 +901,99 @@ public class EmsJFrame extends javax.swing.JFrame {
             leaveMessageSender = leaveRecord.getLeaveDetail().getMessageSender();
             leaveMessageDate = leaveRecord.getLeaveDetail().getMessageDate();
         }
-        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), "", Integer.toString(record.getAttendHours()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), leaveType, leaveText, leaveMessageSender, leaveMessageDate};
-        return recordInString;
+        
+        String dayInRecord = null;
+        if (day == null || day == 0) dayInRecord = "無";
+        else dayInRecord = Integer.toString(day);
+        Object recordInObject[] = {workerId, name, year, month, dayInRecord, record.getAttendHours(), 
+            record.getLeaveHours(), record.getAbsentHours(workerId),record.getOvertimeHours(), 
+            leaveType, leaveText, leaveMessageSender, leaveMessageDate};
+        return recordInObject;
     }
     
     private void searchWorkerRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerRecordButtonActionPerformed
         // TODO add your handling code here:
         outputMessagePane.setSelectedIndex(3);
-        // 以個人搜尋
-        if (searchByAWorkerButton.isSelected()) {
-             try {
+        DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
+        tableModel.setRowCount(0);
+        try {
+            // 以個人搜尋
+            if (searchByAWorkerButton.isSelected()) {
                 String workerId = JOptionPane.showInputDialog("請輸入員工ID: ");
-                if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
+                if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("查詢紀錄時員工ID不可為空。");
                 if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
-                
+
                 CustomDate date = null;
                 int year = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的年: "));
+                if (year == 0) throw new IllegalArgumentException("年份不可為空。");
                 int month = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的月: "));
-                int day = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的日(可為空): "));
-                
-                if (day != 0) date = new CustomDate(year, month, day);
+                if (month == 0) throw new IllegalArgumentException("月份不可為空。");
+                Integer day = Integer.valueOf(JOptionPane.showInputDialog("請輸入想查詢的日(可為空): "));
+                if (day < 0 || day > 31) throw new IllegalArgumentException("不合理的日期。");
+
+                if (day != 0) date = new CustomDate(year, month, day); 
                 else date = new CustomDate(year, month);
-                
-                DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
-                if (day == 0) {
+                if (day == 0) { // 以年月搜尋指定員工
                     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(workerId, date);
                     for (AttendanceDayRecord record : records) {
-                        tableModel.addRow(convertDayRecordToString(workerId, year, month, record));
+                        tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, record));
                     }
-                } else {
+                } else { // 以年月日搜尋指定員工
                     AttendanceDayRecord dayRecord = attendanceRecordSystem.searchRecordByYearMonthDay(workerId, date);
-                    tableModel.addRow(convertDayRecordToString(workerId, year, month, dayRecord));
+                    tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, dayRecord));
                 }
-            } catch (IllegalArgumentException e) {
-                JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            } else { // 以指定年月日搜尋所有員工
+                CustomDate date = null;
+                int year = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的年: "));
+                if (year == 0) throw new IllegalArgumentException("年份不可為空。");
+                int month = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的月: "));
+                if (month == 0) throw new IllegalArgumentException("月份不可為空。");
+                int day = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的日: "));
+                if (day == 0) throw new IllegalArgumentException("日期不可為空。");
+
+                // id 與其 record
+                TreeMap<String, AttendanceDayRecord> allWorkerRecords = attendanceRecordSystem.searchAllWorkersRecordsByYearMonthDay(date);
+                String workerId = null;
+                for (Map.Entry<String, AttendanceDayRecord> entry : allWorkerRecords.entrySet()) {
+                    workerId = entry.getKey();
+                    tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, entry.getValue()));
+                }
             }
-        } else {
-            
-        }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+        } 
     }//GEN-LAST:event_searchWorkerRecordButtonActionPerformed
 
+    private Object[] convertInfoToObject(String workerId) {
+        Worker worker =  Worker.getWorkerById(workerId);
+        WorkerInfo workerInfo = worker.getInfo();
+        Object[] infoInString = {workerId, workerInfo.getName(), workerInfo.getPositionTitle(),workerInfo.getHiredDate().toString(), worker.getPaidLeaveDays()};
+        return infoInString;
+    }
+    
     private void searchWorkerInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerInfoButtonActionPerformed
         // TODO add your handling code here:
+        outputMessagePane.setSelectedIndex(1);
+        DefaultTableModel tableModel = (DefaultTableModel) showWorkerInfoTable.getModel();
+      
+        tableModel.setRowCount(0);
+         try {
+            // 以個人搜尋
+            if (searchByAWorkerButton.isSelected()) {
+                String workerId = JOptionPane.showInputDialog("請輸入員工ID: ");
+                if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("查詢個人基本資料時員工ID不可為空。");
+                if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
+                
+                tableModel.addRow(convertInfoToObject(workerId));
+            } else { // 以全體搜尋
+                TreeMap<String, Worker> allWorkers = Worker.getAllWorkers();
+                for (String workerId : allWorkers.keySet()) {
+                    tableModel.addRow(convertInfoToObject(workerId));
+                }
+            }
+         } catch (IllegalArgumentException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+        } 
     }//GEN-LAST:event_searchWorkerInfoButtonActionPerformed
 
     private void computeWorkerSalaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeWorkerSalaryButtonActionPerformed

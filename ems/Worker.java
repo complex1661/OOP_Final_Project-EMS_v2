@@ -63,4 +63,8 @@ public abstract class Worker implements Serializable{
     }
     return workerList.get(id);
   }
+  
+  public static TreeMap<String, Worker> getAllWorkers() {
+    return workerList;
+  }
 }

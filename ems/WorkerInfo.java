@@ -44,4 +44,8 @@ public class WorkerInfo implements Serializable{
   public String getPositionTitle() {
     return positionTitle;
   }
+  
+  public CustomDate getHiredDate() {
+    return hiredDate;
+  }
 }
