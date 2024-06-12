@@ -6,7 +6,7 @@ public class Message {
   private Time timestamp;
   
   public Message() {
-    text = "";
+    text = "無";
     messageSender = "System";
     date = new CustomDate();
     timestamp = new Time();
@@ -34,5 +34,16 @@ public class Message {
     return "備註: " + txt + "\n"  + "訊息傳送者" + 
       messageSender + "\n"  + "日期: " + date.toString();
   }
-
+  
+  public String getMessageSender() {
+    return messageSender;
+  }
+  
+  public String getText() {
+    return text;
+  }
+  
+  public String getMessageDate() {
+    return date.toString();
+  }
 }

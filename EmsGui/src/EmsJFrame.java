@@ -12,6 +12,7 @@ import ems.*;
 import java.awt.*;
 import java.util.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
@@ -26,6 +27,9 @@ public class EmsJFrame extends javax.swing.JFrame {
     public EmsJFrame() {
         initComponents();
         centeredFrame(this);
+        jPanel6.setVisible(false);
+        searchByAWorkerButton.setSelected(true);
+        outputMessagePane.setSelectedIndex(0);
     }
     
     private String getCurrentDate() {
@@ -34,7 +38,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         return dateForm.format(thisDate);
     }
     
-    public void centeredFrame(javax.swing.JFrame objFrame) {
+    private void centeredFrame(javax.swing.JFrame objFrame) {
         Dimension objDimension = Toolkit.getDefaultToolkit().getScreenSize();
         int iCoordX = (objDimension.width - objFrame.getWidth()) / 2;
         int iCoordY = (objDimension.height - objFrame.getHeight()) / 2;
@@ -49,6 +53,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        searchBy = new javax.swing.ButtonGroup();
         workerOperations = new javax.swing.JPanel();
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
@@ -70,22 +75,32 @@ public class EmsJFrame extends javax.swing.JFrame {
         jLabel7 = new javax.swing.JLabel();
         workerIdTextField = new javax.swing.JTextField();
         recordTypeChooser = new javax.swing.JComboBox<>();
-        jLabel8 = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         startTimePicker = new com.github.lgooddatepicker.components.TimePicker();
         endTimePicker = new com.github.lgooddatepicker.components.TimePicker();
         recordDateChooser = new com.toedter.calendar.JDateChooser();
+        jLabel8 = new javax.swing.JLabel();
+        jPanel6 = new javax.swing.JPanel();
+        jLabel10 = new javax.swing.JLabel();
+        leaveTypeChooser = new javax.swing.JComboBox<>();
         jPanel5 = new javax.swing.JPanel();
         addRecordButton = new javax.swing.JButton();
         removeRecordButton = new javax.swing.JButton();
         outputMessagePane = new javax.swing.JTabbedPane();
         jScrollPane1 = new javax.swing.JScrollPane();
         systemOutputs = new javax.swing.JTextArea();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        showWorkerInfoTable = new javax.swing.JTable();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        showWorkerSalaryTable = new javax.swing.JTable();
         jScrollPane2 = new javax.swing.JScrollPane();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        generalOutputs = new javax.swing.JTextArea();
-        lastButton = new javax.swing.JButton();
-        nextButton = new javax.swing.JButton();
+        showWorkerRecordTable = new javax.swing.JTable();
+        searchWorkerInfoButton = new javax.swing.JButton();
+        searchWorkerRecordButton = new javax.swing.JButton();
+        computeWorkerSalaryButton = new javax.swing.JButton();
+        jPanel7 = new javax.swing.JPanel();
+        searchByAllWorkersButton = new javax.swing.JRadioButton();
+        searchByAWorkerButton = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -157,7 +172,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         jPanel2.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         addWorkerButton.setText("新增員工");
-        addWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        addWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
         addWorkerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addWorkerButtonActionPerformed(evt);
@@ -166,7 +181,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         jPanel2.add(addWorkerButton);
 
         deleteWorkerButton.setText("刪除員工");
-        deleteWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        deleteWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
         deleteWorkerButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 deleteWorkerButtonActionPerformed(evt);
@@ -226,7 +241,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(87, 87, 87)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, 56, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
 
         attedanceRecordOperations.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "出缺勤紀錄操作", javax.swing.border.TitledBorder.CENTER, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Microsoft YaHei UI Light", 1, 18))); // NOI18N
@@ -256,13 +271,44 @@ public class EmsJFrame extends javax.swing.JFrame {
             }
         });
 
-        jLabel8.setText("結束時間");
-        jLabel8.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
-
         jLabel9.setText("起始時間");
         jLabel9.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
 
         recordDateChooser.setToolTipText("請選擇紀錄的時間");
+
+        jLabel8.setText("結束時間");
+        jLabel8.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
+
+        jLabel10.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
+        jLabel10.setText("請假種類");
+
+        leaveTypeChooser.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        leaveTypeChooser.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "病假", "事假", "生理假", "公假", "特休", "婚假", "喪假", "公傷病假", "產假", "產檢假", "陪產檢及陪產假", "安胎假", "家庭照顧假", "育嬰假" }));
+        leaveTypeChooser.addItemListener(new java.awt.event.ItemListener() {
+            public void itemStateChanged(java.awt.event.ItemEvent evt) {
+                leaveTypeChooserItemStateChanged(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
+        jPanel6.setLayout(jPanel6Layout);
+        jPanel6Layout.setHorizontalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 148, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(leaveTypeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 175, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
+        jPanel6Layout.setVerticalGroup(
+            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel6Layout.createSequentialGroup()
+                .addGap(18, 18, 18)
+                .addGroup(jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel10, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(leaveTypeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 53, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(18, Short.MAX_VALUE))
+        );
 
         javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
         jPanel4.setLayout(jPanel4Layout);
@@ -284,16 +330,14 @@ public class EmsJFrame extends javax.swing.JFrame {
                                 .addGap(0, 0, Short.MAX_VALUE))
                             .addComponent(recordDateChooser, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                     .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel4Layout.createSequentialGroup()
-                                .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 281, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 105, Short.MAX_VALUE)
-                                .addComponent(startTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel4Layout.createSequentialGroup()
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 249, Short.MAX_VALUE)
+                        .addComponent(startTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 221, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel4Layout.setVerticalGroup(
@@ -314,21 +358,23 @@ public class EmsJFrame extends javax.swing.JFrame {
                         .addComponent(recordDateChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel4Layout.createSequentialGroup()
-                        .addGap(0, 14, Short.MAX_VALUE)
-                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addComponent(startTimePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(startTimePicker, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
+                        .addGap(0, 13, Short.MAX_VALUE)
+                        .addComponent(jLabel9, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(6, 6, 6))
+                    .addComponent(endTimePicker, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(15, 15, 15))
         );
 
         jPanel5.setLayout(new java.awt.GridLayout(1, 0, 1, 0));
 
         addRecordButton.setText("新增紀錄");
-        addRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        addRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
         addRecordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addRecordButtonActionPerformed(evt);
@@ -337,7 +383,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         jPanel5.add(addRecordButton);
 
         removeRecordButton.setText("移除紀錄");
-        removeRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        removeRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 16)); // NOI18N
         removeRecordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 removeRecordButtonActionPerformed(evt);
@@ -349,27 +395,24 @@ public class EmsJFrame extends javax.swing.JFrame {
         attedanceRecordOperations.setLayout(attedanceRecordOperationsLayout);
         attedanceRecordOperationsLayout.setHorizontalGroup(
             attedanceRecordOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, attedanceRecordOperationsLayout.createSequentialGroup()
-                .addContainerGap(33, Short.MAX_VALUE)
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(30, 30, 30))
-            .addGroup(attedanceRecordOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(attedanceRecordOperationsLayout.createSequentialGroup()
-                    .addGap(19, 19, 19)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGap(20, 20, 20)))
+            .addGroup(attedanceRecordOperationsLayout.createSequentialGroup()
+                .addGroup(attedanceRecordOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addGroup(attedanceRecordOperationsLayout.createSequentialGroup()
+                        .addGap(24, 24, 24)
+                        .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, attedanceRecordOperationsLayout.createSequentialGroup()
+                        .addGap(48, 48, 48)
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 636, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(15, Short.MAX_VALUE))
         );
         attedanceRecordOperationsLayout.setVerticalGroup(
             attedanceRecordOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, attedanceRecordOperationsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(18, Short.MAX_VALUE)
                 .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(132, 132, 132))
-            .addGroup(attedanceRecordOperationsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(attedanceRecordOperationsLayout.createSequentialGroup()
-                    .addGap(385, 385, 385)
-                    .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(31, Short.MAX_VALUE)))
+                .addGap(43, 43, 43)
+                .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, 54, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33))
         );
 
         outputMessagePane.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
@@ -381,66 +424,201 @@ public class EmsJFrame extends javax.swing.JFrame {
 
         outputMessagePane.addTab("系統訊息", jScrollPane1);
 
-        generalOutputs.setColumns(20);
-        generalOutputs.setRows(5);
-        jScrollPane3.setViewportView(generalOutputs);
+        showWorkerInfoTable.setBorder(javax.swing.BorderFactory.createEtchedBorder());
+        showWorkerInfoTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
+        showWorkerInfoTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "員工 ID", "姓名", "職稱", "入職日期"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Object.class
+            };
 
-        jScrollPane2.setViewportView(jScrollPane3);
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane5.setViewportView(showWorkerInfoTable);
 
-        outputMessagePane.addTab("顯示訊息", jScrollPane2);
+        outputMessagePane.addTab("顯示基本資料", jScrollPane5);
 
-        lastButton.setText("下一筆");
-        lastButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
-        lastButton.addActionListener(new java.awt.event.ActionListener() {
+        showWorkerSalaryTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null},
+                {null, null, null, null, null, null}
+            },
+            new String [] {
+                "員工 ID", "姓名", "職稱", "年分", "月份", "薪資"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.Integer.class, java.lang.Integer.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(showWorkerSalaryTable);
+
+        outputMessagePane.addTab("顯示薪資", jScrollPane4);
+
+        showWorkerRecordTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null},
+                {null, null, null, null, null, null, null, null, null, null, null, null, null}
+            },
+            new String [] {
+                "員工 ID", "姓名", "年", "月", "日", "出勤時數", "請假時數", "缺席時數", "加班時數", "請假種類", "註記", "加註者", "加註日期"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+        });
+        jScrollPane2.setViewportView(showWorkerRecordTable);
+        if (showWorkerRecordTable.getColumnModel().getColumnCount() > 0) {
+            showWorkerRecordTable.getColumnModel().getColumn(0).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(1).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(2).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(3).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(4).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(5).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(7).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(8).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(9).setResizable(false);
+            showWorkerRecordTable.getColumnModel().getColumn(12).setResizable(false);
+        }
+
+        outputMessagePane.addTab("顯示出缺勤紀錄", jScrollPane2);
+
+        searchWorkerInfoButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
+        searchWorkerInfoButton.setText("查詢員工基本資料");
+        searchWorkerInfoButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                lastButtonActionPerformed(evt);
+                searchWorkerInfoButtonActionPerformed(evt);
             }
         });
 
-        nextButton.setText("上一筆");
-        nextButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 1, 18)); // NOI18N
-        nextButton.addActionListener(new java.awt.event.ActionListener() {
+        searchWorkerRecordButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
+        searchWorkerRecordButton.setText("查詢員工出缺勤紀錄");
+        searchWorkerRecordButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                nextButtonActionPerformed(evt);
+                searchWorkerRecordButtonActionPerformed(evt);
             }
         });
+
+        computeWorkerSalaryButton.setFont(new java.awt.Font("Microsoft JhengHei UI Light", 0, 18)); // NOI18N
+        computeWorkerSalaryButton.setText("計算員工薪資");
+        computeWorkerSalaryButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                computeWorkerSalaryButtonActionPerformed(evt);
+            }
+        });
+
+        searchBy.add(searchByAllWorkersButton);
+        searchByAllWorkersButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        searchByAllWorkersButton.setText("全體");
+        searchByAllWorkersButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchByAllWorkersButtonActionPerformed(evt);
+            }
+        });
+
+        searchBy.add(searchByAWorkerButton);
+        searchByAWorkerButton.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
+        searchByAWorkerButton.setText("個人");
+        searchByAWorkerButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                searchByAWorkerButtonActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
+        jPanel7.setLayout(jPanel7Layout);
+        jPanel7Layout.setHorizontalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(searchByAWorkerButton)
+                .addGap(18, 18, 18)
+                .addComponent(searchByAllWorkersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 67, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(80, Short.MAX_VALUE))
+        );
+        jPanel7Layout.setVerticalGroup(
+            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(18, Short.MAX_VALUE)
+                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(searchByAllWorkersButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(searchByAWorkerButton, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
+        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(16, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(outputMessagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 1143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lastButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(nextButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(72, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(workerOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(38, 38, 38)
-                        .addComponent(attedanceRecordOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(attedanceRecordOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(outputMessagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 1143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(searchWorkerRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(computeWorkerSalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(59, 59, 59)
+                                .addComponent(searchWorkerInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(27, 27, 27))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addGap(45, 45, 45)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(attedanceRecordOperations, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(workerOperations, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(49, 49, 49)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(workerOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(attedanceRecordOperations, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(38, 38, 38)
                         .addComponent(outputMessagePane, javax.swing.GroupLayout.PREFERRED_SIZE, 523, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(78, 78, 78)
-                        .addComponent(nextButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
-                        .addComponent(lastButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(384, Short.MAX_VALUE))
+                        .addComponent(searchWorkerInfoButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(12, 12, 12)
+                        .addComponent(searchWorkerRecordButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(computeWorkerSalaryButton, javax.swing.GroupLayout.PREFERRED_SIZE, 58, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(246, 246, 246)))
+                .addContainerGap(325, Short.MAX_VALUE))
         );
 
         pack();
@@ -472,8 +650,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 int attendHour = Integer.parseInt(JOptionPane.showInputDialog("請輸入應出勤時間(時):"));
                 int attendMinute = Integer.parseInt(JOptionPane.showInputDialog("請輸入應出勤時間(分):"));
                 Time attendTime = new Time(attendHour, attendMinute);
-                worker = new PartTimeWorker(workerInfo, attendTime);
-                
+                worker = new PartTimeWorker(workerInfo, attendTime); 
             } else if (selectedWorkerType.equals("正職員工")) {
                 worker = new FullTimeWorker(workerInfo);
             } else if (selectedWorkerType.equals("主管")) {
@@ -514,54 +691,152 @@ public class EmsJFrame extends javax.swing.JFrame {
         return customDate;
     }
     
+    
+    private Time transferLocalTimeToTime(LocalTime localTime) {
+        int hour = localTime.getHour();
+        int minute = localTime.getMinute();
+        Time time = null;
+        try {
+            time = new Time(hour, minute);
+        } catch (IllegalArgumentException e){
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        }
+        return time;
+    }
+    
     private void addRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addRecordButtonActionPerformed
         // TODO add your handling code here:
-        // 處理日期
-        Date date = recordDateChooser.getDate();
-        CustomDate recordDate = transferDateToCustomDate(date);
         
-        String selectedItem = (String) recordTypeChooser.getSelectedItem();
-        if (selectedItem.equals("打卡")) {
-            LocalTime startTime = startTimePicker.getTime();
-            LocalTime endTime = endTimePicker.getTime();
-        } else if (selectedItem.equals("請假")) {
+        try {
+            String workerId = workerIdTextField.getText();
+            if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
+            if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
             
-        } else if (selectedItem.equals("缺席")) {
             
-        } else if (selectedItem.equals("加班")) {
+            // 處理日期
+            Date date = recordDateChooser.getDate();
+            if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
+            CustomDate recordDate = transferDateToCustomDate(date);
             
+            String selectedItem = (String) recordTypeChooser.getSelectedItem();
+            if (selectedItem.equals("打卡")) {
+                // 檢查起始時間與結束時間是否為空
+                if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
+                    throw new NullPointerException("新增出勤紀錄時起始時間與結束時間不可為空。");
+                }
+                LocalTime startLocalTime = startTimePicker.getTime();
+                LocalTime endLocalTime = endTimePicker.getTime();
+
+                Time startTime = transferLocalTimeToTime(startLocalTime);
+                Time endTime = transferLocalTimeToTime(endLocalTime);
+                ClockRecord clockRecord = new ClockRecord(startTime, endTime);
+                attendanceRecordSystem.addAttendanceRecord(workerId, recordDate, clockRecord);
+            } else if (selectedItem.equals("請假")) {
+                boolean isPaidLeave = false;
+                String leaveType = (String) leaveTypeChooser.getSelectedItem();
+                
+                Message leaveMessage = null;
+                String message = JOptionPane.showInputDialog("請輸入附註:");
+                if (message != null) {
+                    String messageSender = JOptionPane.showInputDialog("請輸入加註者名稱(可為空):");
+                    if (messageSender != null) leaveMessage = new Message(message, messageSender);
+                    else leaveMessage = new Message(message, "System");
+                }
+                else {
+                    leaveMessage = new Message("無訊息", "System");
+                }
+                
+                LeaveRecord leaveRecord = null;
+                // 請整日
+                if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
+                    leaveRecord = new LeaveRecord(leaveType, leaveMessage, isPaidLeave);
+                } else {
+                    LocalTime startLocalTime = startTimePicker.getTime();
+                    LocalTime endLocalTime = endTimePicker.getTime();
+
+                    Time startTime = transferLocalTimeToTime(startLocalTime);
+                    Time endTime = transferLocalTimeToTime(endLocalTime);
+                    leaveRecord = new LeaveRecord(leaveType, leaveMessage, startTime, endTime);
+                }
+                attendanceRecordSystem.addLeaveRecord(workerId, recordDate, leaveRecord);
+            } else if (selectedItem.equals("缺席")) {
+                Message absentMessage = null;
+                String message = JOptionPane.showInputDialog("請輸入附註:");
+                if (message != null) {
+                    String messageSender = JOptionPane.showInputDialog("請輸入加註者名稱(可為空):");
+                    if (messageSender != null) absentMessage = new Message(message, messageSender);
+                    else absentMessage = new Message(message, "System");
+                }
+                else {
+                    absentMessage = new Message("無訊息", "System");
+                }
+                
+                AbsentRecord absentRecord = null;
+                // 缺席整日
+                if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
+                    absentRecord = new AbsentRecord(absentMessage);
+                } else {
+                    LocalTime startLocalTime = startTimePicker.getTime();
+                    LocalTime endLocalTime = endTimePicker.getTime();
+
+                    Time startTime = transferLocalTimeToTime(startLocalTime);
+                    Time endTime = transferLocalTimeToTime(endLocalTime);
+                    absentRecord = new AbsentRecord(absentMessage, startTime, endTime);
+                }
+                attendanceRecordSystem.addAbsentRecord(workerId, recordDate, absentRecord);
+            } else if (selectedItem.equals("加班")) {
+                if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
+                    throw new NullPointerException("新增加班紀錄時起始時間與結束時間不可為空。");
+                }
+                LocalTime startLocalTime = startTimePicker.getTime();
+                LocalTime endLocalTime = endTimePicker.getTime();
+
+                Time startTime = transferLocalTimeToTime(startLocalTime);
+                Time endTime = transferLocalTimeToTime(endLocalTime);
+                OvertimeRecord overtimeRecord = new OvertimeRecord(startTime, endTime);
+                attendanceRecordSystem.addOvertimeRecord(workerId, recordDate, overtimeRecord);
+            }
+        } catch (IllegalArgumentException | NullPointerException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_addRecordButtonActionPerformed
 
     private void removeRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeRecordButtonActionPerformed
         // TODO add your handling code here:
+        try {
+            String workerId = workerIdTextField.getText();
+            if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
+            if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
+            
+            // 處理日期
+            Date date = recordDateChooser.getDate();
+            if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
+            CustomDate recordDate = transferDateToCustomDate(date);
+            attendanceRecordSystem.deleteDayRecord(workerId, recordDate);
+        } catch (IllegalArgumentException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
+        }
     }//GEN-LAST:event_removeRecordButtonActionPerformed
-
-    private void nextButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_nextButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_nextButtonActionPerformed
-
-    private void lastButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_lastButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_lastButtonActionPerformed
 
     private void handleSelectedRecordType(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_handleSelectedRecordType
         // TODO add your handling code here:
+        
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             try { 
+                if (jPanel6.isVisible()) {
+                    jPanel6.setVisible(false);
+                }
                 String selectedItem = (String) recordTypeChooser.getSelectedItem();
-                if (selectedItem.equals("打卡")) {
-                    systemOutputs.append("選擇「打卡」紀錄。\n");
-                } else if (selectedItem.equals("請假")) {
-                    systemOutputs.append("選擇「請假」紀錄。\n");
-                } else if (selectedItem.equals("缺席")) {
-                    systemOutputs.append("選擇「缺席」紀錄。\n");
-                } else if (selectedItem.equals("加班")) {
-                    systemOutputs.append("選擇「加班」紀錄。\n");
-                } else {
+                if (selectedItem.equals("請假")) {
+                    if (!jPanel6.isVisible()) {
+                        jPanel6.setVisible(true);
+                    }
+                }
+                if (selectedItem.equals("請選擇紀錄種類")) {
                    recordTypeChooser.setSelectedItem("打卡");
                    throw new IllegalArgumentException("請選擇出缺勤紀錄種類。");
                 }
+                systemOutputs.append("選擇「"+ selectedItem +"」。\n");
             }
             catch (IllegalArgumentException e){
                 JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
@@ -574,22 +849,97 @@ public class EmsJFrame extends javax.swing.JFrame {
         if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
             try { 
                 String selectedItem = (String) workerTypeChooser.getSelectedItem();
-                if (selectedItem.equals("工讀生")) {
-                    systemOutputs.append("選擇「工讀生」。\n");
-                } else if (selectedItem.equals("正職員工")) {
-                    systemOutputs.append("選擇「正職員工」。\n");
-                } else if (selectedItem.equals("主管")) {
-                    systemOutputs.append("選擇「主管」。\n");
-                } else {
+                if  (selectedItem.equals("請選擇員工種類")) {
                    workerTypeChooser.setSelectedItem("工讀生");
                    throw new IllegalArgumentException("請選擇員工種類。");
                 }
+                systemOutputs.append("選擇「"+ selectedItem +"」。\n");
             }
             catch (IllegalArgumentException e){
                 JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
             }
         }
     }//GEN-LAST:event_handleSelectedWokerType
+
+    private void leaveTypeChooserItemStateChanged(java.awt.event.ItemEvent evt) {//GEN-FIRST:event_leaveTypeChooserItemStateChanged
+        // TODO add your handling code here:
+        if (evt.getStateChange() == java.awt.event.ItemEvent.SELECTED) {
+            String selectedItem = (String) leaveTypeChooser.getSelectedItem();
+            systemOutputs.append("選擇「"+ selectedItem +"」。\n");
+        }
+    }//GEN-LAST:event_leaveTypeChooserItemStateChanged
+
+    
+    private String[] convertDayRecordToString(String workerId, int year, int month, AttendanceDayRecord record) {
+        Worker worker = Worker.getWorkerById(workerId);
+        String name = worker.getInfo().getName();
+        
+        String leaveType =  "無";
+        String leaveText = "無";
+        String leaveMessageSender = "無";
+        String leaveMessageDate = "無";
+        if (record.getLeaveRecord() != null) {
+            LeaveRecord leaveRecord = record.getLeaveRecord();
+            leaveType = leaveRecord.getLeaveType();
+            leaveText = leaveRecord.getLeaveDetail().getText();
+            leaveMessageSender = leaveRecord.getLeaveDetail().getMessageSender();
+            leaveMessageDate = leaveRecord.getLeaveDetail().getMessageDate();
+        }
+        String recordInString[] = {workerId, name, Integer.toString(year), Integer.toString(month), "", Integer.toString(record.getAttendHours()), Integer.toString(record.getLeaveHours()), Integer.toString(record.getAbsentHours(workerId)),Integer.toString(record.getOvertimeHours()), leaveType, leaveText, leaveMessageSender, leaveMessageDate};
+        return recordInString;
+    }
+    
+    private void searchWorkerRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerRecordButtonActionPerformed
+        // TODO add your handling code here:
+        outputMessagePane.setSelectedIndex(3);
+        // 以個人搜尋
+        if (searchByAWorkerButton.isSelected()) {
+             try {
+                String workerId = JOptionPane.showInputDialog("請輸入員工ID: ");
+                if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
+                if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
+                
+                CustomDate date = null;
+                int year = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的年: "));
+                int month = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的月: "));
+                int day = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的日(可為空): "));
+                
+                if (day != 0) date = new CustomDate(year, month, day);
+                else date = new CustomDate(year, month);
+                
+                DefaultTableModel tableModel = (DefaultTableModel) showWorkerRecordTable.getModel();
+                if (day == 0) {
+                    ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(workerId, date);
+                    for (AttendanceDayRecord record : records) {
+                        tableModel.addRow(convertDayRecordToString(workerId, year, month, record));
+                    }
+                } else {
+                    AttendanceDayRecord dayRecord = attendanceRecordSystem.searchRecordByYearMonthDay(workerId, date);
+                    tableModel.addRow(convertDayRecordToString(workerId, year, month, dayRecord));
+                }
+            } catch (IllegalArgumentException e) {
+                JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.WARNING_MESSAGE);
+            }
+        } else {
+            
+        }
+    }//GEN-LAST:event_searchWorkerRecordButtonActionPerformed
+
+    private void searchWorkerInfoButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerInfoButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchWorkerInfoButtonActionPerformed
+
+    private void computeWorkerSalaryButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_computeWorkerSalaryButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_computeWorkerSalaryButtonActionPerformed
+
+    private void searchByAllWorkersButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByAllWorkersButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchByAllWorkersButtonActionPerformed
+
+    private void searchByAWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchByAWorkerButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_searchByAWorkerButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -630,11 +980,12 @@ public class EmsJFrame extends javax.swing.JFrame {
     private javax.swing.JButton addRecordButton;
     private javax.swing.JButton addWorkerButton;
     private javax.swing.JPanel attedanceRecordOperations;
+    private javax.swing.JButton computeWorkerSalaryButton;
     private javax.swing.JButton deleteWorkerButton;
     private com.github.lgooddatepicker.components.TimePicker endTimePicker;
-    private javax.swing.JTextArea generalOutputs;
     private com.toedter.calendar.JDateChooser hiredDateChooser;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
@@ -648,15 +999,25 @@ public class EmsJFrame extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JPanel jPanel5;
+    private javax.swing.JPanel jPanel6;
+    private javax.swing.JPanel jPanel7;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane3;
-    private javax.swing.JButton lastButton;
-    private javax.swing.JButton nextButton;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane5;
+    private javax.swing.JComboBox<String> leaveTypeChooser;
     private javax.swing.JTabbedPane outputMessagePane;
     private com.toedter.calendar.JDateChooser recordDateChooser;
     private javax.swing.JComboBox<String> recordTypeChooser;
     private javax.swing.JButton removeRecordButton;
+    private javax.swing.ButtonGroup searchBy;
+    private javax.swing.JRadioButton searchByAWorkerButton;
+    private javax.swing.JRadioButton searchByAllWorkersButton;
+    private javax.swing.JButton searchWorkerInfoButton;
+    private javax.swing.JButton searchWorkerRecordButton;
+    private javax.swing.JTable showWorkerInfoTable;
+    private javax.swing.JTable showWorkerRecordTable;
+    private javax.swing.JTable showWorkerSalaryTable;
     private com.github.lgooddatepicker.components.TimePicker startTimePicker;
     private javax.swing.JTextArea systemOutputs;
     private javax.swing.JTextField workerIdTextField;
