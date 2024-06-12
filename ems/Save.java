@@ -1,5 +1,5 @@
 package ems;
 
-public abstract class Save{
-  public abstract void saveFileTo(Worker worker, String dirName);
+public abstract class Save<T> {
+  public abstract void saveFileTo(T object);
 }

@@ -1,5 +1,9 @@
 package ems;
-public class LeaveRecord {
+import java.io.*;
+
+public class LeaveRecord implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private String leaveType;
   private boolean isPaidLeave = false;
   private Time start;

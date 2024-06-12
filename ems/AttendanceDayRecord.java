@@ -1,7 +1,10 @@
 package ems;
 import java.util.TreeMap;
+import java.io.*;
 
-public class AttendanceDayRecord {
+public class AttendanceDayRecord implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private int attendHours;
   private int absentHours;
   private int leaveHours;

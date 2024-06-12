@@ -4,11 +4,35 @@ import java.util.*;
 import java.io.*;
 
 public class LoadWorker extends Load{
+  private static final String DIR_NAME = "workers";
   
-  public ArrayList<Worker> loadFilesFrom(String dirName)  throws FileNotFoundException{
+  public Worker loadFileByName(String workerID) throws FileNotFoundException{
     
+    File dir = new File(DIR_NAME);
+    if (!dir.exists() || !dir.isDirectory()) {
+      throw new FileNotFoundException("目錄："+DIR_NAME+"不存在");
+    }
+    
+    String fileName = workerID + ".dat";
+    File file = new File(dir,workerID);
+    if ( !file.exists() ) {
+      throw new FileNotFoundException("檔案："+ fileName +"不存在");
+    }
+    
+    Worker worker = null;
+    try (FileInputStream fileIn = new FileInputStream(file);
+         ObjectInputStream in = new ObjectInputStream(fileIn)) {
+          
+           worker = (Worker)in.readObject();
+         } catch (IOException | ClassNotFoundException e) {
+           System.out.println(e);
+         }
+         return worker;
+  }
+  
+  public ArrayList<Worker> loadFilesFrom(String dirName)  throws FileNotFoundException{  
     File dir = new File(dirName);
-    if (!dir.isDirectory() || !dir.exists()) {
+    if (!dir.exists() || !dir.isDirectory()) {
       throw new FileNotFoundException("目錄不存在");
     }
     

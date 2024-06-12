@@ -1,6 +1,9 @@
-package ems; 
+package ems;
+import java.io.*;
 
-public class OvertimeRecord {
+public class OvertimeRecord implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private Time start;
   private Time end;
 

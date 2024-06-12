@@ -3,8 +3,11 @@ import java.util.Date;
 import java.util.TreeMap;
 import java.util.ArrayList;
 import java.util.Map;
+import java.io.*;
 
-public class AttendanceRecordSystem {
+public class AttendanceRecordSystem implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>> dayToWorkers;
   private TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>> workerToDays;
   

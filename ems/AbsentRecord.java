@@ -1,6 +1,9 @@
 package ems;
+import java.io.*;
 
-public class AbsentRecord {
+public class AbsentRecord implements Serializable{
+  private static final long serialVersionUID = 1L;
+  
   private Time start;
   private Time end;
   private Message msg;
