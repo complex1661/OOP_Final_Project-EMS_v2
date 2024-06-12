@@ -30,6 +30,10 @@ public class TestSystem {
     //儲存員工資料
     workerSaver.saveFileTo(w2);
     
+    Worker w3 = new FullTimeWorker(new WorkerInfo("Candy", "業務", new CustomDate(2020,8,5)));
+    Worker.addWorker(w3);
+    workerSaver.saveFileTo(w3);
+    
     //儲存系統資料
     SaveManageSystem systemSaver = new SaveManageSystem();
     systemSaver.saveFileTo(system);

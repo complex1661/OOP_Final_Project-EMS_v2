@@ -11,20 +11,39 @@
 import ems.*;
 import java.awt.*;
 import java.util.*;
+import java.io.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.time.LocalTime;
 import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
-    ManageSystem manageSystem = new ManageSystem();
-    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendanceRecordSystem();
-    SalarySystem salarySystem = manageSystem.getSalarySystem();
+    LoadManageSystem loadManageSystem = new LoadManageSystem("..\\");
+    ManageSystem manageSystem = loadManageSystem.loadSystem();
+    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendance();
+    SalarySystem salarySystem = manageSystem.getSalary();
+    
+    SaveManageSystem systemSaver = new SaveManageSystem();
+    SaveWorker workerSaver = new SaveWorker("..\\");
+    LoadWorker workerLoader = new LoadWorker("..\\");
+    
+    WindowAdapter windowAdapter = new WindowAdapter() {
+        @Override
+        public void windowClosing(WindowEvent windowEvent) {
+            System.out.println("Window is closing...");
+            systemSaver.saveFileTo(manageSystem);
+            
+            dispose();
+        }
+    };
+    
     
     /**
      * Creates new form EmsJFrame
      */
     public EmsJFrame() {
+        this.addWindowListener(windowAdapter);
         initComponents();
         centeredFrame(this);
         jPanel6.setVisible(false);
@@ -36,12 +55,9 @@ public class EmsJFrame extends javax.swing.JFrame {
         tableModel.setRowCount(0);
         tableModel = (DefaultTableModel) showWorkerInfoTable.getModel();
         tableModel.setRowCount(0);
-    }
-    
-    private String getCurrentDate() {
-        Date thisDate = new Date();
-        SimpleDateFormat dateForm = new SimpleDateFormat("yyyy/MM/dd");
-        return dateForm.format(thisDate);
+           
+        // 讀檔案
+        workerLoader.load();
     }
     
     private void centeredFrame(javax.swing.JFrame objFrame) {
@@ -690,10 +706,22 @@ public class EmsJFrame extends javax.swing.JFrame {
             if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("員工ID不可為空。");
             if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
             
-            JOptionPane.showConfirmDialog(this, "確定要刪除員工?", "刪除員工確認",JOptionPane.OK_CANCEL_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(this, "確定要刪除員工?", "刪除員工確認",JOptionPane.OK_CANCEL_OPTION);
+            if (confirm != JOptionPane.OK_OPTION) {
+                return;
+            }
             Worker.deleteWorker(attendanceRecordSystem, workerId);
+            File dir = new File("..\\workers");
+            String fileName = workerId + ".dat";
+            File file = new File(dir, fileName);
+            if (file.exists() && file.isFile()) {
+                file.delete();
+            }
+            
+            workerLoader.removeWorkerId(workerId);
+            
             systemOutputs.append("成功刪除員工ID: " + workerId + "。\n");
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | IOException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_deleteWorkerButtonActionPerformed
