@@ -12,9 +12,16 @@ public class LoadWorker extends Load{
     DIR_NAME = dir + "workers";
   }
   
+  @SuppressWarnings("unchecked")
   public void load() {
     try {
-      ArrayList<String>idList = loadIdFile();
+      TreeMap<String, Object> metadata = loadIdFile();
+      
+      int idCounter = (Integer) metadata.get("idCounter");
+      System.out.println("current idCounter is:" + idCounter);
+      WorkerInfo.setIdCounter(idCounter);
+      
+      ArrayList<String> idList = (ArrayList<String>) metadata.get("idList");
       for (String workerId : idList) {
         Worker.addWorker(loadFileByName(workerId));
       }
@@ -24,25 +31,26 @@ public class LoadWorker extends Load{
   }
   
   @SuppressWarnings("unchecked")
-  private ArrayList<String> loadIdFile () throws FileNotFoundException{
+  private TreeMap<String, Object> loadIdFile () throws FileNotFoundException{
     File dir = new File(DIR_NAME);
     if (!dir.exists() || !dir.isDirectory()) {
       throw new FileNotFoundException("目錄："+ DIR_NAME +"不存在");
     }
     
-    File file = new File(dir,"idList.dat");
+    File file = new File(dir,"workerIdMetaData.dat");
     if (!file.exists() ) {
-      throw new FileNotFoundException("檔案 idList.dat 不存在");
+      throw new FileNotFoundException("檔案 workerIdMetaData.dat 不存在");
     }
     
-    ArrayList<String> idList = null;
+    TreeMap<String, Object> metadata = null;
+    
     try (FileInputStream fileIn = new FileInputStream(file); ObjectInputStream in = new ObjectInputStream(fileIn)) {
-      idList = (ArrayList<String>)in.readObject();
+      metadata = (TreeMap<String, Object>) in.readObject();
     } catch (IOException | ClassNotFoundException e) {
       System.out.println(e);
     }
 
-    return idList;
+    return metadata;
   }
   
   public Worker loadFileByName(String workerID) throws FileNotFoundException{
@@ -99,12 +107,14 @@ public class LoadWorker extends Load{
     return workers;
   }
   
+  @SuppressWarnings("unchecked")
   public void removeWorkerId(String workerId) throws IOException, ClassNotFoundException {
-    ArrayList<String> idList = loadIdFile();
-    if (idList.remove(workerId)) {
-      saveIdList(idList);
+    TreeMap<String, Object> metadata = loadIdFile();
+    ArrayList<String> workerIdList = (ArrayList<String>) metadata.get("idList");
+    if (workerIdList.remove(workerId)) {
+      saveIdList(workerIdList);
     } else {
-      throw new IllegalArgumentException("worker ID 不再 idList.dat");
+      throw new IllegalArgumentException("worker ID 不在 idList.dat裡。");
     }
   }
   

@@ -48,4 +48,12 @@ public class WorkerInfo implements Serializable{
   public CustomDate getHiredDate() {
     return hiredDate;
   }
+  
+  static void setIdCounter(int num) {
+    idCounter = num;
+  }
+  
+  static int getIdCounter() {
+    return idCounter;
+  }
 }

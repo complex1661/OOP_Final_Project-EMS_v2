@@ -7,7 +7,8 @@ public class TestSystem {
     ManageSystem system = new ManageSystem();
     SaveWorker workerSaver = new SaveWorker();
     LoadWorker workerLoader = new LoadWorker();
-   
+    workerLoader.load();
+    
     // 第一個員工
     Worker w = new PartTimeWorker(new WorkerInfo("John", "洗碗工", new CustomDate(2020,5,20)), new Time(8,0));
     Worker.addWorker(w);
@@ -15,8 +16,6 @@ public class TestSystem {
     system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(9,1), new Time(17, 0)));
     system.getAttendance().addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("特休", new Message()));
     System.out.println(id.toString() + " 薪資為 " + system.getSalary().computeMonthlySalary(system, id, new CustomDate(2023, 5)));
-    //儲存員工資料
-    workerSaver.saveFileTo(w);
     
     // 第二個員工 - (使用打卡紀錄作為出勤紀錄)
     Worker w2 = new FullTimeWorker(new WorkerInfo("Sarah", "財務部會計師", new CustomDate(2019,6,30)));
@@ -27,12 +26,9 @@ public class TestSystem {
     system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(8,0), new Time(17, 0)));
     system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 18), new ClockRecord(new Time(8,0), new Time(17, 0)));
     system.getAttendance().addOvertimeRecord(id, new CustomDate(2023, 5, 18), new OvertimeRecord(new Time(18,0), new Time(18,50)));
-    //儲存員工資料
-    workerSaver.saveFileTo(w2);
     
     Worker w3 = new FullTimeWorker(new WorkerInfo("Candy", "業務", new CustomDate(2020,8,5)));
     Worker.addWorker(w3);
-    workerSaver.saveFileTo(w3);
     
     //儲存系統資料
     SaveManageSystem systemSaver = new SaveManageSystem();
@@ -62,5 +58,8 @@ public class TestSystem {
     // 測試生成日期
     System.out.println(new CustomDate().toString());
     System.out.println(Worker.getWorkerById("0000001").getPaidLeaveDays());
+    System.out.println("IdCounter:" + WorkerInfo.getIdCounter());
+    
+    workerSaver.save();
   }
 }

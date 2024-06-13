@@ -33,7 +33,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         public void windowClosing(WindowEvent windowEvent) {
             System.out.println("Window is closing...");
             systemSaver.saveFileTo(manageSystem);
-            
+            workerSaver.save();
             dispose();
         }
     };
