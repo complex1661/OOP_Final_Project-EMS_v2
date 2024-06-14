@@ -17,9 +17,9 @@ public class SalarySystem implements Serializable{
     baseSalaryEachWorkerType.put(EWorkerType.SUPERVISOR, Supervisor.HOURLY_WAGE);
   } 
   
-  public int computeMonthlySalary(ManageSystem manageSystem, String worker_id, CustomDate date) {
+  public int computeMonthlySalary(String worker_id, CustomDate date) {
     EWorkerType workerType = Worker.getWorkerById(worker_id).getType();
-    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendance();
+    AttendanceRecordSystem attendanceRecordSystem = ManageSystem.attendanceRecordSystem;
     
     // 取得該員工在該年月的出缺勤狀況
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);

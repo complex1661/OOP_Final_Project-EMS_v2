@@ -30,9 +30,15 @@ public class AttendanceDayRecord implements Serializable{
   public void addLeaveRecord(String workerId, LeaveRecord leaveRecord) {
     int leave_hours = WorkerLeaveSystem.getLeaveHours(workerId, leaveRecord);
     this.leaveHours = leave_hours;
-    this.leaveRecord = leaveRecord;
     
     // 如果是有薪假
+    // 如果先前已經是特休，加回特休的額度
+    if (this.leaveRecord != null && this.leaveRecord.getLeaveType().equals("特休")) {
+      Worker w = Worker.getWorkerById(workerId);
+      w.addPaidLeaveDays();
+    } 
+    
+    this.leaveRecord = leaveRecord;
     if (leaveRecord.getIsPaidLeave()) {
       handlePaidLeave(workerId);
     }

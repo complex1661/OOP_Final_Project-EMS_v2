@@ -1,5 +1,7 @@
 package ems;
 import java.io.*;
+import java.util.ArrayList;
+import java.util.TreeMap;
 
 public class LoadManageSystem extends Load{
   private static String DIR_NAME = "systems";
@@ -11,17 +13,18 @@ public class LoadManageSystem extends Load{
     DIR_NAME = dir + "systems";
   }
   
-  public ManageSystem loadSystem(){
-    ManageSystem system = null;
+  public TreeMap<String, Object> load(){
+    TreeMap<String, Object> recordMaps = null;
     try {
-      system = loadFileByName(FILE_NAME);
+      recordMaps = loadFileByName(FILE_NAME);
     } catch (FileNotFoundException e) {
       System.out.println(e);
     }
-    return system;
+    return recordMaps;
   }
   
-  public ManageSystem loadFileByName(String fileName) throws FileNotFoundException{
+  @SuppressWarnings("unchecked")
+  public TreeMap<String, Object> loadFileByName(String fileName) throws FileNotFoundException{
 
     File dir = new File(DIR_NAME);
     if (!dir.exists() || !dir.isDirectory()) {
@@ -33,14 +36,13 @@ public class LoadManageSystem extends Load{
       throw new FileNotFoundException("檔案: " + FILE_NAME + "不存在");
     }
     
-    ManageSystem system = null;
+    TreeMap<String, Object> recordMaps = null;
     try (FileInputStream fileIn = new FileInputStream(file);
          ObjectInputStream in = new ObjectInputStream(fileIn)) {
-          
-           system = (ManageSystem)in.readObject();
+           recordMaps = (TreeMap<String, Object>)in.readObject();
          } catch (IOException | ClassNotFoundException e) {
            System.out.println(e);
          }
-         return system;
+         return recordMaps;
   }
 }

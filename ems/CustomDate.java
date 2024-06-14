@@ -2,6 +2,7 @@ package ems;
 import java.util.Date;
 import java.util.Calendar;
 import java.io.*;
+import java.util.Objects;
 
 public class CustomDate implements Comparable<CustomDate>,Serializable{
   private static final long serialVersionUID = 1L;
@@ -51,6 +52,18 @@ public class CustomDate implements Comparable<CustomDate>,Serializable{
     return this.day - cd.day;
   }
   
+  @Override
+  public boolean equals(Object obj) {
+    if (this == obj) return true;
+    if (obj == null || getClass() != obj.getClass()) return false;
+    CustomDate that = (CustomDate) obj;
+    return year == that.year && month == that.month && day == that.day;
+  }
+  
+  @Override
+  public int hashCode() {
+    return Objects.hash(year, month, day);
+  }
   
   public Integer getYear() {
     return year;

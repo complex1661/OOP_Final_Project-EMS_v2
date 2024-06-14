@@ -20,11 +20,11 @@ import java.text.SimpleDateFormat;
 
 public class EmsJFrame extends javax.swing.JFrame {
     LoadManageSystem loadManageSystem = new LoadManageSystem("..\\");
-    ManageSystem manageSystem = loadManageSystem.loadSystem();
-    AttendanceRecordSystem attendanceRecordSystem = manageSystem.getAttendance();
-    SalarySystem salarySystem = manageSystem.getSalary();
+    TreeMap<String, Object> recordMaps = null;
+    AttendanceRecordSystem attendanceRecordSystem = new AttendanceRecordSystem();
+    SalarySystem salarySystem = new SalarySystem();
     
-    SaveManageSystem systemSaver = new SaveManageSystem();
+    SaveManageSystem systemSaver = new SaveManageSystem("..\\");
     SaveWorker workerSaver = new SaveWorker("..\\");
     LoadWorker workerLoader = new LoadWorker("..\\");
     
@@ -32,7 +32,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         @Override
         public void windowClosing(WindowEvent windowEvent) {
             System.out.println("Window is closing...");
-            systemSaver.saveFileTo(manageSystem);
+            systemSaver.save(attendanceRecordSystem);
             workerSaver.save();
             dispose();
         }
@@ -57,6 +57,16 @@ public class EmsJFrame extends javax.swing.JFrame {
         tableModel.setRowCount(0);
            
         // 讀檔案
+        
+        recordMaps = loadManageSystem.load();
+        if (recordMaps != null) {
+            TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>> dayToWorkersConvertionTreeMap = (TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>>) recordMaps.get("dayToWorkers");
+            TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>> workerToDaysConvertionTreeMap = (TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>>) recordMaps.get("workerToDays");
+            attendanceRecordSystem = new AttendanceRecordSystem(dayToWorkersConvertionTreeMap, workerToDaysConvertionTreeMap);
+            salarySystem = new SalarySystem();
+            ManageSystem.attendanceRecordSystem = attendanceRecordSystem;
+            ManageSystem.salarySystem = salarySystem;
+        }
         workerLoader.load();
     }
     
@@ -706,7 +716,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("員工ID不可為空。");
             if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
             
-            int confirm = JOptionPane.showConfirmDialog(this, "確定要刪除員工?", "刪除員工確認",JOptionPane.OK_CANCEL_OPTION);
+            int confirm = JOptionPane.showConfirmDialog(this, "確定要刪除員工ID: " + workerId + " ?", "刪除員工確認",JOptionPane.OK_CANCEL_OPTION);
             if (confirm != JOptionPane.OK_OPTION) {
                 return;
             }
@@ -863,10 +873,15 @@ public class EmsJFrame extends javax.swing.JFrame {
             
             // 處理日期
             Date date = recordDateChooser.getDate();
-            if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
+            if (date == null) throw new NullPointerException("移除紀錄時日期不可為空。");
             CustomDate recordDate = convertDateToCustomDate(date);
+            
+            int confirm = JOptionPane.showConfirmDialog(this, "確定要移除ID: " +  workerId + " 在 " + recordDate.toString() + " 的紀錄?", "刪除紀錄確認",JOptionPane.OK_CANCEL_OPTION);
+            if (confirm != JOptionPane.OK_OPTION) {
+                return;
+            }
             attendanceRecordSystem.deleteDayRecord(workerId, recordDate);
-        } catch (IllegalArgumentException e) {
+        } catch (IllegalArgumentException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
     }//GEN-LAST:event_removeRecordButtonActionPerformed
@@ -1039,7 +1054,7 @@ public class EmsJFrame extends javax.swing.JFrame {
     private Object[] convertSalaryToObject(String workerId, CustomDate date) {
         Worker worker = Worker.getWorkerById(workerId);
         WorkerInfo workerInfo = worker.getInfo();
-        int salary = salarySystem.computeMonthlySalary(manageSystem, workerId, date);
+        int salary = salarySystem.computeMonthlySalary(workerId, date);
         
         Object[] salaryInObject = {workerId, workerInfo.getName(), workerInfo.getPositionTitle(), date.getYear(), date.getMonth(), salary};
         return salaryInObject;

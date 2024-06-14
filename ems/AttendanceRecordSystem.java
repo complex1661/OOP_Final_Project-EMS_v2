@@ -17,6 +17,19 @@ public class AttendanceRecordSystem implements Serializable{
     workerToDays = new TreeMap<>();
   }
   
+  public AttendanceRecordSystem(TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>> dayToWorkers, TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>> workerToDays) {
+    this.dayToWorkers = dayToWorkers;
+    this.workerToDays = workerToDays;
+  }
+  
+  public TreeMap<CustomDate, TreeMap<String, AttendanceDayRecord>> getDayToWorkers() {
+    return dayToWorkers;
+  }
+  
+  public TreeMap<String, TreeMap<CustomDate, AttendanceDayRecord>> getWorkerToDays() {
+    return workerToDays;
+  }
+  
   // 取得或做出當天出缺勤紀錄
   private AttendanceDayRecord getOrCreateAttendanceDayRecord(String workerId, CustomDate date) {
     TreeMap<CustomDate, AttendanceDayRecord> workerAttendance = workerToDays.getOrDefault(workerId, new TreeMap<>());
@@ -86,11 +99,24 @@ public class AttendanceRecordSystem implements Serializable{
     if (workerRecords == null || !workerRecords.containsKey(date)) {
       throw new IllegalArgumentException("錯誤: 員工UUID - " + workerId + "在" + date.toString() + "無出缺勤紀錄。");
     }
+    
+    // 如果含有特休，將數量加回
+    AttendanceDayRecord dayRecord = workerRecords.get(date);
+    LeaveRecord leaveRecord = dayRecord.getLeaveRecord();
+    if (leaveRecord.getLeaveType().equals("特休")) {
+      Worker w = Worker.getWorkerById(workerId);
+      w.addPaidLeaveDays();
+    }
+    
     // 從兩個 TreeMap 移除紀錄
     workerRecords.remove(date);
     if (workerRecords.isEmpty()) workerToDays.remove(workerId);
-    dayToWorkers.get(date).remove(workerId);
-    if (dayToWorkers.get(date).isEmpty()) dayToWorkers.remove(date);
+
+    TreeMap<String, AttendanceDayRecord> dayRecords = dayToWorkers.get(date);
+    if (dayRecords != null) {
+      dayRecords.remove(workerId);
+      if (dayRecords.isEmpty()) dayToWorkers.remove(date);
+    }
   }
   
   // 以年月與員工 UUID 搜尋出缺勤狀況 -> 搜尋某員工在某年某月的出缺勤狀況

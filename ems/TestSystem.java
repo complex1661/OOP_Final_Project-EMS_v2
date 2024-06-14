@@ -8,38 +8,39 @@ public class TestSystem {
     SaveWorker workerSaver = new SaveWorker();
     LoadWorker workerLoader = new LoadWorker();
     workerLoader.load();
+    AttendanceRecordSystem attendanceRecordSystem = system.getAttendance();
     
     // 第一個員工
     Worker w = new PartTimeWorker(new WorkerInfo("John", "洗碗工", new CustomDate(2020,5,20)), new Time(8,0));
     Worker.addWorker(w);
     String id = w.getInfo().getId();
-    system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(9,1), new Time(17, 0)));
-    system.getAttendance().addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("特休", new Message()));
-    System.out.println(id.toString() + " 薪資為 " + system.getSalary().computeMonthlySalary(system, id, new CustomDate(2023, 5)));
+    attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(9,1), new Time(17, 0)));
+    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 18), new LeaveRecord("特休", new Message()));
+    System.out.println(id.toString() + " 薪資為 " + system.getSalary().computeMonthlySalary( id, new CustomDate(2023, 5)));
+    
+    attendanceRecordSystem.deleteDayRecord(id, new CustomDate(2023, 5, 17));
     
     // 第二個員工 - (使用打卡紀錄作為出勤紀錄)
     Worker w2 = new FullTimeWorker(new WorkerInfo("Sarah", "財務部會計師", new CustomDate(2019,6,30)));
     Worker.addWorker(w2);
     id = w2.getInfo().getId();
-    system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 16), new ClockRecord(new Time(9,0), new Time(17, 0)));
-    system.getAttendance().addLeaveRecord(id, new CustomDate(2023, 5, 16), new LeaveRecord("事假", new Message(), new Time(8,0), new Time(9, 0)));
-    system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(8,0), new Time(17, 0)));
-    system.getAttendance().addAttendanceRecord(id, new CustomDate(2023, 5, 18), new ClockRecord(new Time(8,0), new Time(17, 0)));
-    system.getAttendance().addOvertimeRecord(id, new CustomDate(2023, 5, 18), new OvertimeRecord(new Time(18,0), new Time(18,50)));
+    
+    attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 16), new ClockRecord(new Time(9,0), new Time(17, 0)));
+    attendanceRecordSystem.addLeaveRecord(id, new CustomDate(2023, 5, 16), new LeaveRecord("事假", new Message(), new Time(8,0), new Time(9, 0)));
+    attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 17), new ClockRecord(new Time(8,0), new Time(17, 0)));
+    attendanceRecordSystem.addAttendanceRecord(id, new CustomDate(2023, 5, 18), new ClockRecord(new Time(8,0), new Time(17, 0)));
+    attendanceRecordSystem.addOvertimeRecord(id, new CustomDate(2023, 5, 18), new OvertimeRecord(new Time(18,0), new Time(18,50)));
     
     Worker w3 = new FullTimeWorker(new WorkerInfo("Candy", "業務", new CustomDate(2020,8,5)));
     Worker.addWorker(w3);
     
     //儲存系統資料
     SaveManageSystem systemSaver = new SaveManageSystem();
-    systemSaver.saveFileTo(system);
     
-    //讀取系統資料
-    LoadManageSystem systemLoader = new LoadManageSystem();
-    system = systemLoader.loadSystem();
+  
     
     // 取得員工在特定年月的薪資
-    System.out.println(id.toString() + " 薪資為 " + system.getSalary().computeMonthlySalary(system, id, new CustomDate(2023, 5)));
+    System.out.println(id.toString() + " 薪資為 " + system.getSalary().computeMonthlySalary(id, new CustomDate(2023, 5)));
    
     // 取得在特定年月的所有員工的出勤紀錄
     CustomDate specificDate = new CustomDate(2023,5,18);

@@ -40,6 +40,10 @@ public abstract class Worker implements Serializable{
     return type;
   }
   
+  public void addPaidLeaveDays() {
+    paidLeaveDays++;
+  }
+  
   public void reducePaidLeaveDays() {
     if (paidLeaveDays == 0) throw new IllegalArgumentException("¿ù»~: ¤wµL¯S¥ð°²¡C");
     paidLeaveDays -= 1;
