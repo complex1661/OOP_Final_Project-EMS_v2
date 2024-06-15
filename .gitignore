@@ -2,12 +2,4 @@
 
 *.java~
 
-<<<<<<< HEAD
 *.gitignore
-=======
-*.gitignore
->>>>>>> 6ef70b3794271accd5f97294e7bf2cad799329b8
-/EmsGUi/nbproject/private/
-/EmsGui/nbproject/private/
-/EmsGui/build/
-/EmsGui/dist/
