@@ -120,7 +120,7 @@ public class AttendanceRecordSystem implements Serializable{
   }
   
   // る籔 UUID 穓碝对猵 -> 穓碝琘琘琘る对猵
-  public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(String workerId, CustomDate date) throws IllegalArgumentException{
+  public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(String workerId, CustomDate date){
     ArrayList<AttendanceDayRecord> records = new ArrayList<>();
     TreeMap<CustomDate, AttendanceDayRecord> workerRecords = workerToDays.get(workerId);
     if (workerRecords != null) {
@@ -132,8 +132,12 @@ public class AttendanceRecordSystem implements Serializable{
       }
     }
     
+//    if (records.isEmpty()) {
+//      throw new IllegalArgumentException("岿粇: UUID - " + workerId + "" + date.toString() + "礚对魁");
+//    }
+    
     if (records.isEmpty()) {
-      throw new IllegalArgumentException("岿粇: UUID - " + workerId + "" + date.toString() + "礚对魁");
+      System.out.println("UUID - " + workerId + "" + date.toString() + "礚对魁");
     }
     
     return records;

@@ -23,7 +23,10 @@ public class SalarySystem implements Serializable{
     
     // 取得該員工在該年月的出缺勤狀況
     ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);
-
+    if (records == null || records.isEmpty()) {
+      return 0;
+    }
+    
     int salary = 0;
     int hourlyWage = baseSalaryEachWorkerType.get(workerType);
     

@@ -159,7 +159,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         workerNameTextField.setToolTipText("請輸入員工姓名");
 
         jLabel3.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-        jLabel3.setText("員工職稱");
+        jLabel3.setText("員工職稱 / 部門");
         jLabel3.setFont(new java.awt.Font("Microsoft YaHei Light", 0, 16)); // NOI18N
 
         workerPositionTitleTextField.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 15)); // NOI18N
@@ -170,11 +170,12 @@ public class EmsJFrame extends javax.swing.JFrame {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(70, 70, 70)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(jLabel3))
+                .addGap(22, 22, 22)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(workerTypeChooser, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(workerNameTextField, javax.swing.GroupLayout.PREFERRED_SIZE, 463, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -522,6 +523,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         });
         showWorkerSalaryTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 18)); // NOI18N
         showWorkerSalaryTable.setRowHeight(40);
+        showWorkerSalaryTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane4.setViewportView(showWorkerSalaryTable);
 
         outputMessagePane.addTab("顯示薪資", jScrollPane4);
@@ -547,6 +549,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         });
         showWorkerRecordTable.setFont(new java.awt.Font("Microsoft JhengHei UI", 0, 14)); // NOI18N
         showWorkerRecordTable.setRowHeight(40);
+        showWorkerRecordTable.getTableHeader().setReorderingAllowed(false);
         jScrollPane2.setViewportView(showWorkerRecordTable);
         if (showWorkerRecordTable.getColumnModel().getColumnCount() > 0) {
             showWorkerRecordTable.getColumnModel().getColumn(0).setResizable(false);
@@ -701,6 +704,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 worker = new Supervisor(workerInfo);
             } 
             Worker.addWorker(worker);
+            JOptionPane.showMessageDialog(this, "成功新增員工ID: " + workerInfo.getId() + "，姓名:" + workerInfo.getName() + "。\n");
             systemOutputs.append("成功新增員工ID: " + workerInfo.getId() + "，姓名:" + workerInfo.getName() + "。\n");
         } catch (IllegalArgumentException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -729,7 +733,7 @@ public class EmsJFrame extends javax.swing.JFrame {
             }
             
             workerLoader.removeWorkerId(workerId);
-            
+            JOptionPane.showMessageDialog(this,"成功刪除員工ID: " + workerId + "。\n");
             systemOutputs.append("成功刪除員工ID: " + workerId + "。\n");
         } catch (IllegalArgumentException | IOException | ClassNotFoundException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
@@ -791,6 +795,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 Time endTime = transferLocalTimeToTime(endLocalTime);
                 ClockRecord clockRecord = new ClockRecord(startTime, endTime);
                 attendanceRecordSystem.addAttendanceRecord(workerId, recordDate, clockRecord);
+                JOptionPane.showMessageDialog(this, "成功為員工ID:" + workerId + "加了打卡紀錄。");
                 systemOutputs.append("成功為員工ID:" + workerId + "加了打卡紀錄。");
             } else if (selectedItem.equals("請假")) {
                 String leaveType = (String) leaveTypeChooser.getSelectedItem();
@@ -819,6 +824,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                     leaveRecord = new LeaveRecord(leaveType, leaveMessage, startTime, endTime);
                 }
                 attendanceRecordSystem.addLeaveRecord(workerId, recordDate, leaveRecord);
+                JOptionPane.showMessageDialog(this, "成功為員工ID:" + workerId + "加了請假紀錄。");
                 systemOutputs.append("成功為員工ID:" + workerId + "加了請假紀錄。");
             } else if (selectedItem.equals("缺席")) {
                 Message absentMessage = null;
@@ -845,6 +851,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                     absentRecord = new AbsentRecord(absentMessage, startTime, endTime);
                 }
                 attendanceRecordSystem.addAbsentRecord(workerId, recordDate, absentRecord);
+                JOptionPane.showMessageDialog(this, "成功為員工ID:" + workerId + "加了缺席紀錄。");
                 systemOutputs.append("成功為員工ID:" + workerId + "加了缺席紀錄。");
             } else if (selectedItem.equals("加班")) {
                 if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
@@ -857,6 +864,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 Time endTime = transferLocalTimeToTime(endLocalTime);
                 OvertimeRecord overtimeRecord = new OvertimeRecord(startTime, endTime);
                 attendanceRecordSystem.addOvertimeRecord(workerId, recordDate, overtimeRecord);
+                JOptionPane.showMessageDialog(this, "成功為員工ID:" + workerId + "加了加班紀錄。");
                 systemOutputs.append("成功為員工ID:" + workerId + "加了加班紀錄。");
             }
         } catch (IllegalArgumentException | NullPointerException e) {
@@ -881,6 +889,8 @@ public class EmsJFrame extends javax.swing.JFrame {
                 return;
             }
             attendanceRecordSystem.deleteDayRecord(workerId, recordDate);
+            JOptionPane.showMessageDialog(this, "成功為員工ID: " + workerId + " 刪除在 " + recordDate.toString() + " 的紀錄。");
+            systemOutputs.append("成功為員工ID: " + workerId + " 刪除在 " + recordDate.toString() + " 的紀錄。");
         } catch (IllegalArgumentException | NullPointerException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "", JOptionPane.ERROR_MESSAGE);
         }
