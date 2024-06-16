@@ -671,6 +671,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    // 新增員工按鈕
     private void addWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addWorkerButtonActionPerformed
         // TODO add your handling code here:
         try {
@@ -713,6 +714,7 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_addWorkerButtonActionPerformed
 
+    // 刪除員工按鈕
     private void deleteWorkerButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteWorkerButtonActionPerformed
         // TODO add your handling code here:
         try {
@@ -776,7 +778,6 @@ public class EmsJFrame extends javax.swing.JFrame {
             if (workerId == null || workerId.isEmpty()) throw new IllegalArgumentException("新增紀錄時員工ID不可為空。");
             if (workerId.length() != 7) throw new IllegalArgumentException("無效的員工ID。");
             
-            
             // 處理日期
             Date date = recordDateChooser.getDate();
             if (date == null) throw new NullPointerException("新增紀錄時日期不可為空。");
@@ -812,7 +813,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 }
                 
                 LeaveRecord leaveRecord = null;
-                // 請整日
+                // 請假整日
                 if (startTimePicker.getText().isEmpty() || endTimePicker.getText().isEmpty()) {
                     leaveRecord = new LeaveRecord(leaveType, leaveMessage);
                 } else {
@@ -947,32 +948,6 @@ public class EmsJFrame extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_leaveTypeChooserItemStateChanged
 
-    
-    private Object[] convertDayRecordToObject(String workerId, int year, int month, Integer day, AttendanceDayRecord record) {
-        Worker worker = Worker.getWorkerById(workerId);
-        String name = worker.getInfo().getName();
-        
-        String leaveType =  "無";
-        String leaveText = "無";
-        String leaveMessageSender = "無";
-        String leaveMessageDate = "無";
-        if (record.getLeaveRecord() != null) {
-            LeaveRecord leaveRecord = record.getLeaveRecord();
-            leaveType = leaveRecord.getLeaveType();
-            leaveText = leaveRecord.getLeaveDetail().getText();
-            leaveMessageSender = leaveRecord.getLeaveDetail().getMessageSender();
-            leaveMessageDate = leaveRecord.getLeaveDetail().getMessageDate();
-        }
-        
-        String dayInRecord = null;
-        if (day == null || day == 0) dayInRecord = "無";
-        else dayInRecord = Integer.toString(day);
-        Object recordInObject[] = {workerId, name, year, month, dayInRecord, record.getAttendHours(), 
-            record.getLeaveHours(), record.getAbsentHours(workerId),record.getOvertimeHours(), 
-            leaveType, leaveText, leaveMessageSender, leaveMessageDate};
-        return recordInObject;
-    }
-    
     private void searchWorkerRecordButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchWorkerRecordButtonActionPerformed
         // TODO add your handling code here:
         outputMessagePane.setSelectedIndex(3);
@@ -995,16 +970,25 @@ public class EmsJFrame extends javax.swing.JFrame {
 
                 if (day != 0) date = new CustomDate(year, month, day); 
                 else date = new CustomDate(year, month);
+                
                 if (day == 0) { // 以年月搜尋指定員工
-                    ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(workerId, date);
-                    for (AttendanceDayRecord record : records) {
-                        tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, record));
+                    TreeMap<CustomDate, AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(workerId, date);
+                    int recordDay;
+                    //先計算總出缺勤時數及遲到次數
+                    Object[] statistic = attendanceRecordSystem.computeRecordsHoursAndLateTimes(workerId, year, month, records);
+                    tableModel.addRow(statistic);
+                    
+                    for (Map.Entry<CustomDate, AttendanceDayRecord> record : records.entrySet()) {
+                        CustomDate customDate = record.getKey();
+                        recordDay = customDate.getDay();
+                        tableModel.addRow(attendanceRecordSystem.convertDayRecordToObject(workerId, year, month, recordDay, record.getValue()));
+                        System.out.println(record.getValue().getIsLate());
                     }
                 } else { // 以年月日搜尋指定員工
                     AttendanceDayRecord dayRecord = attendanceRecordSystem.searchRecordByYearMonthDay(workerId, date);
-                    tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, dayRecord));
+                    tableModel.addRow(attendanceRecordSystem.convertDayRecordToObject(workerId, year, month, day, dayRecord));
                 }
-            } else { // 以指定年月日搜尋所有員工
+            } else { // 以指定年月日搜尋所有員工(全體)
                 CustomDate date = null;
                 int year = Integer.parseInt(JOptionPane.showInputDialog("請輸入想查詢的年: "));
                 if (year == 0) throw new IllegalArgumentException("年份不可為空。");
@@ -1020,7 +1004,7 @@ public class EmsJFrame extends javax.swing.JFrame {
                 for (Map.Entry<String, AttendanceDayRecord> entry : allWorkerRecords.entrySet()) {
                     workerId = entry.getKey();
                     if (entry.getValue() != null) {
-                        tableModel.addRow(convertDayRecordToObject(workerId, year, month, day, entry.getValue()));
+                        tableModel.addRow(attendanceRecordSystem.convertDayRecordToObject(workerId, year, month, day, entry.getValue()));
                     }
                 }
             }

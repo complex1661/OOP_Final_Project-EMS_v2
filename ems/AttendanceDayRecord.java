@@ -148,6 +148,7 @@ public class AttendanceDayRecord implements Serializable{
     
     if (clockRecord != null && clockRecord.isLate(attendTime)){
       handleLateAttendance(workerId, attendTime, clockInTime);
+      return isLate;
     }
     return false;
   }
@@ -169,6 +170,7 @@ public class AttendanceDayRecord implements Serializable{
     else {
       this.absentRecord = new AbsentRecord(attendTime, new Time(clockInTime.getHour(), clockInTime.getMinute()));
       this.absentHours = WorkerAbsentSystem.getAbsentHours(workerId, absentRecord);
+      isLate = false; // 遲到超過一小時設為缺勤，不算遲到
     }
   }
 }

@@ -103,7 +103,7 @@ public class AttendanceRecordSystem implements Serializable{
     // 如果含有特休，將數量加回
     AttendanceDayRecord dayRecord = workerRecords.get(date);
     LeaveRecord leaveRecord = dayRecord.getLeaveRecord();
-    if (leaveRecord.getLeaveType().equals("特休")) {
+    if (leaveRecord != null && leaveRecord.getLeaveType().equals("特休")) {
       Worker w = Worker.getWorkerById(workerId);
       w.addPaidLeaveDays();
     }
@@ -120,20 +120,20 @@ public class AttendanceRecordSystem implements Serializable{
   }
   
   // 以年月與員工 UUID 搜尋出缺勤狀況 -> 搜尋某員工在某年某月的出缺勤狀況
-  public ArrayList<AttendanceDayRecord> searchRecordByYearMonth(String workerId, CustomDate date){
-    ArrayList<AttendanceDayRecord> records = new ArrayList<>();
+  public TreeMap<CustomDate, AttendanceDayRecord> searchRecordByYearMonth(String workerId, CustomDate date){
+    TreeMap<CustomDate, AttendanceDayRecord> records = new TreeMap<>();
     TreeMap<CustomDate, AttendanceDayRecord> workerRecords = workerToDays.get(workerId);
     if (workerRecords != null) {
       for (Map.Entry<CustomDate, AttendanceDayRecord> entry : workerRecords.entrySet()) {
         CustomDate recordDate = entry.getKey();
         if (recordDate.getYear().equals(date.getYear()) && recordDate.getMonth().equals(date.getMonth())) {
-          records.add(entry.getValue());
+          records.put(recordDate, entry.getValue());
         }
       }
     }
     
 //    if (records.isEmpty()) {
-//      throw new IllegalArgumentException("錯誤: 員工UUID - " + workerId + "在" + date.toString() + "無出缺勤紀錄。");
+//      throw new IllegalArgumentException("錯誤: 員工UUID - " + workerId + " 在 " + date.toString() + " 無出缺勤紀錄。");
 //    }
     
     if (records.isEmpty()) {
@@ -188,6 +188,59 @@ public class AttendanceRecordSystem implements Serializable{
           }
         }
       }
+    } else {
+      throw new IllegalArgumentException("刪除紀錄時發生錯誤。");
     }
   }
+  
+  // 將記錄轉換成 Object[] 
+  public Object[] convertDayRecordToObject(String workerId, int year, int month, Integer day, AttendanceDayRecord record) {
+    Worker worker = Worker.getWorkerById(workerId);
+    String name = worker.getInfo().getName();
+    
+    String leaveType =  "無";
+    String leaveText = "無";
+    String leaveMessageSender = "無";
+    String leaveMessageDate = "無";
+    if (record.getLeaveRecord() != null) {
+      LeaveRecord leaveRecord = record.getLeaveRecord();
+      leaveType = leaveRecord.getLeaveType();
+      leaveText = leaveRecord.getLeaveDetail().getText();
+      leaveMessageSender = leaveRecord.getLeaveDetail().getMessageSender();
+      leaveMessageDate = leaveRecord.getLeaveDetail().getMessageDate();
+    }
+    
+    String dayInRecord = null;
+    if (day == null || day == 0) dayInRecord = "無";
+    else dayInRecord = Integer.toString(day);
+    Object recordInObject[] = {workerId, name, year, month, dayInRecord, record.getAttendHours(), 
+      record.getLeaveHours(), record.getAbsentHours(workerId),record.getOvertimeHours(), 
+      leaveType, leaveText, leaveMessageSender, leaveMessageDate};
+    return recordInObject;
+  }
+  
+  // 獲得該年該月的出缺勤時數與遲到次數
+  public Object[] computeRecordsHoursAndLateTimes(String workerId, int year, int month, TreeMap<CustomDate,AttendanceDayRecord> records) {
+    Worker w = Worker.getWorkerById(workerId);
+    String name = w.getInfo().getName();
+    int totalAttendHours = 0;
+    int totalLeaveHours = 0; 
+    int totalAbsentHours = 0;
+    int totalOverttimeHours = 0;
+    int totalLateTimes = 0;
+    
+    for (Map.Entry<CustomDate, AttendanceDayRecord> entry : records.entrySet()) {
+      AttendanceDayRecord dayRecord = entry.getValue();
+      totalAttendHours += dayRecord.getAttendHours();
+      totalLeaveHours += dayRecord.getLeaveHours();
+      totalAbsentHours += dayRecord.getAbsentHours(workerId);
+      totalOverttimeHours += dayRecord.getOvertimeHours();
+      if (dayRecord.getIsLate()) totalLateTimes++;
+    }
+    
+    Object recordHoursInObject[]  = {workerId, name, year, month, "無", totalAttendHours, 
+    totalLeaveHours, totalAbsentHours, totalOverttimeHours, "遲到次數:"+ totalLateTimes, "本月總紀錄", "", ""};
+    return recordHoursInObject;
+  }
+  
 }

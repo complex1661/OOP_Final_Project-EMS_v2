@@ -2,6 +2,7 @@ package ems;
 import java.util.Date;
 import java.util.TreeMap;
 import java.util.ArrayList;
+import java.util.Map;
 import java.io.*;
 
 public class SalarySystem implements Serializable{
@@ -22,7 +23,12 @@ public class SalarySystem implements Serializable{
     AttendanceRecordSystem attendanceRecordSystem = ManageSystem.attendanceRecordSystem;
     
     // 取得該員工在該年月的出缺勤狀況
-    ArrayList<AttendanceDayRecord> records = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);
+    TreeMap<CustomDate, AttendanceDayRecord> dateToRecord = attendanceRecordSystem.searchRecordByYearMonth(worker_id, date);
+    ArrayList<AttendanceDayRecord> records = new ArrayList<>();
+    for (Map.Entry<CustomDate, AttendanceDayRecord> entry : dateToRecord.entrySet()) {
+      records.add(entry.getValue());
+    }
+    
     if (records == null || records.isEmpty()) {
       return 0;
     }

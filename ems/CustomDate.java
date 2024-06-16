@@ -4,7 +4,7 @@ import java.util.Calendar;
 import java.io.*;
 import java.util.Objects;
 
-public class CustomDate implements Comparable<CustomDate>,Serializable{
+public class CustomDate implements Comparable<CustomDate>, Serializable{
   private static final long serialVersionUID = 1L;
   
   private Integer year; 
